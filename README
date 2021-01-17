@@ -1,1 +1,14 @@
-# range manager
+# Range manager
+
+
+# How to use
+
+Just open the range_manager.html on a browser
+
+
+
+# Dev
+
+You need python with jinja2 suppport and compass the css framework
+
+The Makefile have three commands : build, css, html.
