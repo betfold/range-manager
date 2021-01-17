@@ -11,4 +11,10 @@ Just open the range_manager.html on a browser
 
 You need python with jinja2 suppport and compass the css framework
 
-The Makefile have three commands : build, css, html.
+The Makefile have three commands : 
+- build
+	make css and html 
+- css 
+	make css
+- html.
+	make html
