@@ -1,0 +1,22 @@
+
+@mixin clearfix() {
+	&:before,
+	&:after {
+		content: "";
+		display: table;
+	}
+	&:after {
+		clear: both;
+	}
+}
+
+
+@mixin font-size($sizeValue: 12) {
+	font-size: $sizeValue + px;
+	font-size: (0.125 * $sizeValue) + rem;
+}
+
+@mixin line-height($heightValue: 12) {
+	line-height: $heightValue + px;
+	line-height: (0.125 * $heightValue) + rem;
+}

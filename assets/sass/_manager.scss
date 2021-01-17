@@ -1,0 +1,95 @@
+.hidden {
+	visibility: hidden;
+}
+
+.visible { visibility: visible }
+
+.pannel #action  .disable {
+	display:none;
+}
+
+#range_manager td {
+	text-align:center;
+	color: #FFF;
+	padding:.3em;
+	font-weight:bold;
+}
+
+
+.pair {
+	background-color: #CCC;
+}
+
+.suited {
+	background-color: #666;
+}
+
+.offsuit {
+	background-color: #999;
+}
+
+
+.bet {
+	background-color:#ff7f2aff;
+}
+.flat3bet {
+	box-shadow: 0 0 0 4px #5555ffff inset;
+}
+.gobroke {
+	box-shadow: 0 0 0 4px #ff0000ff inset;
+}
+.tbet {
+	background-color: #5555ffff;
+}
+.flat {
+	background-color: #aaccffff;
+}
+.fibet {
+	box-shadow: 0 0 0 4px #ff0066ff inset;
+}
+
+.fbet {
+	background-color: #ff0066ff;
+}
+
+
+// gestion des boutons d'actions des cartes
+.pannel > #action fieldset {
+	display:flex;
+	flex-direction: column;
+	margin-left:1.3em;
+	min-width:10em;
+}
+
+#action fieldset input[type="radio"]{ 
+	display:none
+}
+
+#action fieldset input[type="radio"] + label{
+		padding: 0.5rem 1rem;
+		font-size: 1.25rem;
+		line-height: 1.5;
+		border-radius: 0.3rem;
+		color: #fff;
+		background-color: #6c757d;
+		border: 1px solid transparent;
+		transition: all 0.15s ease-in-out;
+		margin:.3em;
+		text-align:center;
+}
+
+#action fieldset input[type="radio"]:checked + label {
+	border:5px solid #ccc;
+}
+
+#action #facingrfi input[value="flat"] + label { background-color: #aaccffff; }
+#action #facingrfi input[value="tbet"] + label { background-color: #5555ffff; }
+#action #facingrfi input[value="fbet"] + label { background-color: #ff0066ff; }
+#action #facingrfi input[value="gobroke"] + label { background-color: #ff0000ff; }
+#action #facingrfi input[value="fibet"] + label { background-color: #ff0066ff; }
+
+#action #rfi input[value="fbet"] + label { background-color: #ff0066ff; }
+#action #rfi input[value="bet"] + label { background-color: #ff7f2aff; }
+#action #rfi input[value="flat3bet"] + label { background-color: #5555ffff; }
+#action #rfi input[value="gobroke"] + label { background-color: #ff0000ff; }
+#action #rfi input[value="flat"] + label { background-color: #5555ffff; }

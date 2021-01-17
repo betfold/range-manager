@@ -1,0 +1,29 @@
+<form id="pannel_selection">
+
+	<select id="max"  onchange="range_manager.selecteur.set_position(); range_manager.load();">
+		<option value="9" selected>9-max</option>
+		<option value="6">6-max</option>
+		<option value="2">HU</option>
+	</select>
+
+	<select id="position" onchange="range_manager.load(); ">
+	</select>
+
+	<select id="bb"  onchange="range_manager.load()">
+		<option value="70#100" selected>70-100bb</option>
+		<option value="25#50">25-50bb</option>
+		<option value="12#20">12-20bb</option>
+	</select>
+
+	<select id="action"  onchange="range_manager.load(); range_manager.togle_visibility()">
+		<option value="rfi" selected>RFI</option>
+		<option value="facing">Facing RFI</option>
+	</select>
+
+	<label id="versuslabel"  for="versus">Versus</label>
+	<select id="versus"  onchange="range_manager.load(); ">
+		{% include 'select_by_position.html' %}
+	</select>
+
+</form>
+

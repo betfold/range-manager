@@ -1,0 +1,36 @@
+{% set signe = ["A", "K", "Q", "J", "T", "9", "8", "7", "6", "5", "4", "3", "2"] %}
+{# Create the 13x13 hand grid #}
+
+
+<table id="range_manager">
+	{% for l in range(0, 13) %}
+		<tr>
+			{% for c in range(0, 13) %}
+				{% if c == l %}
+					{% set cards = signe[c] + signe[c] %}
+					<td class="pair" id="{{cards}}" onclick="range_manager.set_background_card('{{cards}}'); range_manager.save()">{{cards}}</td>
+				{% else %}
+					{% if c > l %}
+						{% set cards = signe[l] + signe[c] + "s" %}
+						<td class="suited" id="{{cards}}" onclick="range_manager.set_background_card('{{cards}}'); range_manager.save()">{{cards}}</td>	
+					{% else %}
+						{% set cards = signe[c] + signe[l] + "o" %}
+						<td class="offsuit" id="{{cards}}" onclick="range_manager.set_background_card('{{cards}}'); range_manager.save()">{{cards}}</td>	
+					{% endif %}
+				{% endif %}
+			{% endfor %}
+		</tr>
+	{% endfor %}
+</table>
+	
+{% markdown %}
+
+The hand grind contains all 169 possible pre-flop hands:
+
+- 13 pockets pairs 5.88%
+- 78 suited hands 23.53%
+- 78 offsuit hands 70.59%
+
+{% endmarkdown %}
+
+

@@ -1,0 +1,55 @@
+@import "compass/utilities";
+
+$background-color: #fff; /*eee;*/
+$font-color: #222;
+$header-background-color: #262626;
+$header-description: #fff;
+$blue: #0091C8;
+
+h1, h2, h3, h4, h5, h6 {
+  clear:both;
+  line-height:1.4;
+  margin: 0 0 0.75em;
+  padding: 1.5em 0 0;
+  color:$blue;;
+  font-weight:300;
+}
+
+h1:first-child,h2:first-child,h3:first-child,h4:first-child,h5:first-child,h6:first-child {
+  padding-top:0;
+}
+
+h1 {
+  font-size:24px;
+  font-size:1.5rem;
+}
+
+h2 {
+  font-size:20px;
+  font-size:1.25rem;
+}
+
+h3, h4, h5, h6 {
+  font-size:18px;
+  font-size:1.10rem;
+}
+
+hr {
+  background-color: $header-description;
+  border:0;
+  height:1px;
+  margin-bottom:1.5em;
+}
+
+ul, ol {
+  padding:0;
+  margin: 0 0 1.5em;
+}
+
+img, video {
+  max-width:100%;
+  display:block;
+  height:auto;
+}
+
+

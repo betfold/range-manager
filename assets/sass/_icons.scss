@@ -1,0 +1,55 @@
+.icon-tel {
+
+  @extend %fa-icon;
+  @extend .fas;
+
+  &:before {
+    content: fa-content($fa-var-phone)
+  }
+}
+
+.icon-tel> span {
+  display:none;
+}
+
+.icon-tel-mobil {
+
+  @extend %fa-icon;
+  @extend .fas;
+
+  &:before {
+    content: fa-content($fa-var-mobile-alt)
+  }
+}
+
+.icon-tel-mobil> span {
+  display:none;
+}
+
+.icon-fax {
+
+  @extend %fa-icon;
+  @extend .fas;
+
+  &:before {
+    content: fa-content($fa-var-fax)
+  }
+}
+
+.icon-fax > span {
+  display:none;
+}
+
+.icon-mail > span {
+  display:none;
+}
+
+.icon-mail{
+
+  @extend %fa-icon;
+  @extend .fas;
+
+  &:before {
+    content: fa-content($fa-var-envelope)
+  }
+}

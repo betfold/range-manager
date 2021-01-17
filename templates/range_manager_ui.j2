@@ -1,0 +1,20 @@
+{% extends 'layout.html' %}
+{% block main %}
+
+
+<h1>Hand Grid</h1>
+
+{% include 'pannel_selection.html' %}
+<br/>
+
+<div style="display:flex">
+
+	<div>
+		{% include 'grid.j2' %}
+	</div>
+
+	<div>
+		{% include 'pannel_action.html' %}
+	</div>
+
+{% endblock %}

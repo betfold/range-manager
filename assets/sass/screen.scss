@@ -1,0 +1,33 @@
+/* Welcome to Compass.
+ * In this file you should write your main styles. (or centralize your imports)
+ * Import this file using the following HTML or equivalent:
+ * <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" /> */
+
+@import "compass/support";
+@import "compass/css3";
+@import "compass/reset";
+
+
+@import "mixins";
+@import "base";
+
+body {
+	@include font-size(16);
+	@include line-height(12);
+	font-family: "Libre Franklin", "Helvetica Neue", helvetica, arial, sans-serif;
+}
+
+main {
+	font-size:1rem;
+	margin:1em;
+	p {
+		margin-bottom:1.5em;
+  }
+}
+
+
+table, td {
+	border: 1px solid black;
+}
+
+@import "manager";
