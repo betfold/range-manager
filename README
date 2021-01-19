@@ -14,4 +14,6 @@ Just open the range_manager.html on a browser
 
 Require python for jinja2 suppport and rubby for using the css framework compass.
 
-The Makefile have some many commands for build html css and js files.
+The Makefile have some many commands for build html css and js files, you probably should
+update it.
+

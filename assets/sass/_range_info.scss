@@ -1,0 +1,32 @@
+@import  "compass/css3";
+
+#range_info {
+	display:flex;
+	flex-flow: row wrap;
+	width:35em;
+}
+
+#range_info:nth-child(3n) {
+	@include break-after('always');
+}
+
+#range_info ul, #combo_info { 
+	margin:.5em;
+	padding:.3em 2em;
+	text-align:center; 
+	color:white;
+	width:5em;
+}
+
+
+#range_info ul li:nth-child(2), #combo_info li:nth-child(2) { font-size: 180%; }
+
+#range_info .bet { background-color: $bet; }
+#range_info .flat{ background-color: $flat; }
+#range_info .threebet { background-color: $threebet; }
+#range_info .fourbet { background-color: $fourbet; }
+#range_info .fivebet { background-color: $fivebet; }
+#range_info .flat3bet { background-color: $flat3bet; }
+#range_info .flat4bet { background-color: $flat4bet; }
+#range_info .flat5bet { background-color: $flat5bet; }
+#range_info .allin { background-color: $allin; }

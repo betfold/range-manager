@@ -124,8 +124,8 @@ var selecteur = {
 			li_action.innerHTML = action;
 			var li_combo = document.createElement('li');
 			li_combo.innerHTML = stat.combos + ' combos';
-			ul.appendChild(li_pourcent);
 			ul.appendChild(li_action);
+			ul.appendChild(li_pourcent);
 			ul.appendChild(li_combo);
 
 			info_range.appendChild(ul);
@@ -137,8 +137,7 @@ var selecteur = {
 			var lit = document.createElement('li')
 			lit.innerHTML = ui[typeofcard] + " " + typeofcard;
 			var lip = document.createElement('li');
-			lip.innerHTLML = calcul[typeofcard].pourcent.toFixed(2) + "%";
-			console.log(calcul[typeofcard].pourcent);
+			lip.innerHTML = calcul[typeofcard].pourcent.toFixed(2) + "%";
 			var lic = document.createElement('li');
 			lic.innerHTML = calcul[typeofcard].combo + " combos";
 			ult.appendChild(lit);
