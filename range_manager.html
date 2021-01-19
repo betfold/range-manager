@@ -1285,14 +1285,18 @@
 	
 </table>
 	
-<p>The hand grind contains all 169 possible pre-flop hands:</p>
+<p>The hand grind contains all 169 possible pre-flop hands (1 236 combos):</p>
 <ul>
 <li>13 pockets pairs 5.88%</li>
 <li>78 suited hands 23.53%</li>
 <li>78 offsuit hands 70.59%</li>
 </ul>
 
-
+<ul id="combo_info">
+	<li class="pair"></li>
+	<li class="suited"></li>
+	<li class="offsuit"></li>
+</ul>
 	</div>
 
 	<div>
@@ -1306,24 +1310,33 @@
 		<input type="radio" id="action_flat3bet" name="sel" value="flat3bet">
 			<label for="action_flat3bet">Flat vs 3bet</label>
 
-		<input type="radio" id="action_fbet"   name="sel" value="fbet">
+		<input type="radio" id="action_fourbet"   name="sel" value="fourbet">
 			<label for="action_fbet">4Bet</label>
 
-		<input type="radio" id="action_gobroke"   name="sel" value="gobroke">
-			<label for="action_gobroke">Go broke</label>
+		<input type="radio" id="rfi_flat5bet"   name="sel" value="flat5bet">
+			<label for="rfi_flat5bet">Flat vs 5Bet</label>
+
+		<input type="radio" id="action_gobroke"   name="sel" value="allin">
+			<label for="action_gobroke">All in</label>
 
 	</fieldset>
 			<fieldset id="facingrfi" class="disable">
 
-		<input type="radio" id="flat" name="sel" value="flat">
-			<label for="flat">flat</label>
+		<input type="radio" id="facing_flat" name="sel" value="flat">
+			<label for="facing_flat">flat</label>
 
-		<input type="radio" id="tbet" name="sel" value="tbet">
-			<label for="tbet">3Bet</label>
+		<input type="radio" id="facing_threebet" name="sel" value="threebet">
+			<label for="facing_threebet">3Bet</label>
 
-		<input type="radio" id="fibet"   name="sel" value="fibet">
-			<label for="fibet">5Bet</label>
+		<input type="radio"  id="facing_flat4bet" name="sel" value="flat4bet">
+			<label for="facing_flat4bet">Flat vs 4Bet</label>
 
+		<input type="radio"  id="facing_fivebet" name="sel" value="fivebet">
+			<label for="facing_fivebet">5Bet</label>
+
+
+		<input type="radio" id="facing_allin"  name="sel" value="allin">
+			<label for="facing_allin">All in</label>
 
 
 	</fieldset>

@@ -1,8 +1,32 @@
+
+
+
+$bet: #ff7f2aff;
+$threebet: #555;
+$fourbet:#ff0066ff;
+$fivebet:#ff0066ff;
+$flat:#aaccffff;
+$flat3bet: #555;
+$flat4bet:red;
+$flat5bet: red;
+$allin:#ff0000ff;
+$limp:red;
+$limpreraise:red;
+$limp-fold:red;
+$raisefold:red;
+
+$pair: #CCC;
+$offsuit: #999;
+$suited: #666;
+
+/* FIXME not here*/
 .hidden {
 	visibility: hidden;
 }
 
 .visible { visibility: visible }
+
+/* end to move */
 
 .pannel #action  .disable {
 	display:none;
@@ -15,45 +39,64 @@
 	font-weight:bold;
 }
 
-
+/* couleurs des cartes non selectionné par type */
 .pair {
-	background-color: #CCC;
+	background-color: $pair;
 }
 
 .suited {
-	background-color: #666;
+	background-color: $suited;
 }
 
 .offsuit {
-	background-color: #999;
+	background-color: $offsuit;
 }
 
+
+/************************************** 
+	Couleurs des actions sur les cartes 
+***************************************/
 
 .bet {
-	background-color:#ff7f2aff;
+	background-color:$bet;
 }
-.flat3bet {
-	box-shadow: 0 0 0 4px #5555ffff inset;
-}
-.gobroke {
-	box-shadow: 0 0 0 4px #ff0000ff inset;
-}
-.tbet {
-	background-color: #5555ffff;
-}
+
 .flat {
-	background-color: #aaccffff;
-}
-.fibet {
-	box-shadow: 0 0 0 4px #ff0066ff inset;
+	background-color: $flat;
 }
 
-.fbet {
-	background-color: #ff0066ff;
+.threebet {
+	background-color: $threebet;
+}
+
+.flat3bet {
+	box-shadow: 0 0 0 4px $flat3bet inset;
+}
+
+.fourbet {
+	background-color: $fourbet;
+}
+
+.flat4bet {
+	background-color: $flat4bet;
+}
+
+.fivebet {
+	box-shadow: 0 0 0 4px $fivebet inset;
+}
+
+.flat5bet {
+	box-shadow: 0 0 0 4px $flat5bet inset;
+}
+
+.allin{
+	box-shadow: 0 0 0 4px $allin inset;
 }
 
 
-// gestion des boutons d'actions des cartes
+
+// gestion des boutons d'actions
+// 
 .pannel > #action fieldset {
 	display:flex;
 	flex-direction: column;
@@ -62,7 +105,7 @@
 }
 
 #action fieldset input[type="radio"]{ 
-	display:none
+	display:none;
 }
 
 #action fieldset input[type="radio"] + label{
@@ -82,14 +125,14 @@
 	border:5px solid #ccc;
 }
 
-#action #facingrfi input[value="flat"] + label { background-color: #aaccffff; }
-#action #facingrfi input[value="tbet"] + label { background-color: #5555ffff; }
-#action #facingrfi input[value="fbet"] + label { background-color: #ff0066ff; }
-#action #facingrfi input[value="gobroke"] + label { background-color: #ff0000ff; }
-#action #facingrfi input[value="fibet"] + label { background-color: #ff0066ff; }
+#action #facingrfi input[value="flat"] + label { background-color: $flat; }
+#action #facingrfi input[value="threebet"] + label { background-color: $threebet; }
+#action #facingrfi input[value="flat4bet"] + label { background-color: $flat4bet; }
+#action #facingrfi input[value="fivebet"] + label { background-color: $fivebet; }
+#action #facingrfi input[value="allin"] + label { background-color: $allin; }
 
-#action #rfi input[value="fbet"] + label { background-color: #ff0066ff; }
-#action #rfi input[value="bet"] + label { background-color: #ff7f2aff; }
-#action #rfi input[value="flat3bet"] + label { background-color: #5555ffff; }
-#action #rfi input[value="gobroke"] + label { background-color: #ff0000ff; }
-#action #rfi input[value="flat"] + label { background-color: #5555ffff; }
+#action #rfi input[value="bet"] + label { background-color: $bet; }
+#action #rfi input[value="flat3bet"] + label { background-color: $flat3bet; }
+#action #rfi input[value="fourbet"] + label { background-color: $fourbet; }
+#action #rfi input[value="flat5bet"] + label { background-color: $flat5bet; }
+#action #rfi input[value="allin"] + label { background-color: $allin; }
