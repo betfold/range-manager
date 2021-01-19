@@ -7,14 +7,9 @@ Just open the range_manager.html on a browser
 
 
 
+
 # Dev
 
-You need python with jinja2 suppport and compass the css framework
+Require python for jinja2 suppport and rubby for using the css framework compass.
 
-The Makefile have three commands : 
-- build
-	make css and html 
-- css 
-	make css
-- html.
-	make html
+The Makefile have some many commands for build html css and js files.
