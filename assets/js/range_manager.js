@@ -94,9 +94,9 @@ var selecteur = {
 	function set_combo_info() {
 		calcul_combo();
 		var calcul = {
-			pair: { pourcent: "", combo: "" },
-			offsuit: { pourcent: "", combo: "" },
-			suited: { pourcent: "", combo: ""}
+			pair: { pourcent: 0, combo: 0 },
+			offsuit: { pourcent: 0, combo: 0 },
+			suited: { pourcent: 0, combo: 0}
 		}
 		
 		calcul.pair.combo = ui.pair * 6;
@@ -107,14 +107,7 @@ var selecteur = {
 		calcul.offsuit.pourcent = ui.offsuit * 12 / 1326 * 100;
 		calcul.suited.pourcent = ui.suited * 4 / 1326 * 100;
 
-		var block_info = document.getElementById('combo_info');
-		var pair = block_info.getElementsByClassName('pair')[0];
-		var offsuit = block_info.getElementsByClassName('offsuit')[0];
-		var suited = block_info.getElementsByClassName('suited')[0];
-		pair.innerHTML= ui.pair + " pairs "+calcul.pair.pourcent.toFixed(2) + "% des mains ("+calcul.pair.combo+ " combos)";
-		suited.innerHTML= ui.suited + " suited "+calcul.suited.pourcent.toFixed(2) + "% des mains  ("+calcul.suited.combo+ " combos)";
-		offsuit.innerHTML= ui.offsuit + " offsuit "+calcul.offsuit.pourcent.toFixed(2) + "% des mains ("+calcul.offsuit.combo+ " combos)";
-
+		
 		
 		var info_range = document.getElementById('range_info');
 		info_range.innerHTML = '';
@@ -125,18 +118,35 @@ var selecteur = {
 			var ul = document.createElement('ul');
 			ul.classList.add(action);
 
-			var li_action = document.createElement('li');
-			li_action.innerHTML = action;
 			var li_pourcent = document.createElement('li');
 			li_pourcent.innerHTML = stat.pourcent.toFixed(2) + '%';
+			var li_action = document.createElement('li');
+			li_action.innerHTML = action;
 			var li_combo = document.createElement('li');
 			li_combo.innerHTML = stat.combos + ' combos';
-			ul.appendChild(li_action);
 			ul.appendChild(li_pourcent);
+			ul.appendChild(li_action);
 			ul.appendChild(li_combo);
 
 			info_range.appendChild(ul);
 		}
+
+		for(var typeofcard in calcul) {
+			var ult = document.createElement('ul');
+			ult.classList.add(typeofcard);
+			var lit = document.createElement('li')
+			lit.innerHTML = ui[typeofcard] + " " + typeofcard;
+			var lip = document.createElement('li');
+			lip.innerHTLML = calcul[typeofcard].pourcent.toFixed(2) + "%";
+			console.log(calcul[typeofcard].pourcent);
+			var lic = document.createElement('li');
+			lic.innerHTML = calcul[typeofcard].combo + " combos";
+			ult.appendChild(lit);
+			ult.appendChild(lip);
+			ult.appendChild(lic);
+			info_range.appendChild(ult);
+		}
+
 	}
 	function save_range() {
 	var ranges = {};

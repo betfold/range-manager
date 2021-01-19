@@ -75,7 +75,7 @@ $suited: #666;
 }
 
 .fourbet {
-	background-color: $fourbet;
+	box-shadow: 0 0 0 4px $fourbet inset;
 }
 
 .flat4bet {
@@ -93,6 +93,7 @@ $suited: #666;
 .allin{
 	box-shadow: 0 0 0 4px $allin inset;
 }
+
 
 @import 'range_info';
 
