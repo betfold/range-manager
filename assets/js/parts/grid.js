@@ -11,7 +11,8 @@ function save_range() {
 			}
 		}
 	}
-	localStorage.setItem(get_range_name(), JSON.stringify(ranges));
+	ranges = JSON.stringify(ranges);
+	if( ranges.length > 8 ) { localStorage.setItem(get_range_name(), ranges); }
 }
 
 function set_range() {
