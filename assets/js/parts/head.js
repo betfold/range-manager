@@ -5,12 +5,9 @@ var ui = {
 		facingrfi:  ["flat", "threebet", "flat4bet", "fivebet", "allin"],
 		bvb:        ["limpfold", "limpcall", "raisefold", "limpraise", "raisecall", "allin"]
 		},
-	selected_hands: {},
-	info_range: {
-		pair: 0,
-		suited: 0,
-		offsuit: 0,
-		},
+	pair: 0,
+	suited: 0,
+	offsuit: 0,
 }
 
 var selecteur = {

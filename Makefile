@@ -9,7 +9,7 @@ css:
 html:
 	python tools/jparser.py templates/range_manager_ui.j2 > range_manager.html
 
-js: lintjs
+js:
 	python tools/jparser.py assets/js/parts/range_manager.js > assets/js/range_manager.js
 
 lintjs:

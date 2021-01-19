@@ -13,12 +13,12 @@ function save_range() {
 	}
 	ranges = JSON.stringify(ranges);
 	if( ranges.length > 8 ) { localStorage.setItem(get_range_name(), ranges); }
+	set_combo_info();
 }
 
 function set_range() {
 	clear_range();
-	var name   = get_range_name();
-	var ranges = JSON.parse(localStorage.getItem(name));
+	var ranges = get_range();
 	var ac     = ui.classname_to_remove;
 	ac         = ac.split(' ');
 	if(ranges != null) {
@@ -30,6 +30,10 @@ function set_range() {
 			}
 		}
 	}
+}
+
+function get_range() {
+	return JSON.parse(localStorage.getItem(get_range_name()));
 }
 
 /* clean the html grid */

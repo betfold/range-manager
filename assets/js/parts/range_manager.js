@@ -2,6 +2,7 @@ var range_manager = (function() {
 
 
 	{% include 'head.js' %}
+	{% include 'info_range.js' %}
 	{% include 'grid.js' %}
 	{% include 'action.js' %}
 	{% include 'selecteur.js' %}	

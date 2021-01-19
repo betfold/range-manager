@@ -1,26 +1,15 @@
-var INFO = (function() {
-
-	var ui = {
-		/* list des action possible par position */
-		actions: {
-			rfi:				["bet", "flat3bet", "fourbet", "flat5bet", "allin"],
-			facingrfi:  ["flat", "threebet", "flat4bet", "fivebet", "allin"],
-			bvb:					["limpfold", "limpcall", "raisefold", "limpraise", "raisecall", "allin"]
-		},
-		selected_hands: {}, 
-		info_range: {
-					pair: 0,
-					offsuit: 0,
-					suited: 0,
-		},
-	}
-
 
 	function calcul_combo() {
+		ui.pair = 0;
+		ui.offsuit = 0;
+		ui.suited = 0;
 		var temp_cards = []; // pour eviter les doublons 
-		for(var action in ui.selected_hands) {
-			var cards = ui.selected_hands[action];
+		var range = get_range();	
+		for(var action in range) {
+			var cards = range[action];
+			console.log(action + " with ");
 			for(var i in cards) {
+				console.log(cards[i]);
 				if(!temp_cards.includes(cards[i])) {
 					temp_cards.push(cards[i]);
 					if(cards[i][2] === "s") { ui.suited += 1; }
@@ -55,10 +44,3 @@ var INFO = (function() {
 		suited.innerHTML= ui.suited + " suited "+calcul.suited.pourcent.toFixed(2) + "% des mains - "+calcul.suited.combo+ " combos";
 		offsuit.innerHTML= ui.offsuit + " offsuit "+calcul.offsuit.pourcent.toFixed(2) + "% des mains - "+calcul.offsuit.combo+ " combos";
 	}
-
-	return { 
-		set_range_info: set_combo_info,
-	}
-
-})();
-

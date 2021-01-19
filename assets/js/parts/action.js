@@ -9,6 +9,7 @@ function set_action_to_card(card_id) {
 		}
 	}
 	
+	set_combo_info();
 }
 	
 
