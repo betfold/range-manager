@@ -30,6 +30,7 @@ function set_range() {
 			}
 		}
 	}
+	set_combo_info(); // FIXME change function to get_range_info
 }
 
 function get_range() {

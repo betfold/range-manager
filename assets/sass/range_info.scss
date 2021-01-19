@@ -1,0 +1,12 @@
+#range_info {
+	display: flex;
+	flex-wrap: wrap;
+}
+#range_info ul, #combo_info { 
+	margin:.5em;
+	padding:.3em 2em;
+	text-align:center; 
+	min-width:15%;
+}
+
+#range_info ul li:nth-child(2), #combo_info li:nth-child(2) { font-size: 180%; }

@@ -94,6 +94,7 @@ $suited: #666;
 	box-shadow: 0 0 0 4px $allin inset;
 }
 
+@import 'range_info';
 
 
 // gestion des boutons d'actions
@@ -120,7 +121,10 @@ $suited: #666;
 		transition: all 0.15s ease-in-out;
 		margin:.3em;
 		text-align:center;
+		display:flex;
 }
+
+#action fieldset input[type="radio"] + label span:nth-child(2) { font-size:130%; }
 
 #action fieldset input[type="radio"]:checked + label {
 	border:5px solid #ccc;
@@ -137,3 +141,5 @@ $suited: #666;
 #action #rfi input[value="fourbet"] + label { background-color: $fourbet; }
 #action #rfi input[value="flat5bet"] + label { background-color: $flat5bet; }
 #action #rfi input[value="allin"] + label { background-color: $allin; }
+
+

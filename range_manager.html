@@ -67,7 +67,7 @@
 
 <div style="display:flex">
 
-	<div>
+	<div style="width:35%">
 		
 
 
@@ -1283,20 +1283,17 @@
 			
 		</tr>
 	
-</table>
 	
-<p>The hand grind contains all 169 possible pre-flop hands (1 236 combos):</p>
-<ul>
-<li>13 pockets pairs 5.88%</li>
-<li>78 suited hands 23.53%</li>
-<li>78 offsuit hands 70.59%</li>
-</ul>
+</table>
 
-<ul id="combo_info">
-	<li class="pair"></li>
-	<li class="suited"></li>
-	<li class="offsuit"></li>
-</ul>
+		<div id="range_info">
+		</div>
+
+		<ul id="combo_info">
+			<li class="pair"></li>
+			<li class="suited"></li>
+			<li class="offsuit"></li>
+		</ul>
 	</div>
 
 	<div>
@@ -1305,19 +1302,19 @@
 			<fieldset id="rfi">
 
 		<input type="radio" id="action_bet" name="sel" value="bet" checked>
-			<label for="action_bet">Open 2.5</label>
+			<label for="action_bet"><span>Open 2.5</span><span></span><span></span></label>
 
 		<input type="radio" id="action_flat3bet" name="sel" value="flat3bet">
-			<label for="action_flat3bet">Flat vs 3bet</label>
+			<label for="action_flat3bet"><span>Flat vs 3bet</span><span></span><span></span></label>
 
 		<input type="radio" id="action_fourbet"   name="sel" value="fourbet">
-			<label for="action_fourbet">4Bet</label>
+			<label for="action_fourbet"><span>4Bet</span><span></span><span></span></label>
 
 		<input type="radio" id="rfi_flat5bet"   name="sel" value="flat5bet">
-			<label for="rfi_flat5bet">Flat vs 5Bet</label>
+			<label for="rfi_flat5bet"><span>Flat vs 5Bet</span><span></span><span></span></label>
 
 		<input type="radio" id="action_gobroke"   name="sel" value="allin">
-			<label for="action_gobroke">All in</label>
+			<label for="action_gobroke"><span>All in</span><span></span><span></span></label>
 
 	</fieldset>
 			<fieldset id="facingrfi" class="disable">
