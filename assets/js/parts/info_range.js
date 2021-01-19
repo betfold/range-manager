@@ -68,8 +68,8 @@
 			li_action.innerHTML = action;
 			var li_combo = document.createElement('li');
 			li_combo.innerHTML = stat.combos + ' combos';
-			ul.appendChild(li_action);
 			ul.appendChild(li_pourcent);
+			ul.appendChild(li_action);
 			ul.appendChild(li_combo);
 
 			info_range.appendChild(ul);
