@@ -247,11 +247,23 @@ function add_card_value(card, value) {
 			card.classList.remove("flat3bet", "fourbet", "flat5bet", "allin");
 			break;		
 		case "allin":
-			card.classList.remove("bet", "flat3bet", "fourbet", "flat5bet");
+			card.classList.remove("bet", "flat3bet", "fourbet", "flat5bet", "threebet", "flat4bet", "flat", "fivebet");
 			break;
 		case "bet":
 			card.classList.remove("allin");
 			break;
+		case "flat":
+			card.classList.remove("threebet");
+			break;
+		case "threebet":
+			card.classList.remove("flat");
+			break;
+		case "flat4bet":
+		case "fivebet":
+			card.classList.remove("flat");
+			card.classList.add("threebet");
+			break;
+			
 	}
 
 	card.classList.add(value)
