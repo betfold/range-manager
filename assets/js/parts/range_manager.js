@@ -6,6 +6,7 @@ var range_manager = (function() {
 	{% include 'grid.js' %}
 	{% include 'action.js' %}
 	{% include 'selecteur.js' %}	
+	{% include 'cmd.js' %}
 	{% include 'init.js' %}
 
 	return { 
@@ -15,6 +16,7 @@ var range_manager = (function() {
 		set_background_card: set_action_to_card,
 		togle_visibility: togle_versus_selecteur,
 		selecteur: selecteur,
+		cmd: parse_cmd,
 		init: __init,
 	}
 

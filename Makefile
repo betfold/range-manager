@@ -3,6 +3,8 @@ show_task:
 
 build: css html js
 
+jst: js lintjs
+
 css:
 	export PATH=${PATH}:${HOME}/.gem/ruby/2.7.0/bin/ && cd assets && compass compile
 

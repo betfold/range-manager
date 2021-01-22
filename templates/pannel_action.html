@@ -1,6 +1,7 @@
 <div class="pannel">
-	<form id="action">
+	<form id="action" onsubmit="return false">
 		{% include 'action_rfi.html' %}
 		{% include 'action_facingrfi.html' %}
+		<input type="text" id="cmdselect" placeholder="AT+ ATo+ 55-TT">
 	<form/>
 </div>
