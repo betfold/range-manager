@@ -1293,7 +1293,7 @@
 
 	<div>
 		<div class="pannel">
-	<form id="action" onsubmit="return false">
+	<form id="action" onsubmit="range_manager.cmd(); range_manager.save();return false">
 			<fieldset id="rfi">
 
 		<input type="radio" id="action_bet" name="sel" value="bet" checked>
@@ -1340,6 +1340,7 @@
 
 		</main>
 
+	<script src="assets/js/node_modules/lodash/lodash.js" type="text/javascript"></script>
 	<script src="assets/js/range_manager.js" type="text/javascript"></script>
 	</body>
 </html>

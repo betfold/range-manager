@@ -349,19 +349,22 @@ function togle_versus_selecteur() {
 	}
 }
 	
-	const hand_range_weight = ["2", "3", "4", "5", "6", "7", "8", "9", "T", "J", "Q", "K", "A"];
+	var user_cmd = { 
+	args: '', 
+	hand_range_weight: ["2", "3", "4", "5", "6", "7", "8", "9", "T", "J", "Q", "K", "A"],
+	hand_sign: ['o', 's', '+', '-'],
+	auth_char: _.concat(this.hand_range_weight, this.hand_sign),
+	ranges: [],
+
+ }
 	
-function cmd_get_line() {
-		return document.getElementById('cmdselect').value;
-}
 
 function parse_cmd() {
-	var cmd = {line: cmd_get_line()};
-	
-	cmd['filtres'] = cmd.line.split(' ');
-	
-	cmd.filtres.forEach(filtre =>	exec_cmd(filtre));
 
+	user_cmd.args = _.compact(document.getElementById('cmdselect').value.split(' '));
+	user_cmd.ranges = [];
+	user_cmd.args.forEach(filtre =>	exec_cmd(filtre));
+	user_cmd.ranges.forEach(e => set_action_to_card(e));
 	
 }
 
@@ -369,65 +372,126 @@ function parse_cmd() {
 function exec_cmd(filtre) {
 
 	console.log("commande :"+ filtre);
-	var action = { command: "none", type: "all", cards: [] };
-	var listingscard = [];
 
+	var cmd = nota_parse_cmd_hand(filtre);
+	var ranges = [];
 
-	filtre = filtre.split("");
-
-	if ( filtre[0] === filtre[1] ) {
-		console.log("c'est une pauire");
-		listingscard = nota_sel_by_pair(filtre);
+	if (cmd.hands[0][0] === cmd.hands[0][1]) {
+		ranges = nota_sel_by_pair(cmd);
 	}
-	else if ( filtre.includes('-') && filtre.length >= 5 ) 
-		{ nota_sel_by_range(filtre); }
+	else if ( cmd.hands.length === 1 ) {
+		ranges = nota_sel_unique_range(cmd);
+	}
 	else {
-		nota_sel_single_non_pair(filtre);
+		ranges = nota_set_multiple_range(cmd);
 	}
 	
 
-	listingscard.forEach(ch => console.log(ch));
-	//listingscards.forEach(ch => set_action_to_card(ch));
+	if ( ranges.length > 0 ) {
+		ranges.forEach(ch => console.log(ch));
+		ranges.forEach(ch => user_cmd.ranges.push(ch));
+	}
 }
 
-function nota_sel_by_range(filtre) { console.log("not implemented"); return 0; }
-function nota_sel_single_non_pair(filtre) { console.log("not implemented"); return 0; }
-function nota_sel_by_pair(filtre) {
-	var hand_ranges = nota_get_cmd_hand(filtre);
-	var hhstart =  hand_range_weight.indexOf( hand_ranges[0][0] );
-	var hhend = 13;
-	var list_card = [];
-	if( hand_ranges[1] ) {
-		hhend = hand_range_weight.indexOf( hand_ranges[1][0] ) + 1;
+function nota_set_multiple_range(cmd) {
+	var start_at = 0;
+	var end_at = 0;
+	var ranges = [];	
+	if (cmd.hands[0][0] === cmd.hands[1][0] ) {
+		start_at = user_cmd.hand_range_weight.indexOf( cmd.hands[0][1] );
+		end_at = user_cmd.hand_range_weight.indexOf( cmd.hands[1][1] );
+		for(start_at; start_at < end_at; start_at++) {
+			var c = cmd.hands[0][0] + ""+ user_cmd.hand_range_weight[start_at];
+			ranges.push(c);
+		}
+		ranges = nota_added_card_by(ranges, cmd.type)
 	}
-
-	for(hhstart; hhstart < hhend; hhstart++) {
-		var nc = hand_range_weight[hhstart];
-		nc += nc;
-		list_card.push(nc);
-	}
-	return list_card;
+	return ranges;
 }
 
-function nota_get_cmd_hand(filtre) {
+function nota_sel_unique_range(cmd) {
+	console.log(cmd);
+	var start_at = 0;
+	var end_at = 0;
 	var ranges = [];
-	if ( filtre.includes('-') && filtre.slice(-1)[0] !== '-') {
-		filtre = filtre.join("");
-		ranges = filtre.split('-')
-	} else { ranges.push(filtre.join("")); }
+	switch ( cmd['opt'] ) {
+		case '-':
+			start_at = 0;
+			end_at = user_cmd.hand_range_weight.indexOf( cmd.hands[0][1] );
+			break;
+		case '+':
+			start_at = user_cmd.hand_range_weight.indexOf( cmd.hands[0][1] );
+			end_at = user_cmd.hand_range_weight.indexOf( cmd.hands[0][0] );
+			break;
+	}
 
-	for(var i = 0; i < ranges.length; i++) {
-		var value_user = ranges[i];
-		value_user = value_user.split("");
-		var hh = value_user.slice(0, 2).join('');
-		var combi = value_user.slice(2).join('');
-
-		hh = nota_set_hight_card(hh);
-		hh += combi
-		ranges[i] = hh;
+	if ( cmd.opt === '+' || cmd.opt === '-' ) {
+		for(start_at; start_at < end_at; start_at++) {
+			var c = cmd.hands[0][0] + ""+ user_cmd.hand_range_weight[start_at];
+			ranges.push(c);
+		}
 		
 	}
-	
+	else {
+		ranges.push(cmd.hands[0]);
+	}
+
+	ranges = nota_added_card_by(ranges, cmd.type);
+	return ranges;
+}
+
+function nota_parse_cmd_hand(filtre) {
+	var arg_cmd = {hands: [], type: "all", opt: "none" };
+	filtre = filtre.split('');
+	if (filtre.includes('-') && filtre.slice(-1) !== '-') {
+		arg_cmd.hands = filtre.join('').split('-');
+	} else { arg_cmd.hands.push(filtre.join('')); }
+
+	arg_cmd.hands.forEach(function(argument, index) {
+		argument = argument.split('');
+		var opts = argument.splice(2, 2);
+		argument = argument.splice(0, 2);
+
+		if (user_cmd.hand_range_weight.indexOf( argument[0] ) < user_cmd.hand_range_weight.indexOf( argument[1] )) {
+			argument.reverse();
+		}
+		
+		arg_cmd.hands[index] = argument.join('');
+
+		opts.forEach(function(signe) {
+			switch (signe) {
+				case 'o':
+				case 's':
+					arg_cmd.type = signe;
+					break;
+				case '+':
+				case '-':
+					arg_cmd.opt = signe;
+					break;
+			}
+		});
+	});
+
+	if ( arg_cmd.hands.length > 1) {
+		if ( user_cmd.hand_range_weight.indexOf( arg_cmd.hands[0][0] ) > user_cmd.hand_range_weight.indexOf( arg_cmd.hands[1][0] )) {
+			arg_cmd.hands.reverse();
+		}
+	}
+	return arg_cmd;	
+}
+
+
+function nota_sel_by_pair(cmd) {
+	var start_at = user_cmd.hand_range_weight.indexOf( cmd.hands[0][0] );
+	var end_at   = 13;
+	var ranges = [];
+	if ( cmd.hands.length > 1 ) { end_at = user_cmd.hand_range_weight.indexOf( cmd.hands[1][0] ) + 1; }
+
+	for(start_at; start_at < end_at; start_at++) {
+		var c = user_cmd.hand_range_weight[start_at];
+		c += c;
+		ranges.push(c);
+	}
 	return ranges;
 }
 
@@ -453,14 +517,6 @@ function nota_added_card_by(cards, by) {
 }
 
 
-// set the hight card first
-function nota_set_hight_card(hand) {
-	if( hand_range_weight.indexOf( hand[0] ) <  hand_range_weight.indexOf( hand[1] )) {
-		hand = hand.split("").reverse().join("");
-	}
-
-	return hand;			
-}
 	function __init() {
 	selecteur.set_position();
 	var action = document.getElementById("action").value;
