@@ -18,6 +18,10 @@
 	width:5em;
 }
 
+#range_info ul, #combo_info ul {
+	box-shadow: 3px 3px 1px rgba(0, 0, 0, 0.12), 3px 3px 1px rgba(0, 0, 0, 0.24);
+}
+
 
 #range_info ul li:nth-child(2), #combo_info li:nth-child(2) { font-size: 180%; }
 

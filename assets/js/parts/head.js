@@ -8,6 +8,7 @@ var ui = {
 	pair: 0,
 	suited: 0,
 	offsuit: 0,
+	copy: "", // the range name to copy 
 }
 
 var selecteur = {
@@ -21,7 +22,7 @@ var selecteur = {
 		{
 			table_size: 9,
 			table_name: "9-max",
-			position: { early: ["UTG", "UTG1", "UTG2"], middle: ["HJ", "LJ"], late:["CO", "BT"], blind: ["SB", "BB"] } ,
+			position: { early: ["UTG", "UTG1", "UTG2"], middle: ["LJ", "HJ"], late:["CO", "BT"], blind: ["SB", "BB"] } ,
 		},
 	2: 
 		{

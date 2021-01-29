@@ -33,6 +33,10 @@ $suited: #666;
 	display:none;
 }
 
+#range_manager {
+	box-shadow: 0 19px 38px gray, 0 15px 12px gray;
+}
+
 #range_manager td {
 	text-align:center;
 	color: #FFF;
@@ -123,6 +127,7 @@ $suited: #666;
 		margin:.3em;
 		text-align:center;
 		display:flex;
+		box-shadow: 2px 2px 5px black;
 }
 
 #action fieldset input[type="radio"] + label span:nth-child(2) { font-size:130%; }
