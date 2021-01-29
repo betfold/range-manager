@@ -1,8 +1,8 @@
 @import  "compass/css3";
 
 #range_info {
-	display:flex;
-	flex-flow: row wrap;
+	@include display-flex;
+	@include flex-flow(row wrap);
 	width:35em;
 }
 
@@ -19,7 +19,7 @@
 }
 
 #range_info ul, #combo_info ul {
-	box-shadow: 3px 3px 1px rgba(0, 0, 0, 0.12), 3px 3px 1px rgba(0, 0, 0, 0.24);
+	@include box-shadow(3px 3px 1px rgba(0, 0, 0, 0.12), 3px 3px 1px rgba(0, 0, 0, 0.24));
 }
 
 

@@ -29,12 +29,15 @@ $suited: #666;
 
 /* end to move */
 
+#pannel_selection select {
+	@include box-shadow(1px 1px 1px);
+}
 .pannel #action  .disable {
 	display:none;
 }
 
 #range_manager {
-	box-shadow: 0 19px 38px gray, 0 15px 12px gray;
+	@include box-shadow(0 19px 38px gray, 0 15px 12px gray);
 }
 
 #range_manager td {
@@ -75,23 +78,23 @@ $suited: #666;
 }
 
 .flat3bet {
-	box-shadow: 0 0 0 4px $flat3bet inset;
+	@include box-shadow(0 0 0 4px $flat3bet inset);
 }
 
 .fourbet {
-	box-shadow: 0 0 0 4px $fourbet inset;
+	@include box-shadow(0 0 0 4px $fourbet inset);
 }
 
 .flat4bet {
-	box-shadow: 0 0 0 4px $flat4bet inset;
+	@include box-shadow(0 0 0 4px $flat4bet inset);
 }
 
 .fivebet {
-	box-shadow: 0 0 0 4px $fivebet inset;
+	@include box-shadow(0 0 0 4px $fivebet inset);
 }
 
 .flat5bet {
-	box-shadow: 0 0 0 4px $flat5bet inset;
+	@include box-shadow(0 0 0 4px $flat5bet inset);
 }
 
 .allin{
@@ -105,8 +108,8 @@ $suited: #666;
 // gestion des boutons d'actions
 // 
 .pannel > #action fieldset {
-	display:flex;
-	flex-direction: column;
+	@include display-flex;
+	@include flex-direction(column);
 	margin-left:1.3em;
 	min-width:10em;
 }
@@ -126,8 +129,8 @@ $suited: #666;
 		transition: all 0.15s ease-in-out;
 		margin:.3em;
 		text-align:center;
-		display:flex;
-		box-shadow: 2px 2px 5px black;
+		@include display-flex;
+		@include box-shadow(2px 2px 5px black);
 }
 
 #action fieldset input[type="radio"] + label span:nth-child(2) { font-size:130%; }
