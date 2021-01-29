@@ -20,14 +20,8 @@ $pair: #CCC;
 $offsuit: #999;
 $suited: #666;
 
-/* FIXME not here*/
-.hidden {
-	visibility: hidden;
-}
-
-.visible { visibility: visible }
-
-/* end to move */
+@import 'range_info';
+@import 'button';
 
 #pannel_selection select {
 	@include box-shadow(1px 1px 1px);
@@ -100,55 +94,5 @@ $suited: #666;
 .allin{
 	background-color: $allin;
 }
-
-
-@import 'range_info';
-
-
-// gestion des boutons d'actions
-// 
-.pannel > #action fieldset {
-	@include display-flex;
-	@include flex-direction(column);
-	margin-left:1.3em;
-	min-width:10em;
-}
-
-#action fieldset input[type="radio"]{ 
-	display:none;
-}
-
-#action fieldset input[type="radio"] + label{
-		padding: 0.5rem 1rem;
-		font-size: 1.25rem;
-		line-height: 1.5;
-		border-radius: 0.3rem;
-		color: #fff;
-		background-color: #6c757d;
-		border: 1px solid transparent;
-		transition: all 0.15s ease-in-out;
-		margin:.3em;
-		text-align:center;
-		@include display-flex;
-		@include box-shadow(2px 2px 5px black);
-}
-
-#action fieldset input[type="radio"] + label span:nth-child(2) { font-size:130%; }
-
-#action fieldset input[type="radio"]:checked + label {
-	border:5px solid #ccc;
-}
-
-#action #facingrfi input[value="flat"] + label { background-color: $flat; }
-#action #facingrfi input[value="threebet"] + label { background-color: $threebet; }
-#action #facingrfi input[value="flat4bet"] + label { background-color: $flat4bet; }
-#action #facingrfi input[value="fivebet"] + label { background-color: $fivebet; }
-#action #facingrfi input[value="allin"] + label { background-color: $allin; }
-
-#action #rfi input[value="bet"] + label { background-color: $bet; }
-#action #rfi input[value="flat3bet"] + label { background-color: $flat3bet; }
-#action #rfi input[value="fourbet"] + label { background-color: $fourbet; }
-#action #rfi input[value="flat5bet"] + label { background-color: $flat5bet; }
-#action #rfi input[value="allin"] + label { background-color: $allin; }
 
 
