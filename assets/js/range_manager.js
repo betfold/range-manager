@@ -11,6 +11,7 @@ var range_manager = (function() {
 	pair: 0,
 	suited: 0,
 	offsuit: 0,
+	copy: "", // the range name to copy 
 }
 
 var selecteur = {
@@ -18,13 +19,13 @@ var selecteur = {
 		{
 			table_size: 6,
 			table_name: "6-max",
-			position: { early: ["LJ"], middle: ["HJ"], late:["CO", "BT"], blind: ["SB", "BB"] }
+			position: { early: ["LJ"], middle: ["HJ"], late:["CO", "BT"] }
 		},
 	9:
 		{
 			table_size: 9,
 			table_name: "9-max",
-			position: { early: ["UTG", "UTG1", "UTG2"], middle: ["HJ", "LJ"], late:["CO", "BT"], blind: ["SB", "BB"] } ,
+			position: { early: ["UTG", "UTG1", "UTG2"], middle: ["LJ", "HJ"], late:["CO", "BT"] } ,
 		},
 	2: 
 		{
@@ -37,22 +38,25 @@ var selecteur = {
 		{
 			table_size: 4,
 			table_name: "4-handed",
-			position: { early: ["CO"], late:["BT"], blind: ["SB", "BB"] },
+			position: { early: ["CO"], late:["BT"] },
 		},
 	3:
 		{
 			table_size: 3,
 			table_name: '3-handed',
-			position: { late: ["BT"], blind: ['SB', 'BB'] }
+			position: { late: ["BT"] },
+
 		},
 	
 
 
+	// TODO normaliser les noms de fonctions
 	get_position: function() { return document.getElementById('position'); },
 	current_id: function() { return document.getElementById('max').value; }, 
 	current_pos: function() { return document.getElementById('position').value; },
-	current_action: function() { return document.getElementById('action').value; },
+	current_action: function() { return document.getElementById('position_name').value; },
 	set_position: function() { set_position(); },
+	set_versus_position: function() { set_versus_pos(); },
 }
 	
 	function calcul_combo() {
@@ -275,33 +279,95 @@ function add_card_value(card, value) {
 
 	function set_position() {
 	var sel = selecteur.get_position();
-	var max = selecteur.current_id()
-	var pos = selecteur[max].position;
-	set_selecteur_pos(sel, pos);
+	var position = get_position_by_max();
+	set_selecteur_pos(sel, position.hero);
 }
 
 function set_versus_pos() {
-	var sel = document.getElementById("versus");
-	var max = selecteur.current_id();
-	var pos = selecteur[max].position;
-	set_selecteur_pos(sel, pos);
+	var sel = document.getElementById('versus');
+	var position = get_position_by_max();
+	set_selecteur_pos(sel, position.vilain);
 }
 
-function set_selecteur_pos(sel, pos) {
+
+function set_selecteur_pos(sel, position) {
 
 	clear_select(sel);
-	for(const name in pos) {
+	
+
+	for(const name in position) {
 		var optgroup = document.createElement("optgroup");
 		optgroup.label = name + " position";
-		for(var v in pos[name]) {
-			var option = document.createElement("option");
-			var value = pos[name][v];
-			option.value = value;
-			option.innerHTML = value;
-			optgroup.appendChild(option);
-		}
-		sel.appendChild(optgroup);
-	}	
+		if ( position[name].length > 0) {
+			for(var v in position[name]) {
+				var option = document.createElement("option");
+				var value = position[name][v];
+				option.value = value;
+				option.innerHTML = value;
+				optgroup.appendChild(option);
+			}
+			sel.appendChild(optgroup);
+		}	
+	}
+}
+
+function get_position_by_max() {
+	var maxid = selecteur.current_id();
+	var hero_pos = document.getElementById('position').value;
+	var action = selecteur.current_action();
+	
+	console.log(hero_pos);
+	
+	var pos = { hero: {}, vilain: {} };
+	switch (maxid) {
+		case '9':
+			pos.hero = { early: ["UTG", "UTG1", "UTG2"], middle: ["LJ", "HJ"], late: ["CO", "BT"] };	
+			break;
+		case '6':
+			pos.hero = { early: ["LJ"], middle: ["HJ"], late: ["CO", "BT"] };
+			break;
+		case '4':
+			pos.hero = { early: ["CO"], late: ["BT"] };
+			break;
+		case '3':
+			pos.hero = { late: ["BT"] };
+			break;
+		case '2':
+			pos.hero = { blind: ['Small Blind Strategy', 'BB vs SB Limp', 'BB vs SB Raise'] }
+			break;
+	} 
+	
+	pos.vilain = {};
+	
+
+	switch (action) {
+		case 'facingip':
+			// vilain cant be at the same place of hero and behind him
+			var stop = true; // Fixme it's probalby not good
+			for(var i = 0; i < Object.keys(pos.hero).length && stop; i++) {
+				var zone = Object.keys(pos.hero)[i];
+				pos.vilain[zone] = [];
+				for( var e = 0; e < pos.hero[zone].length; e++ ) {
+					var position_name = pos.hero[zone][e];
+					console.log("hero est en pos "+ hero_pos + " on et on traite " + position_name);
+					if ( position_name === hero_pos ) { stop = false; break; }
+					else { pos.vilain[zone].push(position_name); }
+				}
+			}
+			// hero can't be the first
+			var first_optgroup = Object.keys(pos.hero)[0];
+			pos.hero[first_optgroup] = _.drop(pos.hero[first_optgroup]);
+			break;
+		case 'facingoop':
+			pos.vilain = JSON.parse(JSON.stringify(pos.hero));
+			pos.hero = { blind: ['SB', 'BB'] };
+			break;
+		case 'bvb':
+			pos.hero = { blind: ['Small Blind Strategy', 'BB vs SB Limp', 'BB vs SB Raise'] }
+			break;
+	}
+	
+	return pos;
 }
 
 
@@ -326,13 +392,13 @@ function get_range_name() {
 }
 
 function togle_versus_selecteur() {
-	var action_selected = document.getElementById('action').value;
+	var action_selected = document.getElementById('position_name').value;
 	var versus_s = document.getElementById('versus');
 	var versus_l = document.getElementById('versuslabel');
 	var versus_ar = document.getElementById('rfi');
 	var versus_af = document.getElementById('facingrfi');
 
-	if (action_selected == "rfi") {
+	if (action_selected === "rfi" || action_selected === "bvb") {
 		document.getElementById('action_bet').checked = true;
 		versus_s.classList.add('hidden');
 		versus_l.classList.add('hidden');

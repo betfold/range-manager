@@ -26,41 +26,29 @@
 		<option value="2">HU</option>
 	</select>
 
-	<select id="position" onchange="range_manager.load(); ">
-	</select>
-
 	<select id="bb"  onchange="range_manager.load()">
 		<option value="70#100" selected>70-100bb</option>
 		<option value="25#50">25-50bb</option>
 		<option value="12#20">12-20bb</option>
 	</select>
 
-	<select id="action"  onchange="range_manager.load(); range_manager.togle_visibility()">
+
+	<select id="position_name"  onchange="range_manager.selecteur.set_position();range_manager.load(); range_manager.togle_visibility()">
 		<option value="rfi" selected>RFI</option>
 		<option value="facingip">Facing RFI IP</option>
 		<option value="facingoop">Facing RFI OOP</option>
+		<option value="bvb">Blind vs Blind</option>
 	</select>
+
+	<select id="position" onchange="range_manager.selecteur.set_versus_position();range_manager.load(); ">
+	</select>
+
+
 
 	<label id="versuslabel"  for="versus">Versus</label>
 	<select id="versus"  onchange="range_manager.load(); ">
-				<optgroup id="p2-early"label="Early Position">
-			<option value="utg">UTG</option>
-			<option value="utg1">UTG 1</option>
-			<option value="utg2">UTG 2</option>
-			</optgroup>
-		<optgroup id="p2-middle" label="Middle Position">
-			<option value="lj">LJ</option>
-			<option value="hj">HJ</option>
-			</optgroup>
-		<optgroup id="p2-late" label="Late Position">
-			<option value="co">CO</option>
-			<option value="bt">BT</option>
-			</optgroup>
-		<optgroup id="p2-blind" label="Blind Position">
-			<option value="sb">SB</option>
-			<option value="bb">BB</option>
-		</optgroup>
 	</select>
+
 
 </form>
 
@@ -1334,7 +1322,7 @@
 
 
 	</fieldset>
-		<input type="text" id="cmdselect" placeholder="AT+ ATo+ 55-TT">
+		<input type="text" id="cmdselect" placeholder="You can use AT+ ATo+ 55-TT"> 
 	<form/>
 </div>
 	</div>
