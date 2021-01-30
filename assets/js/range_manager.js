@@ -586,7 +586,7 @@ function nota_added_card_by(cards, by) {
 	function __init() {
 	selecteur.set_position();
 	selecteur.set_versus_position();
-	var action = document.getElementById("action").value;
+	var action = document.getElementById("position_name").value;
 	if(action === "rfi") {
 		document.getElementById("versus").classList.add("hidden");
 		document.getElementById("versuslabel").classList.add("hidden");
