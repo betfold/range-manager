@@ -1,5 +1,6 @@
 function __init() {
 	selecteur.set_position();
+	selecteur.set_versus_position();
 	var action = document.getElementById("action").value;
 	if(action === "rfi") {
 		document.getElementById("versus").classList.add("hidden");
