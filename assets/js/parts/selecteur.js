@@ -30,7 +30,7 @@ function set_action_sel() {
 			action = { rfi: "RFI", facingip: "Facing RFI IP", facingoop: "Facing RFI OOP", bvb: "Blind vs Blind" };
 			break;
 		case '3':
-			action = { rfi: "RFI", bvb: "Blind vs Blind" };
+			action = { rfi: "RFI", facingoop: "Facing RFI OOP", bvb: "Blind vs Blind" };
 			break;
 		case '2':
 			action = { bvb: "Blind vs Blind" };
