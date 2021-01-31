@@ -1,5 +1,6 @@
 function __init() {
 	selecteur.set_position();
+	selecteur.set_action();
 	selecteur.set_versus_position();
 	var action = document.getElementById("position_name").value;
 	if(action === "rfi") {

@@ -57,6 +57,7 @@ var selecteur = {
 	current_action: function() { return document.getElementById('position_name').value; },
 	set_position: function() { set_position(); },
 	set_versus_position: function() { set_versus_pos(); },
+	set_action: function() { set_action_sel(); },
 }
 	
 	function calcul_combo() {
@@ -281,7 +282,7 @@ function add_card_value(card, value) {
 	var sel = selecteur.get_position();
 	var position = get_position_by_max();
 	set_selecteur_pos(sel, position.hero);
-	set_action_sel();
+	//set_action_sel();
 }
 
 function set_versus_pos() {
@@ -619,6 +620,7 @@ function nota_added_card_by(cards, by) {
 
 	function __init() {
 	selecteur.set_position();
+	selecteur.set_action();
 	selecteur.set_versus_position();
 	var action = document.getElementById("position_name").value;
 	if(action === "rfi") {

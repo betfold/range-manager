@@ -2,7 +2,7 @@ function set_position() {
 	var sel = selecteur.get_position();
 	var position = get_position_by_max();
 	set_selecteur_pos(sel, position.hero);
-	set_action_sel();
+	//set_action_sel();
 }
 
 function set_versus_pos() {
