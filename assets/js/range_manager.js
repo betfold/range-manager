@@ -198,7 +198,7 @@ function clear_range() {
 		var cols = grid[i].cells;
 		for(var c = 0; c < 13; c++) {
 			// fixme have some error when I want to use ui.classname_to_remove or ui.actions.rfi.join(", ") or whatever you want to create this
-			cols[c].classList.remove("bet", "threebet", "fourbet", "fivebet", "flat", "flat3bet", "falt4bet", "flat5bet", "allin", "limp", "limpfold", "limpcall", "limp3bet");
+			cols[c].classList.remove("bet", "threebet", "fourbet", "fivebet", "flat", "flat3bet", "falt4bet", "flat5bet", "allin", "limp", "limpfold", "limpcall", "limp3bet", "limpfold", "limpcall", "raisefold", "raisecall", "limpraise");
 		}
 	}
 	
