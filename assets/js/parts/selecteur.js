@@ -2,6 +2,7 @@ function set_position() {
 	var sel = selecteur.get_position();
 	var position = get_position_by_max();
 	set_selecteur_pos(sel, position.hero);
+	set_action_sel();
 }
 
 function set_versus_pos() {
@@ -10,6 +11,41 @@ function set_versus_pos() {
 	set_selecteur_pos(sel, position.vilain);
 }
 
+function set_action_sel() {
+
+	var sel			= document.getElementById('position_name');
+	var max			= selecteur.current_id();
+	var action	= {};
+
+	clear_select(sel);
+
+	switch (max) {
+		case '9':
+			action = { rfi: "RFI", facingip: "Facing RFI IP", facingoop: "Facing RFI OOP", bvb: "Blind vs Blind" };
+			break;
+		case '6':
+			action = { rfi: "RFI", facingip: "Facing RFI IP", facingoop: "Facing RFI OOP", bvb: "Blind vs Blind" };
+			break;
+		case '4':
+			action = { rfi: "RFI", facingip: "Facing RFI IP", facingoop: "Facing RFI OOP", bvb: "Blind vs Blind" };
+			break;
+		case '3':
+			action = { rfi: "RFI", bvb: "Blind vs Blind" };
+			break;
+		case '2':
+			action = { bvb: "Blind vs Blind" };
+			break;
+	}
+	var names = Object.keys(action);
+	for(var i = 0, n = names.length; i < n; i++) {
+		var option = document.createElement('option');
+		var name = names[i];
+		option.value = name;
+		option.innerHTML = action[name];
+		sel.appendChild(option);
+	}
+	
+}
 
 function set_selecteur_pos(sel, position) {
 
@@ -33,13 +69,12 @@ function set_selecteur_pos(sel, position) {
 }
 
 function get_position_by_max() {
-	var maxid = selecteur.current_id();
-	var hero_pos = document.getElementById('position').value;
-	var action = selecteur.current_action();
-	
-	console.log(hero_pos);
-	
-	var pos = { hero: {}, vilain: {} };
+
+	var maxid			= selecteur.current_id();
+	var hero_pos	= document.getElementById('position').value;
+	var action		= selecteur.current_action();
+	var pos				= { hero: {}, vilain: {}, action: {}  };
+
 	switch (maxid) {
 		case '9':
 			pos.hero = { early: ["UTG", "UTG1", "UTG2"], middle: ["LJ", "HJ"], late: ["CO", "BT"] };	
@@ -70,7 +105,6 @@ function get_position_by_max() {
 				pos.vilain[zone] = [];
 				for( var e = 0; e < pos.hero[zone].length; e++ ) {
 					var position_name = pos.hero[zone][e];
-					console.log("hero est en pos "+ hero_pos + " on et on traite " + position_name);
 					if ( position_name === hero_pos ) { stop = false; break; }
 					else { pos.vilain[zone].push(position_name); }
 				}
@@ -106,7 +140,7 @@ function get_range_name() {
 	var name = document.getElementById('max').value;
 	name += document.getElementById('position').value;
 	name += document.getElementById('bb').value;
-	var action = document.getElementById('action').value;		
+	var action = document.getElementById('position_name').value;		
 	name+= action
 	if (action == "facing")	{  name+= document.getElementById('versus').value; }
 	return name;
