@@ -141,8 +141,13 @@ function get_range_name() {
 	name += document.getElementById('position').value;
 	name += document.getElementById('bb').value;
 	var action = document.getElementById('position_name').value;		
-	name+= action
-	if (action == "facing")	{  name+= document.getElementById('versus').value; }
+	name+= action;
+	switch ( action ) {
+		case 'facingip':
+		case 'facingoop':
+			name+= document.getElementById('versus').value;
+			break;
+	}
 	return name;
 }
 
