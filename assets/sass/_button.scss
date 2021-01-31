@@ -46,4 +46,8 @@
 #action #rfi input[value="flat5bet"] + label { background-color: $flat5bet; }
 #action #rfi input[value="allin"] + label { background-color: $allin; }
 
-
+#action #bt_bvb input[value="limpfold"] + label { background-color: $limpfold ;}
+#action #bt_bvb input[value="limpcall"] + label { background-color: $limpcall;}
+#action #bt_bvb input[value="limpraise"] + label { background-color: $limpraise ;}
+#action #bt_bvb input[value="raisefold"] + label { background-color: $raisefold;}
+#action #bt_bvb input[value="raisecall"] + label { background-color: $raisecall;}

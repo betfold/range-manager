@@ -11,9 +11,12 @@ $flat4bet:#ff0066ff;
 $flat5bet: darkred;
 $allin:red;
 $limp:red;
-$limpreraise:red;
-$limp-fold:red;
-$raisefold:red;
+
+$limpfold:HotPink;
+$limpcall: Orange;
+$limpraise:Crimson;
+$raisefold:LimeGreen;
+$raisecall:MediumBlue;
 
 
 $pair: #CCC;
@@ -99,3 +102,22 @@ $suited: #666;
 }
 
 
+.limpfold {
+	background-color: $limpfold;
+}
+
+.limpcall {
+	background-color: $limpcall;
+}
+
+.limpraise {
+	background-color: $limpraise;
+}
+
+.raisefold {
+ background-color: $raisefold;
+}
+
+.raisecall {
+	background-color: $raisecall;
+}

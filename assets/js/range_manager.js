@@ -268,6 +268,13 @@ function add_card_value(card, value) {
 			card.classList.remove("flat");
 			card.classList.add("threebet");
 			break;
+		case 'limpfold':
+		case 'limpcall':
+		case 'limpraise':
+		case 'raisefold':
+		case 'raisecall':
+			card.classList.remove("limpfold", "limpcall", "limpraise", "raisefold", "raisecall");
+			break;
 			
 	}
 
