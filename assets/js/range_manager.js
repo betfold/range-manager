@@ -463,10 +463,12 @@ function togle_versus_selecteur() {
 		versus_asb.classList.add('disable');
 	}
 	if ( action_selected === 'bvb' && show_pos === 'Small Blind Strategy') {
+		document.getElementById('action_limpfold').checked = true;
 		versus_asb.classList.remove('disable');
 		versus_ar.classList.add('disable');	
 	}
 	else if ( action_selected === 'bvb' && show_pos !== 'Small Blind Strategy') {
+		document.getElementById('facing_flat').checked = true;
 		versus_af.classList.remove('disable');
 		versus_ar.classList.add('disable');
 		versus_asb.classList.add('disable');
