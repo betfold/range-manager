@@ -36,7 +36,7 @@
 	<select id="position_name"  onchange="range_manager.selecteur.set_position();range_manager.load(); range_manager.togle_visibility()">
 	</select>
 
-	<select id="position" onchange="range_manager.selecteur.set_versus_position();range_manager.load(); ">
+	<select id="position" onchange="range_manager.selecteur.set_versus_position();range_manager.load(); range_manager.togle_visibility() ">
 	</select>
 
 
@@ -1318,6 +1318,28 @@
 
 
 	</fieldset>
+			<fieldset id="bt_bvb" class="disable">
+
+		<input type="radio" id="action_limpfold" name="sel" value="limpfold" checked>
+			<label for="action_bet"><span>Limp/Fold</span><span></span><span></span></label>
+
+		<input type="radio" id="action_limpcall" name="sel" value="flat3bet">
+			<label for="action_bvb_limpcall"><span>Limp/Call</span><span></span><span></span></label>
+
+		<input type="radio" id="action_limpraise"   name="sel" value="limpraise">
+			<label for="action_bvb_limpreraise"><span>Limp/Raise</span><span></span><span></span></label>
+
+		<input type="radio" id="action_bvb_bet"   name="sel" value="bet">
+			<label for="action_bvb_bet"><span>Raise/Fold</span><span></span><span></span></label>
+
+		<input type="radio" id="action_bvb_raisecall"   name="sel" value="flat3bet">
+			<label for="action_bvb_raisecall"><span>Raise/Call</span><span></span><span></span></label>
+
+		<input type="radio" id="action_bvb_4bet"   name="sel" value="flat4bet">
+			<label for="action_bvb_4bet"><span>4bet</span><span></span><span></span></label>
+
+	</fieldset>
+		<br/>
 		<input type="text" id="cmdselect" placeholder="You can use AT+ ATo+ 55-TT"> 
 	<form/>
 </div>

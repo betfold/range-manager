@@ -146,12 +146,17 @@ function get_range_name() {
 	return name;
 }
 
+// TODO split this, they dont only change the versus selector
 function togle_versus_selecteur() {
+	console.log("on change les action");
 	var action_selected = document.getElementById('position_name').value;
 	var versus_s = document.getElementById('versus');
 	var versus_l = document.getElementById('versuslabel');
 	var versus_ar = document.getElementById('rfi');
 	var versus_af = document.getElementById('facingrfi');
+	var versus_asb = document.getElementById('bt_bvb');
+
+	var show_pos  = document.getElementById('position').value;
 
 	if (action_selected === "rfi" || action_selected === "bvb") {
 		document.getElementById('action_bet').checked = true;
@@ -159,6 +164,7 @@ function togle_versus_selecteur() {
 		versus_l.classList.add('hidden');
 		versus_af.classList.add('disable');
 		versus_ar.classList.remove('disable');
+		versus_asb.classList.add('disable');
 	} 
 	else {
 		set_versus_pos();
@@ -167,6 +173,16 @@ function togle_versus_selecteur() {
 		versus_l.classList.remove('hidden');
 		versus_ar.classList.add('disable');
 		versus_af.classList.remove('disable');
+		versus_asb.classList.add('disable');
+	}
+	if ( action_selected === 'bvb' && show_pos === 'Small Blind Strategy') {
+		versus_asb.classList.remove('disable');
+		versus_ar.classList.add('disable');	
+	}
+	else if ( action_selected === 'bvb' && show_pos !== 'Small Blind Strategy') {
+		versus_af.classList.remove('disable');
+		versus_ar.classList.add('disable');
+		versus_asb.classList.add('disable');
 	}
 }
 
