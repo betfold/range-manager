@@ -1,19 +1,27 @@
 function save_range() {
-	var ranges = {};
+
+	var grid			= document.getElementById('range_manager');
+	var cards_td	= grid.getElementsByTagName('td');
+	var ranges		= {};
 	
-	for(var pos in ui.actions) {
-		for(var i in ui.actions[pos]) {
-			var action = ui.actions[pos][i];
-			var combos = get_card_by_action(action);
-			if ( combos.length > 0 ) {
-				ranges[action] = [];
-				Array.prototype.push.apply(ranges[action], combos);
+	for(var n = 0, size = cards_td.length; n < size; n++) {
+		var action_card = cards_td[n].className.split(' ');
+		action_card.forEach(function(action_name) {
+			switch ( action_name ) {
+				case 'pair':
+				case 'offsuit':
+				case 'suited':
+					break;
+				default:
+					if ( ! (action_name in ranges) ) { ranges[action_name] = []; }
+					ranges[action_name].push(cards_td[n].id);
+					break;
 			}
-		}
+		});
 	}
+
 	ranges = JSON.stringify(ranges);
-	if( ranges.length > 8 ) { localStorage.setItem(get_range_name(), ranges); }
-	set_combo_info();
+	if ( ranges.length > 8 ) { localStorage.setItem( get_range_name(), ranges); }
 }
 
 function set_range() {
@@ -43,8 +51,17 @@ function clear_range() {
 	for(var i = 0; i < 13; i++) {
 		var cols = grid[i].cells;
 		for(var c = 0; c < 13; c++) {
-			// fixme have some error when I want to use ui.classname_to_remove or ui.actions.rfi.join(", ") or whatever you want to create this
-			cols[c].classList.remove("bet", "threebet", "fourbet", "fivebet", "flat", "flat3bet", "falt4bet", "flat5bet", "allin", "limp", "limpfold", "limpcall", "limp3bet", "limpfold", "limpcall", "raisefold", "raisecall", "limpraise");
+			cols[c].className.split(' ').forEach(function(item) {
+				switch ( item ) {
+					case 'pair':
+					case 'offsuit':
+					case 'suited':
+						break;
+					default:
+						cols[c].classList.remove(item);
+						break;
+				}
+			});
 		}
 	}
 	
