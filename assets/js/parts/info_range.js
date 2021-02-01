@@ -40,7 +40,7 @@
 		var calcul = {
 			pair: { pourcent: 0, combo: 0 },
 			offsuit: { pourcent: 0, combo: 0 },
-			suited: { pourcent: 0, combo: 0}
+			suited: { pourcent: 0, combo: 0},
 		}
 		
 		calcul.pair.combo			= ui.pair * 6;
@@ -76,6 +76,26 @@
 			info_range.appendChild(ul);
 		}
 		
+		// set global stat
+		var totalc = calcul.pair.combo + calcul.offsuit.combo + calcul.suited.combo;
+		var totalp = calcul.pair.pourcent + calcul.offsuit.pourcent + calcul.suited.pourcent;
+		
+		
+		var ulg = document.createElement('ul');
+		var ligt = document.createElement('li');
+		var ligp = document.createElement('li');
+		var ligc = document.createElement('li');
+
+		ulg.style = "background:black;";
+		ligt.innerHTML = "TOTAL";
+		ligp.innerHTML = totalp.toFixed(2) + "%";
+		ligc.innerHTML = totalc + " combos";
+
+		ulg.appendChild(ligt);
+		ulg.appendChild(ligp);
+		ulg.appendChild(ligc);
+
+		info_range.appendChild(ulg);
 
 		// set stat by type of cards
 		for(var typeofcard in calcul) {
