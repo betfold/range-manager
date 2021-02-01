@@ -2,12 +2,6 @@ var range_manager = (function() {
 
 
 	var ui = {
-	classname_to_remove: "bet flat3bet fourbet flat5bet allin flat threebet flat4bet fivebet limpfold limpcall raisefold limpraise raisecall",
-	actions: {
-		rfi:        ["bet", "flat3bet", "fourbet", "flat5bet", "allin"],
-		facingrfi:  ["flat", "threebet", "flat4bet", "fivebet", "allin"],
-		bvb:        ["limpfold", "limpcall", "raisefold", "limpraise", "raisecall", "allin"]
-		},
 	pair: 0,
 	suited: 0,
 	offsuit: 0,
@@ -15,58 +9,22 @@ var range_manager = (function() {
 }
 
 var selecteur = {
-	6: 
-		{
-			table_size: 6,
-			table_name: "6-max",
-			position: { early: ["LJ"], middle: ["HJ"], late:["CO", "BT"] }
-		},
-	9:
-		{
-			table_size: 9,
-			table_name: "9-max",
-			position: { early: ["UTG", "UTG1", "UTG2"], middle: ["LJ", "HJ"], late:["CO", "BT"] } ,
-		},
-	2: 
-		{
-			table_size: 2,
-			table_name: "HU",
-			position: { blind: ["SB", "BB"] }
-		},
-
-	4:
-		{
-			table_size: 4,
-			table_name: "4-handed",
-			position: { early: ["CO"], late:["BT"] },
-		},
-	3:
-		{
-			table_size: 3,
-			table_name: '3-handed',
-			position: { late: ["BT"] },
-
-		},
-	
-
-
-	// TODO normaliser les noms de fonctions
-	get_position: function() { return document.getElementById('position'); },
-	current_id: function() { return document.getElementById('max').value; }, 
-	current_pos: function() { return document.getElementById('position').value; },
-	current_action: function() { return document.getElementById('position_name').value; },
-	set_position: function() { set_position(); },
-	set_versus_position: function() { set_versus_pos(); },
-	set_action: function() { set_action_sel(); },
+	get_position:					function() { return document.getElementById('position'); },
+	current_id:						function() { return document.getElementById('max').value; }, 
+	current_pos:					function() { return document.getElementById('position').value; },
+	current_action:				function() { return document.getElementById('position_name').value; },
+	set_position:					function() { set_position(); },
+	set_versus_position:	function() { set_versus_pos(); },
+	set_action:						function() { set_action_sel(); },
 }
 	
 	function calcul_combo() {
-		ui.pair = 0;
-		ui.offsuit = 0;
-		ui.suited = 0;
-		ui['action'] = {}
-		var temp_cards = []; // pour eviter les doublons 
-		var range = get_range();	
+		var temp_cards	= []; // pour eviter les doublons 
+		var range				= get_range();	
+		ui.pair					= 0;
+		ui.offsuit			= 0;
+		ui.suited				= 0;
+		ui['action']		= {}
 		for(var action in range) {
 			var cards = range[action];
 			ui['action'][action] = { pourcent: 0, combos: 0 };
@@ -104,18 +62,18 @@ var selecteur = {
 			suited: { pourcent: 0, combo: 0}
 		}
 		
-		calcul.pair.combo = ui.pair * 6;
-		calcul.offsuit.combo = ui.offsuit * 12;
-		calcul.suited.combo = ui.suited * 4;
+		calcul.pair.combo			= ui.pair * 6;
+		calcul.offsuit.combo	= ui.offsuit * 12;
+		calcul.suited.combo		= ui.suited * 4;
 
-		calcul.pair.pourcent = ui.pair * 6 / 1326 * 100;
+		calcul.pair.pourcent		= ui.pair * 6 / 1326 * 100;
 		calcul.offsuit.pourcent = ui.offsuit * 12 / 1326 * 100;
-		calcul.suited.pourcent = ui.suited * 4 / 1326 * 100;
+		calcul.suited.pourcent	= ui.suited * 4 / 1326 * 100;
 
-		
-		
 		var info_range = document.getElementById('range_info');
 		info_range.innerHTML = '';
+
+		// set stat by action
 		for(var action in ui['action']) {	
 
 			var stat  = ui['action'][action];
@@ -123,19 +81,22 @@ var selecteur = {
 			var ul = document.createElement('ul');
 			ul.classList.add(action);
 
-			var li_pourcent = document.createElement('li');
+			var li_pourcent				= document.createElement('li');
 			li_pourcent.innerHTML = stat.pourcent.toFixed(2) + '%';
-			var li_action = document.createElement('li');
-			li_action.innerHTML = action;
-			var li_combo = document.createElement('li');
-			li_combo.innerHTML = stat.combos + ' combos';
+			var li_action					= document.createElement('li');
+			li_action.innerHTML		= action;
+			var li_combo					= document.createElement('li');
+			li_combo.innerHTML		= stat.combos + ' combos';
+
 			ul.appendChild(li_pourcent);
 			ul.appendChild(li_action);
 			ul.appendChild(li_combo);
 
 			info_range.appendChild(ul);
 		}
+		
 
+		// set stat by type of cards
 		for(var typeofcard in calcul) {
 			var ult = document.createElement('ul');
 			ult.classList.add(typeofcard);
@@ -181,14 +142,10 @@ var selecteur = {
 function set_range() {
 	clear_range();
 	var ranges = get_range();
-	var ac     = ui.classname_to_remove;
-	ac         = ac.split(' ');
 	if(ranges != null) {
 		for(var action in ranges) {
 			for(var i=0; i < ranges[action].length; i++) { 
-				if(ac.includes(action)) {
-					document.getElementById(ranges[action][i]).classList.add(action); 
-				}
+				document.getElementById(ranges[action][i]).classList.add(action); 
 			}
 		}
 	}
@@ -306,7 +263,6 @@ function add_card_value(card, value) {
 	var sel = selecteur.get_position();
 	var position = get_position_by_max();
 	set_selecteur_pos(sel, position.hero);
-	//set_action_sel();
 }
 
 function set_versus_pos() {
@@ -342,10 +298,10 @@ function set_action_sel() {
 	}
 	var names = Object.keys(action);
 	for(var i = 0, n = names.length; i < n; i++) {
-		var option = document.createElement('option');
-		var name = names[i];
-		option.value = name;
-		option.innerHTML = action[name];
+		var option				= document.createElement('option');
+		var name					= names[i];
+		option.value			= name;
+		option.innerHTML	= action[name];
 		sel.appendChild(option);
 	}
 	
@@ -355,7 +311,6 @@ function set_selecteur_pos(sel, position) {
 
 	clear_select(sel);
 	
-
 	for(const name in position) {
 		var optgroup = document.createElement("optgroup");
 		optgroup.label = name + " position";
@@ -414,12 +369,12 @@ function get_position_by_max() {
 				}
 			}
 			// hero can't be the first
-			var first_optgroup = Object.keys(pos.hero)[0];
-			pos.hero[first_optgroup] = _.drop(pos.hero[first_optgroup]);
+			var first_optgroup				= Object.keys(pos.hero)[0];
+			pos.hero[first_optgroup]	= _.drop(pos.hero[first_optgroup]);
 			break;
 		case 'facingoop':
 			pos.vilain = JSON.parse(JSON.stringify(pos.hero));
-			pos.hero = { blind: ['SB', 'BB'] };
+			pos.hero   = { blind: ['SB', 'BB'] };
 			break;
 		case 'bvb':
 			pos.hero = { blind: ['Small Blind Strategy', 'BB vs SB Limp', 'BB vs SB Raise'] }
@@ -431,41 +386,36 @@ function get_position_by_max() {
 
 
 function clear_select(select) {
-	var optgroup = select.getElementsByTagName("optgroup");
-	var option = select.getElementsByTagName("option");
-	var size = optgroup.length;
-	for(var i = 0; i < size; i++) { optgroup[0].remove(); }
-	size = option.length;
-	for(i = 0; i < size; i++) { select.remove(0); }
+	var optgroup	= select.getElementsByTagName("optgroup");
+	var option		= select.getElementsByTagName("option");
+	for(var i = 0, size = optgroup.length; i < size; i++) { optgroup[0].remove(); }
+	for( i = 0, size = option.length; i < size; i++)		{ select.remove(0); }
 }
 
 
 function get_range_name() {
-	var name = document.getElementById('max').value;
-	name += document.getElementById('position').value;
-	name += document.getElementById('bb').value;
 	var action = document.getElementById('position_name').value;		
-	name+= action;
+	var name	 = document.getElementById('max').value;
+	name			+= document.getElementById('position').value;
+	name			+= document.getElementById('bb').value;
+	name			+= action;
 	switch ( action ) {
 		case 'facingip':
 		case 'facingoop':
-			name+= document.getElementById('versus').value;
+			name += document.getElementById('versus').value;
 			break;
 	}
 	return name;
 }
 
-// TODO split this, they dont only change the versus selector
 function togle_versus_selecteur() {
-	console.log("on change les action");
 	var action_selected = document.getElementById('position_name').value;
-	var versus_s = document.getElementById('versus');
-	var versus_l = document.getElementById('versuslabel');
-	var versus_ar = document.getElementById('rfi');
-	var versus_af = document.getElementById('facingrfi');
-	var versus_asb = document.getElementById('bt_bvb');
-
-	var show_pos  = document.getElementById('position').value;
+	var versus_s				= document.getElementById('versus');
+	var versus_l				= document.getElementById('versuslabel');
+	var versus_ar				= document.getElementById('rfi');
+	var versus_af				= document.getElementById('facingrfi');
+	var versus_asb			= document.getElementById('bt_bvb');
+	var show_pos				= document.getElementById('position').value;
 
 	if (action_selected === "rfi" || action_selected === "bvb") {
 		document.getElementById('action_bet').checked = true;

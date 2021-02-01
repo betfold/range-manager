@@ -27,14 +27,10 @@ function save_range() {
 function set_range() {
 	clear_range();
 	var ranges = get_range();
-	var ac     = ui.classname_to_remove;
-	ac         = ac.split(' ');
 	if(ranges != null) {
 		for(var action in ranges) {
 			for(var i=0; i < ranges[action].length; i++) { 
-				if(ac.includes(action)) {
-					document.getElementById(ranges[action][i]).classList.add(action); 
-				}
+				document.getElementById(ranges[action][i]).classList.add(action); 
 			}
 		}
 	}

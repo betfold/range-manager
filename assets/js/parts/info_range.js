@@ -1,11 +1,11 @@
 
 	function calcul_combo() {
-		ui.pair = 0;
-		ui.offsuit = 0;
-		ui.suited = 0;
-		ui['action'] = {}
-		var temp_cards = []; // pour eviter les doublons 
-		var range = get_range();	
+		var temp_cards	= []; // pour eviter les doublons 
+		var range				= get_range();	
+		ui.pair					= 0;
+		ui.offsuit			= 0;
+		ui.suited				= 0;
+		ui['action']		= {}
 		for(var action in range) {
 			var cards = range[action];
 			ui['action'][action] = { pourcent: 0, combos: 0 };
@@ -43,18 +43,18 @@
 			suited: { pourcent: 0, combo: 0}
 		}
 		
-		calcul.pair.combo = ui.pair * 6;
-		calcul.offsuit.combo = ui.offsuit * 12;
-		calcul.suited.combo = ui.suited * 4;
+		calcul.pair.combo			= ui.pair * 6;
+		calcul.offsuit.combo	= ui.offsuit * 12;
+		calcul.suited.combo		= ui.suited * 4;
 
-		calcul.pair.pourcent = ui.pair * 6 / 1326 * 100;
+		calcul.pair.pourcent		= ui.pair * 6 / 1326 * 100;
 		calcul.offsuit.pourcent = ui.offsuit * 12 / 1326 * 100;
-		calcul.suited.pourcent = ui.suited * 4 / 1326 * 100;
+		calcul.suited.pourcent	= ui.suited * 4 / 1326 * 100;
 
-		
-		
 		var info_range = document.getElementById('range_info');
 		info_range.innerHTML = '';
+
+		// set stat by action
 		for(var action in ui['action']) {	
 
 			var stat  = ui['action'][action];
@@ -62,19 +62,22 @@
 			var ul = document.createElement('ul');
 			ul.classList.add(action);
 
-			var li_pourcent = document.createElement('li');
+			var li_pourcent				= document.createElement('li');
 			li_pourcent.innerHTML = stat.pourcent.toFixed(2) + '%';
-			var li_action = document.createElement('li');
-			li_action.innerHTML = action;
-			var li_combo = document.createElement('li');
-			li_combo.innerHTML = stat.combos + ' combos';
+			var li_action					= document.createElement('li');
+			li_action.innerHTML		= action;
+			var li_combo					= document.createElement('li');
+			li_combo.innerHTML		= stat.combos + ' combos';
+
 			ul.appendChild(li_pourcent);
 			ul.appendChild(li_action);
 			ul.appendChild(li_combo);
 
 			info_range.appendChild(ul);
 		}
+		
 
+		// set stat by type of cards
 		for(var typeofcard in calcul) {
 			var ult = document.createElement('ul');
 			ult.classList.add(typeofcard);

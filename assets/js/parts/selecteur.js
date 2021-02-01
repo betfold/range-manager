@@ -2,7 +2,6 @@ function set_position() {
 	var sel = selecteur.get_position();
 	var position = get_position_by_max();
 	set_selecteur_pos(sel, position.hero);
-	//set_action_sel();
 }
 
 function set_versus_pos() {
@@ -38,10 +37,10 @@ function set_action_sel() {
 	}
 	var names = Object.keys(action);
 	for(var i = 0, n = names.length; i < n; i++) {
-		var option = document.createElement('option');
-		var name = names[i];
-		option.value = name;
-		option.innerHTML = action[name];
+		var option				= document.createElement('option');
+		var name					= names[i];
+		option.value			= name;
+		option.innerHTML	= action[name];
 		sel.appendChild(option);
 	}
 	
@@ -51,7 +50,6 @@ function set_selecteur_pos(sel, position) {
 
 	clear_select(sel);
 	
-
 	for(const name in position) {
 		var optgroup = document.createElement("optgroup");
 		optgroup.label = name + " position";
@@ -110,12 +108,12 @@ function get_position_by_max() {
 				}
 			}
 			// hero can't be the first
-			var first_optgroup = Object.keys(pos.hero)[0];
-			pos.hero[first_optgroup] = _.drop(pos.hero[first_optgroup]);
+			var first_optgroup				= Object.keys(pos.hero)[0];
+			pos.hero[first_optgroup]	= _.drop(pos.hero[first_optgroup]);
 			break;
 		case 'facingoop':
 			pos.vilain = JSON.parse(JSON.stringify(pos.hero));
-			pos.hero = { blind: ['SB', 'BB'] };
+			pos.hero   = { blind: ['SB', 'BB'] };
 			break;
 		case 'bvb':
 			pos.hero = { blind: ['Small Blind Strategy', 'BB vs SB Limp', 'BB vs SB Raise'] }
@@ -127,41 +125,36 @@ function get_position_by_max() {
 
 
 function clear_select(select) {
-	var optgroup = select.getElementsByTagName("optgroup");
-	var option = select.getElementsByTagName("option");
-	var size = optgroup.length;
-	for(var i = 0; i < size; i++) { optgroup[0].remove(); }
-	size = option.length;
-	for(i = 0; i < size; i++) { select.remove(0); }
+	var optgroup	= select.getElementsByTagName("optgroup");
+	var option		= select.getElementsByTagName("option");
+	for(var i = 0, size = optgroup.length; i < size; i++) { optgroup[0].remove(); }
+	for( i = 0, size = option.length; i < size; i++)		{ select.remove(0); }
 }
 
 
 function get_range_name() {
-	var name = document.getElementById('max').value;
-	name += document.getElementById('position').value;
-	name += document.getElementById('bb').value;
 	var action = document.getElementById('position_name').value;		
-	name+= action;
+	var name	 = document.getElementById('max').value;
+	name			+= document.getElementById('position').value;
+	name			+= document.getElementById('bb').value;
+	name			+= action;
 	switch ( action ) {
 		case 'facingip':
 		case 'facingoop':
-			name+= document.getElementById('versus').value;
+			name += document.getElementById('versus').value;
 			break;
 	}
 	return name;
 }
 
-// TODO split this, they dont only change the versus selector
 function togle_versus_selecteur() {
-	console.log("on change les action");
 	var action_selected = document.getElementById('position_name').value;
-	var versus_s = document.getElementById('versus');
-	var versus_l = document.getElementById('versuslabel');
-	var versus_ar = document.getElementById('rfi');
-	var versus_af = document.getElementById('facingrfi');
-	var versus_asb = document.getElementById('bt_bvb');
-
-	var show_pos  = document.getElementById('position').value;
+	var versus_s				= document.getElementById('versus');
+	var versus_l				= document.getElementById('versuslabel');
+	var versus_ar				= document.getElementById('rfi');
+	var versus_af				= document.getElementById('facingrfi');
+	var versus_asb			= document.getElementById('bt_bvb');
+	var show_pos				= document.getElementById('position').value;
 
 	if (action_selected === "rfi" || action_selected === "bvb") {
 		document.getElementById('action_bet').checked = true;
