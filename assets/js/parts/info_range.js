@@ -52,6 +52,7 @@
 		calcul.suited.pourcent	= ui.suited * 4 / 1326 * 100;
 
 		var info_range = document.getElementById('range_info');
+		// clear info
 		info_range.innerHTML = '';
 
 		// set stat by action
@@ -59,58 +60,23 @@
 
 			var stat  = ui['action'][action];
 
-			var ul = document.createElement('ul');
-			ul.classList.add(action);
-
-			var li_pourcent				= document.createElement('li');
-			li_pourcent.innerHTML = stat.pourcent.toFixed(2) + '%';
-			var li_action					= document.createElement('li');
-			li_action.innerHTML		= action;
-			var li_combo					= document.createElement('li');
-			li_combo.innerHTML		= stat.combos + ' combos';
-
-			ul.appendChild(li_pourcent);
-			ul.appendChild(li_action);
-			ul.appendChild(li_combo);
-
-			info_range.appendChild(ul);
+			info_range.innerHTML += templete_info_range(stat.pourcent.toFixed(2) + '%', action, stat.combos + ' combo', action);
 		}
 		
 		// set global stat
 		var totalc = calcul.pair.combo + calcul.offsuit.combo + calcul.suited.combo;
 		var totalp = calcul.pair.pourcent + calcul.offsuit.pourcent + calcul.suited.pourcent;
 		
-		
-		var ulg = document.createElement('ul');
-		var ligt = document.createElement('li');
-		var ligp = document.createElement('li');
-		var ligc = document.createElement('li');
-
-		ulg.style = "background:black;";
-		ligt.innerHTML = "TOTAL";
-		ligp.innerHTML = totalp.toFixed(2) + "%";
-		ligc.innerHTML = totalc + " combos";
-
-		ulg.appendChild(ligt);
-		ulg.appendChild(ligp);
-		ulg.appendChild(ligc);
-
-		info_range.appendChild(ulg);
+		info_range.innerHTML += templete_info_range('TOTAL', totalp.toFixed(2) + '%', totalc, 'global_info_range');
 
 		// set stat by type of cards
 		for(var typeofcard in calcul) {
-			var ult = document.createElement('ul');
-			ult.classList.add(typeofcard);
-			var lit = document.createElement('li')
-			lit.innerHTML = ui[typeofcard] + " " + typeofcard;
-			var lip = document.createElement('li');
-			lip.innerHTML = calcul[typeofcard].pourcent.toFixed(2) + "%";
-			var lic = document.createElement('li');
-			lic.innerHTML = calcul[typeofcard].combo + " combos";
-			ult.appendChild(lit);
-			ult.appendChild(lip);
-			ult.appendChild(lic);
-			info_range.appendChild(ult);
+			info_range.innerHTML += templete_info_range(ui[typeofcard] + " " + typeofcard, calcul[typeofcard].pourcent.toFixed(2) + "%", calcul[typeofcard].combo + " combos", typeofcard);
 		}
 
+	}
+
+
+	function templete_info_range(first, second, three, classename) {
+		return `<ul class="${classename}"><li>${first}</li><li>${second}</li><li>${three}</li></ul>`;
 	}
