@@ -86,24 +86,10 @@ var selecteur = {
 		var totalc = calcul.pair.combo + calcul.offsuit.combo + calcul.suited.combo;
 		var totalp = calcul.pair.pourcent + calcul.offsuit.pourcent + calcul.suited.pourcent;
 		
-		info_range.innerHTML += templete_info_range('TOTAL', totalp.toFixed(2) + '%', totalc, 'global_info_range');
+		info_range.innerHTML += templete_info_range('TOTAL', totalp.toFixed(2) + '%', totalc + " combos", 'global_info_range');
 
 		// set stat by type of cards
 		for(var typeofcard in calcul) {
-			/*
-			var ult = document.createElement('ul');
-			ult.classList.add(typeofcard);
-			var lit = document.createElement('li')
-			lit.innerHTML = ui[typeofcard] + " " + typeofcard;
-			var lip = document.createElement('li');
-			lip.innerHTML = calcul[typeofcard].pourcent.toFixed(2) + "%";
-			var lic = document.createElement('li');
-			lic.innerHTML = calcul[typeofcard].combo + " combos";
-			ult.appendChild(lit);
-			ult.appendChild(lip);
-			ult.appendChild(lic);
-			info_range.appendChild(ult);
-			*/
 			info_range.innerHTML += templete_info_range(ui[typeofcard] + " " + typeofcard, calcul[typeofcard].pourcent.toFixed(2) + "%", calcul[typeofcard].combo + " combos", typeofcard);
 		}
 

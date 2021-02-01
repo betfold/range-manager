@@ -67,7 +67,7 @@
 		var totalc = calcul.pair.combo + calcul.offsuit.combo + calcul.suited.combo;
 		var totalp = calcul.pair.pourcent + calcul.offsuit.pourcent + calcul.suited.pourcent;
 		
-		info_range.innerHTML += templete_info_range('TOTAL', totalp.toFixed(2) + '%', totalc, 'global_info_range');
+		info_range.innerHTML += templete_info_range('TOTAL', totalp.toFixed(2) + '%', totalc + " combos", 'global_info_range');
 
 		// set stat by type of cards
 		for(var typeofcard in calcul) {
