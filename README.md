@@ -13,7 +13,7 @@ Just open the range_manager.html on a browser
 
 
 ![range manager](https://github.com/betfold/range_manager/blob/main/assets/range_manager.png?raw=true)
-![range manager](/blob/main/assets/range_manager.png?raw=true)
+![range manager](/assets/range_manager.png?raw=true)
 
 
 # Dev
