@@ -12,7 +12,7 @@ Is a Beta version.
 Just open the range_manager.html on a browser
 
 
-![range manager](https.com/betfold/range_manager/tree/main/assets/range_manager.png?raw=true)
+![range manager](https://github.com/betfold/range_manager/tree/main/assets/range_manager.png?raw=true)
 
 
 # Dev
