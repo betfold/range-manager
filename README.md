@@ -11,6 +11,8 @@ Is a Beta version.
 
 Just open the range_manager.html on a browser
 
+The selecteur use the Holdem starting hand classment
+
 
 ![range manager](/assets/range_manager.png?raw=true)
 
