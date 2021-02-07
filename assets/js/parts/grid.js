@@ -21,7 +21,7 @@ function save_range() {
 	}
 
 	ranges = JSON.stringify(ranges);
-	if ( ranges.length > 8 ) { localStorage.setItem( get_range_name(), ranges); }
+	if ( ranges.length > 8 ) { localStorage.setItem( this.selecteur.get_range_name(), ranges); }
 }
 
 function set_range() {
@@ -38,7 +38,7 @@ function set_range() {
 }
 
 function get_range() {
-	return JSON.parse(localStorage.getItem(get_range_name()));
+	return JSON.parse(localStorage.getItem(this.selecteur.get_range_name()));
 }
 
 /* clean the html grid */

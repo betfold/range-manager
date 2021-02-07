@@ -13,10 +13,8 @@ function slider_on_change() {
 	var handsingrid = get_used_hand();
 
 
-	var randum_nhand = Math.floor( Math.random() * 100 + 1 )
-	console.log(`debug affichage de d'une main random ${rank_holdem[randum_nhand].hand} numéro ${randum_nhand}`);
-	console.log(`il y a ${grid_have} elements dans la grille`); 
-
+	//var randum_nhand = Math.floor( Math.random() * 100 + 1 )
+	//console.log(`debug affichage de d'une main random ${rank_holdem[randum_nhand].hand} numéro ${randum_nhand}`);
 	
 	if ( slider_want > grid_have ) {
 		var total2added = slider_want - grid_have;
@@ -32,12 +30,12 @@ function slider_on_change() {
 	}
 	else {
 		var total2remove = grid_have - slider_want;
-		for ( var cpt = 0, i = 169; i > 0; i--) {
+		for ( cpt = 0, i = 169; i > 0; i--) {
 			if ( cpt === total2remove ) { break; }
 			hh = rank_holdem[i];
 			if ( handsingrid.includes(hh.hand) ) {
 				var hid = handsingrid.indexOf(hh.hand);
-				var hid = handsingrid.splice(hid, 1)
+				hid = handsingrid.splice(hid, 1)
 				grid_set_hh_to_unset(hid);
 				cpt += 1;
 			}

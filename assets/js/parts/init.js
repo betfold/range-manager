@@ -1,19 +1,9 @@
 function __init() {
-	selecteur.set_position();
-	selecteur.set_action();
-	selecteur.set_versus_position();
-	var action = document.getElementById("position_name").value;
-	if(action === "rfi") {
-		document.getElementById("versus").classList.add("hidden");
-		document.getElementById("versuslabel").classList.add("hidden");
-	} else { 
-		document.getElementById("versus").classList.remove("hidden"); 
-		document.getElementById("versuslabel").classList.remove("hidden"); 
-	}
-	set_range();	
-	document.getElementById("versuslabel").classList.add("hidden")
+	// Set action to the select range 
+	this.selecteur.table_size.addEventListener('change', () => { this.selecteur.table_size_has_changed(); set_range();} , false);
+	this.selecteur.hero_pos.addEventListener('change', () => { this.selecteur._set_vilain_pos();set_range();} , false);
+	this.selecteur.action.addEventListener('change', () => { this.selecteur.action_has_changed(); set_range(); }, false);
+	this.selecteur.stack_size.addEventListener('change', () => {  set_range(); }, false);
 
-	document.getElementById('range_slider').oninput = function() { 
-		slider_on_change();
-	} 
+	set_range();	
 }

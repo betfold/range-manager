@@ -1,6 +1,223 @@
 var range_manager = (function() {
 
 
+	/**
+ * Range Manager Selecteur
+ *  **/
+
+class RMSelector {
+
+	constructor() {
+		this.table_size		= document.getElementById('table_size');
+		this.stack_size		= document.getElementById('stack_size');
+		this.action				= document.getElementById('action_name');
+		this.hero_pos			= document.getElementById('hero_pos');
+		this.vilain_pos		= document.getElementById('vilain_pos'); 
+		this.actions			= {};
+		this.positions		= { hero: {}, vilain: {} };
+		this.vs_isvisible = false; // show hide the versus select (vilain_pos)
+
+		this.table_size_has_changed();	
+		
+	}
+
+	// Set the HTML select position and action 
+	table_size_has_changed() {
+
+		// init value
+		this._get_action_by_position();
+		this._get_position_by_tablesize();
+
+		// set value
+		this.set_action();
+		this.set_position();
+		this.toggle_versus();
+	}
+	
+	action_has_changed() {
+		this._get_position_by_tablesize()
+		this.set_position();
+		this.toggle_versus();
+	}
+	
+	get_range_name() {
+		var name	 = `${this.table_size.value}${this.hero_pos.value}${this.stack_size.value}${this.action.value}`;
+		switch ( this.action.value ) {
+			case 'facingip':
+			case 'facingoop':
+				name += this.vilain_pos.value;
+				break;
+		}
+		return name;
+	}
+
+	set_action() {
+		this._clear(this.action);
+		for(var action in this.actions) {
+			var item = document.createElement('option');
+			item.value = action;
+			item.innerHTML = this.actions[action];
+			this.action.appendChild(item);
+		}
+	}
+
+	set_position() {
+		this._set_hero_pos();
+		this._set_vilain_pos();
+	}
+
+	_set_hero_pos() {
+		this.set_selecteur_options(this.hero_pos, this.positions.hero);
+	}
+
+	_set_vilain_pos() {
+		this._get_position_by_tablesize();
+		this.set_selecteur_options(this.vilain_pos, this.positions.vilain);
+	}
+
+	set_selecteur_options(select, positions) {
+
+		this._clear(select);
+		
+		for(const name in positions) {
+			var optgroup = document.createElement("optgroup");
+			optgroup.label = name + " position";
+			if ( positions[name].length > 0) {
+				for(var v in positions[name]) {
+					var option = document.createElement("option");
+					var value = positions[name][v];
+					option.value = value;
+					option.innerHTML = value;
+					optgroup.appendChild(option);
+				}
+				select.appendChild(optgroup);
+			}	
+		}
+	}
+
+	
+	toggle_versus() {
+		switch (this.action.value) {
+			case 'rfi':
+			case 'bvb':
+				if( !this.vilain_pos.classList.contains('hidden') ) {
+					this.vilain_pos.classList.add('hidden');
+					document.getElementById('versuslabel').classList.add('hidden');
+				}
+				break;
+			default:
+				if ( this.vilain_pos.classList.contains('hidden') ) {
+					this.vilain_pos.classList.remove('hidden');
+					document.getElementById('versuslabel').classList.remove('hidden');
+				}
+		}
+	}
+
+	_clear(select) {
+		select.innerHTML = '';
+	}
+
+
+	// Set possible actions
+	//
+	// TODO I dont think is the best way FIXME
+	_get_action_by_position() {
+
+		switch (this.table_size.value) {
+			case '9':
+				this.actions = { rfi: "RFI", facingip: "Facing RFI IP", facingoop: "Facing RFI OOP", bvb: "Blind vs Blind" };
+				break;
+			case '8':
+				this.actions = { rfi: "RFI", facingip: "Facing RFI IP", facingoop: "Facing RFI OOP", bvb: "Blind vs Blind" };
+				break;
+			case '7':
+				this.actions = { rfi: "RFI", facingip: "Facing RFI IP", facingoop: "Facing RFI OOP", bvb: "Blind vs Blind" };
+				break;
+			case '6':
+				this.actions = { rfi: "RFI", facingip: "Facing RFI IP", facingoop: "Facing RFI OOP", bvb: "Blind vs Blind" };
+				break;
+			case '5':
+				this.actions = { rfi: "RFI", facingip: "Facing RFI IP", facingoop: "Facing RFI OOP", bvb: "Blind vs Blind" };
+				break;
+			case '4':
+				this.actions = { rfi: "RFI", facingip: "Facing RFI IP", facingoop: "Facing RFI OOP", bvb: "Blind vs Blind" };
+				break;
+			case '3':
+				this.actions = { rfi: "RFI", facingoop: "Facing RFI OOP", bvb: "Blind vs Blind" };
+				break;
+			case '2':
+				this.actions = { bvb: "Blind vs Blind" };
+				break;
+		}
+	
+	}
+
+
+	_get_position_by_tablesize() {
+
+		switch (this.table_size.value) {
+			case '9':
+				this.positions.hero = { early: ["UTG", "UTG1", "UTG2"], middle: ["LJ", "HJ"], late: ["CO", "BT"] };	
+				break;
+			case '8':
+				this.positions.hero = { early: ["UTG1", "UTG2"], middle: ["LJ", "HJ"], late: ["CO", "BT"] };	
+				break;
+			case '7':
+				this.positions.hero = { early: ["UTG2"], middle: ["LJ", "HJ"], late: ["CO", "BT"] };	
+				break;
+			case '6':
+				this.positions.hero = { early: ["LJ"], middle: ["HJ"], late: ["CO", "BT"] };
+				break;
+			case '5':
+				this.positions.hero = { early: ["HJ"], middle: ["CO"], late: ["BT"] };
+				break;
+			case '4':
+				this.positions.hero = { early: ["CO"], late: ["BT"] };
+				break;
+			case '3':
+				this.positions.hero = { late: ["BT"] };
+				break;
+			case '2':
+				this.positions.hero = { blind: ['Small Blind Strategy', 'BB vs SB Limp', 'BB vs SB Raise'] }
+				break;
+		} 
+
+		switch (this.action.value) {
+			case 'facingip':
+				// vilain cant be at the same place of hero and behind him
+				var stop = true; // Fixme it's probalby not good
+				for(var i = 0; i < Object.keys(this.positions.hero).length && stop; i++) {
+					var zone = Object.keys(this.positions.hero)[i];
+					this.positions.vilain[zone] = [];
+					for( var e = 0; e < this.positions.hero[zone].length; e++ ) {
+						var position_name = this.positions.hero[zone][e];
+						console.log(`position ${position_name} ${this.hero_pos.value}`);
+						if ( position_name === this.hero_pos.value ) { stop = false; break; }
+						else {
+							console.log(`ajout de ${position_name}`);
+							this.positions.vilain[zone].push(position_name);
+						}
+					}	
+				}
+				console.log(this.positions.vilain);
+				// hero can't be the first
+				var first_optgroup				= Object.keys(this.positions.hero)[0];
+				this.positions.hero[first_optgroup]	= _.drop(this.positions.hero[first_optgroup]);
+				break;
+			case 'facingoop':
+				this.positions.vilain = JSON.parse(JSON.stringify(this.positions.hero));
+				this.positions.hero   = { blind: ['SB', 'BB'] };
+				break;
+			case 'bvb':
+				this.positions.hero = { blind: ['Small Blind Strategy', 'BB vs SB Limp', 'BB vs SB Raise'] }
+				break;
+		}
+		
+	}
+
+
+	
+}
 	var ui = {
 	pair: 0,
 	suited: 0,
@@ -8,15 +225,7 @@ var range_manager = (function() {
 	copy: "", // the range name to copy 
 }
 
-var selecteur = {
-	get_position:					function() { return document.getElementById('position'); },
-	current_id:						function() { return document.getElementById('max').value; }, 
-	current_pos:					function() { return document.getElementById('position').value; },
-	current_action:				function() { return document.getElementById('position_name').value; },
-	set_position:					function() { set_position(); },
-	set_versus_position:	function() { set_versus_pos(); },
-	set_action:						function() { set_action_sel(); },
-}
+this.selecteur = new RMSelector(); 
 	
 	function calcul_combo() {
 		var temp_cards	= []; // pour eviter les doublons 
@@ -126,7 +335,7 @@ var selecteur = {
 	}
 
 	ranges = JSON.stringify(ranges);
-	if ( ranges.length > 8 ) { localStorage.setItem( get_range_name(), ranges); }
+	if ( ranges.length > 8 ) { localStorage.setItem( this.selecteur.get_range_name(), ranges); }
 }
 
 function set_range() {
@@ -143,7 +352,7 @@ function set_range() {
 }
 
 function get_range() {
-	return JSON.parse(localStorage.getItem(get_range_name()));
+	return JSON.parse(localStorage.getItem(this.selecteur.get_range_name()));
 }
 
 /* clean the html grid */
@@ -265,212 +474,6 @@ function add_card_value(card, value) {
 
 
 
-	function set_position() {
-	var sel = selecteur.get_position();
-	var position = get_position_by_max();
-	set_selecteur_pos(sel, position.hero);
-}
-
-function set_versus_pos() {
-	var sel = document.getElementById('versus');
-	var position = get_position_by_max();
-	set_selecteur_pos(sel, position.vilain);
-}
-
-function set_action_sel() {
-
-	var sel			= document.getElementById('position_name');
-	var max			= selecteur.current_id();
-	var action	= {};
-
-	clear_select(sel);
-
-	switch (max) {
-		case '9':
-			action = { rfi: "RFI", facingip: "Facing RFI IP", facingoop: "Facing RFI OOP", bvb: "Blind vs Blind" };
-			break;
-		case '8':
-			action = { rfi: "RFI", facingip: "Facing RFI IP", facingoop: "Facing RFI OOP", bvb: "Blind vs Blind" };
-			break;
-		case '7':
-			action = { rfi: "RFI", facingip: "Facing RFI IP", facingoop: "Facing RFI OOP", bvb: "Blind vs Blind" };
-			break;
-		case '6':
-			action = { rfi: "RFI", facingip: "Facing RFI IP", facingoop: "Facing RFI OOP", bvb: "Blind vs Blind" };
-			break;
-		case '5':
-			action = { rfi: "RFI", facingip: "Facing RFI IP", facingoop: "Facing RFI OOP", bvb: "Blind vs Blind" };
-			break;
-		case '4':
-			action = { rfi: "RFI", facingip: "Facing RFI IP", facingoop: "Facing RFI OOP", bvb: "Blind vs Blind" };
-			break;
-		case '3':
-			action = { rfi: "RFI", facingoop: "Facing RFI OOP", bvb: "Blind vs Blind" };
-			break;
-		case '2':
-			action = { bvb: "Blind vs Blind" };
-			break;
-	}
-	var names = Object.keys(action);
-	for(var i = 0, n = names.length; i < n; i++) {
-		var option				= document.createElement('option');
-		var name					= names[i];
-		option.value			= name;
-		option.innerHTML	= action[name];
-		sel.appendChild(option);
-	}
-	
-}
-
-function set_selecteur_pos(sel, position) {
-
-	clear_select(sel);
-	
-	for(const name in position) {
-		var optgroup = document.createElement("optgroup");
-		optgroup.label = name + " position";
-		if ( position[name].length > 0) {
-			for(var v in position[name]) {
-				var option = document.createElement("option");
-				var value = position[name][v];
-				option.value = value;
-				option.innerHTML = value;
-				optgroup.appendChild(option);
-			}
-			sel.appendChild(optgroup);
-		}	
-	}
-}
-
-function get_position_by_max() {
-
-	var maxid			= selecteur.current_id();
-	var hero_pos	= document.getElementById('position').value;
-	var action		= selecteur.current_action();
-	var pos				= { hero: {}, vilain: {}, action: {}  };
-
-	switch (maxid) {
-		case '9':
-			pos.hero = { early: ["UTG", "UTG1", "UTG2"], middle: ["LJ", "HJ"], late: ["CO", "BT"] };	
-			break;
-		case '8':
-			pos.hero = { early: ["UTG1", "UTG2"], middle: ["LJ", "HJ"], late: ["CO", "BT"] };	
-			break;
-		case '7':
-			pos.hero = { early: ["UTG2"], middle: ["LJ", "HJ"], late: ["CO", "BT"] };	
-			break;
-		case '6':
-			pos.hero = { early: ["LJ"], middle: ["HJ"], late: ["CO", "BT"] };
-			break;
-		case '5':
-			pos.hero = { early: ["HJ"], middle: ["CO"], late: ["BT"] };
-			break;
-		case '4':
-			pos.hero = { early: ["CO"], late: ["BT"] };
-			break;
-		case '3':
-			pos.hero = { late: ["BT"] };
-			break;
-		case '2':
-			pos.hero = { blind: ['Small Blind Strategy', 'BB vs SB Limp', 'BB vs SB Raise'] }
-			break;
-	} 
-	
-	pos.vilain = {};
-	
-
-	switch (action) {
-		case 'facingip':
-			// vilain cant be at the same place of hero and behind him
-			var stop = true; // Fixme it's probalby not good
-			for(var i = 0; i < Object.keys(pos.hero).length && stop; i++) {
-				var zone = Object.keys(pos.hero)[i];
-				pos.vilain[zone] = [];
-				for( var e = 0; e < pos.hero[zone].length; e++ ) {
-					var position_name = pos.hero[zone][e];
-					if ( position_name === hero_pos ) { stop = false; break; }
-					else { pos.vilain[zone].push(position_name); }
-				}
-			}
-			// hero can't be the first
-			var first_optgroup				= Object.keys(pos.hero)[0];
-			pos.hero[first_optgroup]	= _.drop(pos.hero[first_optgroup]);
-			break;
-		case 'facingoop':
-			pos.vilain = JSON.parse(JSON.stringify(pos.hero));
-			pos.hero   = { blind: ['SB', 'BB'] };
-			break;
-		case 'bvb':
-			pos.hero = { blind: ['Small Blind Strategy', 'BB vs SB Limp', 'BB vs SB Raise'] }
-			break;
-	}
-	
-	return pos;
-}
-
-
-function clear_select(select) {
-	var optgroup	= select.getElementsByTagName("optgroup");
-	var option		= select.getElementsByTagName("option");
-	for(var i = 0, size = optgroup.length; i < size; i++) { optgroup[0].remove(); }
-	for( i = 0, size = option.length; i < size; i++)		{ select.remove(0); }
-}
-
-
-function get_range_name() {
-	var action = document.getElementById('position_name').value;		
-	var name	 = document.getElementById('max').value;
-	name			+= document.getElementById('position').value;
-	name			+= document.getElementById('bb').value;
-	name			+= action;
-	switch ( action ) {
-		case 'facingip':
-		case 'facingoop':
-			name += document.getElementById('versus').value;
-			break;
-	}
-	return name;
-}
-
-function togle_versus_selecteur() {
-	var action_selected = document.getElementById('position_name').value;
-	var versus_s				= document.getElementById('versus');
-	var versus_l				= document.getElementById('versuslabel');
-	var versus_ar				= document.getElementById('rfi');
-	var versus_af				= document.getElementById('facingrfi');
-	var versus_asb			= document.getElementById('bt_bvb');
-	var show_pos				= document.getElementById('position').value;
-
-	if (action_selected === "rfi" || action_selected === "bvb") {
-		document.getElementById('action_bet').checked = true;
-		versus_s.classList.add('hidden');
-		versus_l.classList.add('hidden');
-		versus_af.classList.add('disable');
-		versus_ar.classList.remove('disable');
-		versus_asb.classList.add('disable');
-	} 
-	else {
-		set_versus_pos();
-		document.getElementById('facing_flat').checked = true;
-		versus_s.classList.remove('hidden');
-		versus_l.classList.remove('hidden');
-		versus_ar.classList.add('disable');
-		versus_af.classList.remove('disable');
-		versus_asb.classList.add('disable');
-	}
-	if ( action_selected === 'bvb' && show_pos === 'Small Blind Strategy') {
-		document.getElementById('action_limpfold').checked = true;
-		versus_asb.classList.remove('disable');
-		versus_ar.classList.add('disable');	
-	}
-	else if ( action_selected === 'bvb' && show_pos !== 'Small Blind Strategy') {
-		document.getElementById('facing_flat').checked = true;
-		versus_af.classList.remove('disable');
-		versus_ar.classList.add('disable');
-		versus_asb.classList.add('disable');
-	}
-}
-	
 	var user_cmd = { 
 	args: '', 
 	hand_range_weight: ["2", "3", "4", "5", "6", "7", "8", "9", "T", "J", "Q", "K", "A"],
@@ -828,10 +831,8 @@ function slider_on_change() {
 	var handsingrid = get_used_hand();
 
 
-	var randum_nhand = Math.floor( Math.random() * 100 + 1 )
-	console.log(`debug affichage de d'une main random ${rank_holdem[randum_nhand].hand} numéro ${randum_nhand}`);
-	console.log(`il y a ${grid_have} elements dans la grille`); 
-
+	//var randum_nhand = Math.floor( Math.random() * 100 + 1 )
+	//console.log(`debug affichage de d'une main random ${rank_holdem[randum_nhand].hand} numéro ${randum_nhand}`);
 	
 	if ( slider_want > grid_have ) {
 		var total2added = slider_want - grid_have;
@@ -847,12 +848,12 @@ function slider_on_change() {
 	}
 	else {
 		var total2remove = grid_have - slider_want;
-		for ( var cpt = 0, i = 169; i > 0; i--) {
+		for ( cpt = 0, i = 169; i > 0; i--) {
 			if ( cpt === total2remove ) { break; }
 			hh = rank_holdem[i];
 			if ( handsingrid.includes(hh.hand) ) {
 				var hid = handsingrid.indexOf(hh.hand);
-				var hid = handsingrid.splice(hid, 1)
+				hid = handsingrid.splice(hid, 1)
 				grid_set_hh_to_unset(hid);
 				cpt += 1;
 			}
@@ -862,23 +863,13 @@ function slider_on_change() {
 	set_combo_info();	
 }
 	function __init() {
-	selecteur.set_position();
-	selecteur.set_action();
-	selecteur.set_versus_position();
-	var action = document.getElementById("position_name").value;
-	if(action === "rfi") {
-		document.getElementById("versus").classList.add("hidden");
-		document.getElementById("versuslabel").classList.add("hidden");
-	} else { 
-		document.getElementById("versus").classList.remove("hidden"); 
-		document.getElementById("versuslabel").classList.remove("hidden"); 
-	}
-	set_range();	
-	document.getElementById("versuslabel").classList.add("hidden")
+	// Set action to the select range 
+	this.selecteur.table_size.addEventListener('change', () => { this.selecteur.table_size_has_changed(); set_range();} , false);
+	this.selecteur.hero_pos.addEventListener('change', () => { this.selecteur._set_vilain_pos();set_range();} , false);
+	this.selecteur.action.addEventListener('change', () => { this.selecteur.action_has_changed(); set_range(); }, false);
+	this.selecteur.stack_size.addEventListener('change', () => {  set_range(); }, false);
 
-	document.getElementById('range_slider').oninput = function() { 
-		slider_on_change();
-	} 
+	set_range();	
 }
 
 	return { 
@@ -886,8 +877,8 @@ function slider_on_change() {
 		save: save_range, 
 		load: set_range, 
 		set_background_card: set_action_to_card,
-		togle_visibility: togle_versus_selecteur,
-		selecteur: selecteur,
+		togle_visibility: function() { console.log('da beta version'); },
+		selecteur: this.selecteur,
 		cmd: parse_cmd,
 		init: __init,
 	}
