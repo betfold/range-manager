@@ -22,7 +22,16 @@ function set_action_sel() {
 		case '9':
 			action = { rfi: "RFI", facingip: "Facing RFI IP", facingoop: "Facing RFI OOP", bvb: "Blind vs Blind" };
 			break;
+		case '8':
+			action = { rfi: "RFI", facingip: "Facing RFI IP", facingoop: "Facing RFI OOP", bvb: "Blind vs Blind" };
+			break;
+		case '7':
+			action = { rfi: "RFI", facingip: "Facing RFI IP", facingoop: "Facing RFI OOP", bvb: "Blind vs Blind" };
+			break;
 		case '6':
+			action = { rfi: "RFI", facingip: "Facing RFI IP", facingoop: "Facing RFI OOP", bvb: "Blind vs Blind" };
+			break;
+		case '5':
 			action = { rfi: "RFI", facingip: "Facing RFI IP", facingoop: "Facing RFI OOP", bvb: "Blind vs Blind" };
 			break;
 		case '4':
@@ -77,8 +86,17 @@ function get_position_by_max() {
 		case '9':
 			pos.hero = { early: ["UTG", "UTG1", "UTG2"], middle: ["LJ", "HJ"], late: ["CO", "BT"] };	
 			break;
+		case '8':
+			pos.hero = { early: ["UTG1", "UTG2"], middle: ["LJ", "HJ"], late: ["CO", "BT"] };	
+			break;
+		case '7':
+			pos.hero = { early: ["UTG2"], middle: ["LJ", "HJ"], late: ["CO", "BT"] };	
+			break;
 		case '6':
 			pos.hero = { early: ["LJ"], middle: ["HJ"], late: ["CO", "BT"] };
+			break;
+		case '5':
+			pos.hero = { early: ["HJ"], middle: ["CO"], late: ["BT"] };
 			break;
 		case '4':
 			pos.hero = { early: ["CO"], late: ["BT"] };
