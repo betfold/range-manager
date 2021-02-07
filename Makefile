@@ -3,7 +3,7 @@ show_task:
 
 build: css html js
 
-jst: js lintjs
+js: jsp lintjs
 
 css:
 	export PATH=${PATH}:${HOME}/.gem/ruby/2.7.0/bin/ && cd assets && compass compile
@@ -11,7 +11,7 @@ css:
 html:
 	python tools/jparser.py templates/range_manager_ui.j2 > range_manager.html
 
-js:
+jsp:
 	python tools/jparser.py assets/js/parts/range_manager.js > assets/js/range_manager.js
 
 lintjs:
