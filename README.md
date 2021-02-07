@@ -11,7 +11,6 @@ Is a Beta version.
 
 Just open the range_manager.html on a browser
 
-The slider have a basic use of the Holdem starting hand classment for select hh. Update it, don't use the grid like that's it's not a 'calculted gto range or whatever to use in this position at this stack'. 
 
 
 ![range manager](/assets/range_manager.png?raw=true)
