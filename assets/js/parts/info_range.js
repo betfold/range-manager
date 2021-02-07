@@ -42,7 +42,8 @@
 			offsuit: { pourcent: 0, combo: 0 },
 			suited: { pourcent: 0, combo: 0},
 		}
-		
+		// the info for compare with slider
+		ui['total_selected']	= ui.pair + ui.suited + ui.offsuit;		
 		calcul.pair.combo			= ui.pair * 6;
 		calcul.offsuit.combo	= ui.offsuit * 12;
 		calcul.suited.combo		= ui.suited * 4;
@@ -74,6 +75,9 @@
 			info_range.innerHTML += templete_info_range(ui[typeofcard] + " " + typeofcard, calcul[typeofcard].pourcent.toFixed(2) + "%", calcul[typeofcard].combo + " combos", typeofcard);
 		}
 
+		// set the slider value
+		var slider = document.getElementById('range_slider');
+		slider.value = totalp;
 	}
 
 

@@ -7,6 +7,7 @@ var range_manager = (function() {
 	{% include 'action.js' %}
 	{% include 'selecteur.js' %}	
 	{% include 'cmd.js' %}
+	{% include 'slider.js' %}
 	{% include 'init.js' %}
 
 	return { 

@@ -1,5 +1,9 @@
 @import  "compass/css3";
 
+#range_slider {
+	width: 90%;
+}
+
 #range_info {
 	@include display-flex;
 	@include flex-flow(row wrap);

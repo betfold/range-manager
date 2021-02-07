@@ -63,6 +63,18 @@ function clear_range() {
 	
 }
 
+// Return list of id hands selected
+// TODO change the html id of table hand to grid_mananger
+function get_used_hand() {
+	var grid = document.getElementById('range_manager');
+	var rows = grid.getElementsByTagName('td');
+	var hands = [];
+	for ( var i = 0, n = rows.length; i < n; i++ ) {
+		if ( rows[i].className.split(' ').length > 1 ) { hands.push( rows[i].id ); }
+	}
+	return hands;
+}
+
 function get_card_by_action(action) {
 	var rm = document.getElementById("range_manager");
 	var cards = rm.getElementsByClassName(action);

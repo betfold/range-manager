@@ -61,7 +61,8 @@ var selecteur = {
 			offsuit: { pourcent: 0, combo: 0 },
 			suited: { pourcent: 0, combo: 0},
 		}
-		
+		// the info for compare with slider
+		ui['total_selected']	= ui.pair + ui.suited + ui.offsuit;		
 		calcul.pair.combo			= ui.pair * 6;
 		calcul.offsuit.combo	= ui.offsuit * 12;
 		calcul.suited.combo		= ui.suited * 4;
@@ -93,6 +94,9 @@ var selecteur = {
 			info_range.innerHTML += templete_info_range(ui[typeofcard] + " " + typeofcard, calcul[typeofcard].pourcent.toFixed(2) + "%", calcul[typeofcard].combo + " combos", typeofcard);
 		}
 
+		// set the slider value
+		var slider = document.getElementById('range_slider');
+		slider.value = totalp;
 	}
 
 
@@ -164,6 +168,18 @@ function clear_range() {
 	
 }
 
+// Return list of id hands selected
+// TODO change the html id of table hand to grid_mananger
+function get_used_hand() {
+	var grid = document.getElementById('range_manager');
+	var rows = grid.getElementsByTagName('td');
+	var hands = [];
+	for ( var i = 0, n = rows.length; i < n; i++ ) {
+		if ( rows[i].className.split(' ').length > 1 ) { hands.push( rows[i].id ); }
+	}
+	return hands;
+}
+
 function get_card_by_action(action) {
 	var rm = document.getElementById("range_manager");
 	var cards = rm.getElementsByClassName(action);
@@ -201,6 +217,10 @@ function remove_card_value(card, value) {
 	card.classList.remove(value);
 }
 	
+function grid_set_hh_to_unset(hhid) {
+	var hh = document.getElementById(hhid);
+	hh.className = hh.className.split(' ')[0]
+}
 
 function add_card_value(card, value) {
 	
@@ -601,6 +621,228 @@ function nota_added_card_by(cards, by) {
 }
 
 
+	//source https://www.gamblingsites.org/poker/texas-holdem/starting-hand-rankings/
+// holdmem have a grid of 169 pf hand 
+// TODO fixe the correct pourcentage win value
+// is not a json file in fact !!
+var rank_holdem = {
+	"1": { "hand": "AA", "win_pourcentage": "31" },
+	"2": { "hand": "KK", "win_pourcentage": "26" },
+	"3": { "hand": "QQ", "win_pourcentage": "22" },
+	"4": { "hand": "AKs", "win_pourcentage": "20.20" },
+	"5": { "hand": "JJ", "win_pourcentage": "19.10" },
+	"6": { "hand": "AQs", "win_pourcentage": "18.70" },
+	"7": { "hand": "KQs", "win_pourcentage": "18.10" },
+	"8": { "hand": "AJs", "win_pourcentage": "17.50" },
+	"9": { "hand": "KJs", "win_pourcentage": "31" },
+	"10": { "hand": "TT", "win_pourcentage": "31" },
+	"11": { "hand": "AKo", "win_pourcentage": "31" },
+	"12": { "hand": "ATs", "win_pourcentage": "31" },
+	"13": { "hand": "QJs", "win_pourcentage": "31" },
+	"14": { "hand": "KTs", "win_pourcentage": "31" },
+	"15": { "hand": "QTs", "win_pourcentage": "31" },
+	"16": { "hand": "JTs", "win_pourcentage": "31" },
+	"17": { "hand": "99", "win_pourcentage": "31" },
+	"18": { "hand": "AQs", "win_pourcentage": "31" },
+	"19": { "hand": "A9s", "win_pourcentage": "31" },
+	"20": { "hand": "KQo", "win_pourcentage": "31" },
+	"21": { "hand": "88", "win_pourcentage": "31" },
+	"22": { "hand": "K9s", "win_pourcentage": "31" },
+	"23": { "hand": "T9s", "win_pourcentage": "31" },
+	"24": { "hand": "A8s", "win_pourcentage": "31" },
+	"25": { "hand": "Q9s", "win_pourcentage": "31" },
+	"26": { "hand": "J9s", "win_pourcentage": "31" },
+	"27": { "hand": "AJo", "win_pourcentage": "31" },
+	"28": { "hand": "A5s", "win_pourcentage": "31" },
+	"29": { "hand": "77", "win_pourcentage": "31" },
+	"30": { "hand": "A7s", "win_pourcentage": "31" },
+	"31": { "hand": "KJo", "win_pourcentage": "31" },
+	"32": { "hand": "A4s", "win_pourcentage": "31" },
+	"33": { "hand": "A3s", "win_pourcentage": "31" },
+	"34": { "hand": "A6s", "win_pourcentage": "31" },
+	"35": { "hand": "QJo", "win_pourcentage": "31" },
+	"36": { "hand": "66", "win_pourcentage": "31" },
+	"37": { "hand": "K8s", "win_pourcentage": "31" },
+	"38": { "hand": "T8s", "win_pourcentage": "31" },
+	"39": { "hand": "A2s", "win_pourcentage": "31" },
+	"40": { "hand": "98s", "win_pourcentage": "31" },
+	"41": { "hand": "J8s", "win_pourcentage": "31" },
+	"42": { "hand": "ATo", "win_pourcentage": "31" },
+	"43": { "hand": "Q8s", "win_pourcentage": "31" },
+	"44": { "hand": "K7s", "win_pourcentage": "31" },
+	"45": { "hand": "KTo", "win_pourcentage": "31" },
+	"46": { "hand": "55", "win_pourcentage": "31" },
+	"47": { "hand": "JTo", "win_pourcentage": "31" },
+	"48": { "hand": "87s", "win_pourcentage": "31" },
+	"49": { "hand": "QTo", "win_pourcentage": "31" },
+	"50": { "hand": "44", "win_pourcentage": "31" },
+	"51": { "hand": "33", "win_pourcentage": "31" },
+	"52": { "hand": "22", "win_pourcentage": "31" },
+	"53": { "hand": "K6s", "win_pourcentage": "31" },
+	"54": { "hand": "97s", "win_pourcentage": "31" },
+	"55": { "hand": "K5s", "win_pourcentage": "31" },
+	"56": { "hand": "76s", "win_pourcentage": "31" },
+	"57": { "hand": "T7s", "win_pourcentage": "31" },
+	"58": { "hand": "K4s", "win_pourcentage": "31" },
+	"59": { "hand": "K3s", "win_pourcentage": "31" },
+	"60": { "hand": "K2s", "win_pourcentage": "31" },
+	"61": { "hand": "Q7s", "win_pourcentage": "31" },
+	"62": { "hand": "86s", "win_pourcentage": "31" },
+	"63": { "hand": "65s", "win_pourcentage": "31" },
+	"64": { "hand": "J7s", "win_pourcentage": "31" },
+	"65": { "hand": "54s", "win_pourcentage": "31" },
+	"66": { "hand": "Q6s", "win_pourcentage": "31" },
+	"67": { "hand": "75s", "win_pourcentage": "31" },
+	"68": { "hand": "96s", "win_pourcentage": "31" },
+	"69": { "hand": "Q5s", "win_pourcentage": "31" },
+	"70": { "hand": "65s", "win_pourcentage": "31" },
+	"71": { "hand": "Q4s", "win_pourcentage": "31" },
+	"72": { "hand": "Q3s", "win_pourcentage": "31" },
+	"73": { "hand": "T9o", "win_pourcentage": "31" },
+	"74": { "hand": "T6s", "win_pourcentage": "31" },
+	"75": { "hand": "Q2s", "win_pourcentage": "31" },
+	"76": { "hand": "A9o", "win_pourcentage": "31" },
+	"77": { "hand": "53s", "win_pourcentage": "31" },
+	"78": { "hand": "85s", "win_pourcentage": "31" },
+	"79": { "hand": "J6s", "win_pourcentage": "31" },
+	"80": { "hand": "J9s", "win_pourcentage": "31" },
+	"81": { "hand": "K9o", "win_pourcentage": "31" },
+	"82": { "hand": "J5s", "win_pourcentage": "31" },
+	"83": { "hand": "Q9o", "win_pourcentage": "31" },
+	"84": { "hand": "43s", "win_pourcentage": "31" },
+	"85": { "hand": "74s", "win_pourcentage": "31" },
+	"86": { "hand": "J4s", "win_pourcentage": "31" },
+	"87": { "hand": "J3s", "win_pourcentage": "31" },
+	"88": { "hand": "95s", "win_pourcentage": "31" },
+	"89": { "hand": "J2s", "win_pourcentage": "31" },
+	"90": { "hand": "63s", "win_pourcentage": "31" },
+	"91": { "hand": "A8o", "win_pourcentage": "31" },
+	"92": { "hand": "52s", "win_pourcentage": "31" },
+	"93": { "hand": "T5s", "win_pourcentage": "31" },
+	"94": { "hand": "84s", "win_pourcentage": "31" },
+	"95": { "hand": "T4s", "win_pourcentage": "31" },
+	"96": { "hand": "T3s", "win_pourcentage": "31" },
+	"97": { "hand": "42s", "win_pourcentage": "31" },
+	"98": { "hand": "T2s", "win_pourcentage": "31" },
+	"99": { "hand": "98o", "win_pourcentage": "31" },
+	"100": { "hand": "T8o", "win_pourcentage": "31" },
+	"101": { "hand": "A5o", "win_pourcentage": "31" },
+	"102": { "hand": "A7o", "win_pourcentage": "31" },
+	"103": { "hand": "73s", "win_pourcentage": "31" },
+	"104": { "hand": "A4o", "win_pourcentage": "31" },
+	"105": { "hand": "32s", "win_pourcentage": "31" },
+	"106": { "hand": "94s", "win_pourcentage": "31" },
+	"107": { "hand": "93s", "win_pourcentage": "31" },
+	"108": { "hand": "J8o", "win_pourcentage": "31" },
+	"109": { "hand": "A3o", "win_pourcentage": "31" },
+	"110": { "hand": "62s", "win_pourcentage": "31" },
+	"111": { "hand": "92s", "win_pourcentage": "31" },
+	"112": { "hand": "K8o", "win_pourcentage": "31" },
+	"113": { "hand": "A6o", "win_pourcentage": "31" },
+	"114": { "hand": "87o", "win_pourcentage": "31" },
+	"115": { "hand": "Q8o", "win_pourcentage": "31" },
+	"116": { "hand": "83o", "win_pourcentage": "31" },
+	"117": { "hand": "A2o", "win_pourcentage": "31" },
+	"118": { "hand": "82s", "win_pourcentage": "31" },
+	"119": { "hand": "97o", "win_pourcentage": "31" },
+	"120": { "hand": "72s", "win_pourcentage": "31" },
+	"121": { "hand": "76o", "win_pourcentage": "31" },
+	"122": { "hand": "K7o", "win_pourcentage": "31" },
+	"123": { "hand": "65o", "win_pourcentage": "31" },
+	"124": { "hand": "T7o", "win_pourcentage": "31" },
+	"125": { "hand": "K6o", "win_pourcentage": "31" },
+	"126": { "hand": "86o", "win_pourcentage": "31" },
+	"127": { "hand": "54o", "win_pourcentage": "31" },
+	"128": { "hand": "K5o", "win_pourcentage": "31" },
+	"129": { "hand": "J7o", "win_pourcentage": "31" },
+	"130": { "hand": "75o", "win_pourcentage": "31" },
+	"131": { "hand": "Q7o", "win_pourcentage": "31" },
+	"132": { "hand": "K4o", "win_pourcentage": "31" },
+	"133": { "hand": "K3o", "win_pourcentage": "31" },
+	"134": { "hand": "96o", "win_pourcentage": "31" },
+	"135": { "hand": "K2o", "win_pourcentage": "31" },
+	"136": { "hand": "64o", "win_pourcentage": "31" },
+	"137": { "hand": "Q6o", "win_pourcentage": "31" },
+	"138": { "hand": "53o", "win_pourcentage": "31" },
+	"139": { "hand": "85o", "win_pourcentage": "31" },
+	"140": { "hand": "T6o", "win_pourcentage": "31" },
+	"141": { "hand": "Q5o", "win_pourcentage": "31" },
+	"142": { "hand": "43o", "win_pourcentage": "31" },
+	"143": { "hand": "Q4o", "win_pourcentage": "31" },
+	"144": { "hand": "Q3o", "win_pourcentage": "31" },
+	"145": { "hand": "74o", "win_pourcentage": "31" },
+	"146": { "hand": "Q2o", "win_pourcentage": "31" },
+	"147": { "hand": "J6o", "win_pourcentage": "31" },
+	"148": { "hand": "63o", "win_pourcentage": "31" },
+	"149": { "hand": "J5o", "win_pourcentage": "31" },
+	"150": { "hand": "95o", "win_pourcentage": "31" },
+	"151": { "hand": "52o", "win_pourcentage": "31" },
+	"152": { "hand": "J4o", "win_pourcentage": "31" },
+	"153": { "hand": "J3o", "win_pourcentage": "31" },
+	"154": { "hand": "42o", "win_pourcentage": "31" },
+	"155": { "hand": "J2o", "win_pourcentage": "31" },
+	"156": { "hand": "84o", "win_pourcentage": "31" },
+	"157": { "hand": "T5o", "win_pourcentage": "31" },
+	"158": { "hand": "T4o", "win_pourcentage": "31" },
+	"159": { "hand": "32o", "win_pourcentage": "31" },
+	"160": { "hand": "T3o", "win_pourcentage": "31" },
+	"161": { "hand": "73o", "win_pourcentage": "31" },
+	"162": { "hand": "T2o", "win_pourcentage": "31" },
+	"163": { "hand": "62o", "win_pourcentage": "31" },
+	"164": { "hand": "94o", "win_pourcentage": "31" },
+	"165": { "hand": "93o", "win_pourcentage": "31" },
+	"166": { "hand": "92o", "win_pourcentage": "31" },
+	"167": { "hand": "83o", "win_pourcentage": "31" },
+	"168": { "hand": "82o", "win_pourcentage": "31" },
+	"169": { "hand": "72o", "win_pourcentage": "31" }
+}
+
+// TODO create a current list of selected cards with they're id
+//
+
+// update the pourcent of selected hands on the grid
+// the default action set to card is always the first possible action
+function slider_on_change() {
+	// 
+	var slider			= document.getElementById('range_slider');
+	var slider_want = Math.round(169 * slider.value / 100);
+	var grid_have		= ui.total_selected;
+	var handsingrid = get_used_hand();
+
+
+	var randum_nhand = Math.floor( Math.random() * 100 + 1 )
+	console.log(`debug affichage de d'une main random ${rank_holdem[randum_nhand].hand} numéro ${randum_nhand}`);
+	console.log(`il y a ${grid_have} elements dans la grille`); 
+
+	
+	if ( slider_want > grid_have ) {
+		var total2added = slider_want - grid_have;
+		for(var cpt = 0, i = 1; i <= 169; i++) {
+			if ( cpt === total2added ) { break; }
+			var hh = rank_holdem[i];
+			if ( !handsingrid.includes(hh.hand) ) {
+				set_action_to_card( hh.hand );
+
+				cpt += 1;	
+			}
+		}
+	}
+	else {
+		var total2remove = grid_have - slider_want;
+		for ( var cpt = 0, i = 169; i > 0; i--) {
+			if ( cpt === total2remove ) { break; }
+			hh = rank_holdem[i];
+			if ( handsingrid.includes(hh.hand) ) {
+				var hid = handsingrid.indexOf(hh.hand);
+				var hid = handsingrid.splice(hid, 1)
+				grid_set_hh_to_unset(hid);
+				cpt += 1;
+			}
+		}
+	}
+	save_range();
+	set_combo_info();	
+}
 	function __init() {
 	selecteur.set_position();
 	selecteur.set_action();
@@ -615,6 +857,10 @@ function nota_added_card_by(cards, by) {
 	}
 	set_range();	
 	document.getElementById("versuslabel").classList.add("hidden")
+
+	document.getElementById('range_slider').oninput = function() { 
+		slider_on_change();
+	} 
 }
 
 	return { 

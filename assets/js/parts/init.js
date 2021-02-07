@@ -12,4 +12,8 @@ function __init() {
 	}
 	set_range();	
 	document.getElementById("versuslabel").classList.add("hidden")
+
+	document.getElementById('range_slider').oninput = function() { 
+		slider_on_change();
+	} 
 }

@@ -25,6 +25,10 @@ function remove_card_value(card, value) {
 	card.classList.remove(value);
 }
 	
+function grid_set_hh_to_unset(hhid) {
+	var hh = document.getElementById(hhid);
+	hh.className = hh.className.split(' ')[0]
+}
 
 function add_card_value(card, value) {
 	
