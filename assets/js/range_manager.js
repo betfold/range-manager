@@ -1,6 +1,21 @@
 var range_manager = (function() {
 
-	// RM class
+	// load class
+	/**
+ *  The current range
+ *  **/
+
+class Range {
+
+	constructor(name, ranges) {
+		this.name = name; // The id in base
+		this.ranges = ranges; // action:[cards+]
+		
+		this.info = new RangeInfo(this.ranges);
+		this.info.set_combo_info();
+	}
+
+}
 	/**
  * Range Manager Selecteur
  *  **/
@@ -319,6 +334,11 @@ const suited_pourcent		= suited_combinations / hand_combinations * 100;
 const offsuit_pourcent	= offsuit_combinations / hand_combinations * 100;
 const pair_pourcent			= pair_combinations / hand_combinations * 100;
 
+/**
+ *
+ *  RangeInfo use the html hand grid for making stats
+ *  TODO change this with class object of the current range
+ *  **/
 
 class RangeInfo {
 
@@ -332,6 +352,10 @@ class RangeInfo {
 	}
 
 	calcul_combo() {
+		this.pair = 0;
+		this.suited = 0;
+		this.offsuit = 0;
+		this.screen =  document.getElementById('range_info');
 		var temp_cards	= []; // pour eviter les doublons 
 		for(var action in this.range) {
 			this.action2card[action] = { pourcent: 0, combos: 0 };
@@ -486,19 +510,7 @@ class RMAction {
 
 }
 
-	// Search and destroy TODO
-var ui = {
-	pair: 0,
-	suited: 0,
-	offsuit: 0,
-	copy: "", // the range name to copy 
-} ///////
-
-this.selecteur = new RMSelector(); 
-this.grid			 = new RMGrid();
-this.action		 = new RMAction();
-this.info_range = new RangeInfo(this.grid.get_range(this.selecteur.get_range_name()));
-this.info_range.set_combo_info();
+	// load function
 	var user_cmd = { 
 	args: '', 
 	hand_range_weight: ["2", "3", "4", "5", "6", "7", "8", "9", "T", "J", "Q", "K", "A"],
@@ -848,12 +860,11 @@ var rank_holdem = {
 
 // update the pourcent of selected hands on the grid
 // the default action set to card is always the first possible action
-function slider_on_change() {
+function slider_on_change(handsingrid) {
 	// 
 	var slider			= document.getElementById('range_slider');
 	var slider_want = Math.round(169 * slider.value / 100);
-	var grid_have		= ui.total_selected;
-	var handsingrid = this.grid.get_used_hand();
+	var grid_have		= handsingrid.length;
 
 
 	//var randum_nhand = Math.floor( Math.random() * 100 + 1 )
@@ -884,31 +895,66 @@ function slider_on_change() {
 			}
 		}
 	}
-	this.grid.save_range();
-	this.info_range.set_combo_info();	
-}
-	function __init() {
-	// Set action to the select range 
-	this.selecteur.table_size.addEventListener('change', () => { this.selecteur.table_size_has_changed(); this.grid.set_range(this.selecteur.get_range_name());} , false);
-	this.selecteur.hero_pos.addEventListener('change', () => { this.selecteur._set_vilain_pos(); this.grid.set_range(this.selecteur.get_range_name());} , false);
-	this.selecteur.action.addEventListener('change', () => { this.selecteur.action_has_changed(); this.grid.set_range(this.selecteur.get_range_name()); }, false);
-	this.selecteur.stack_size.addEventListener('change', () => {  this.grid.set_range(this.selecteur.get_range_name()); }, false);
-
-	//document.getElementbYId('range_slider').addEventListener(
-	this.grid.set_range(this.selecteur.get_range_name());	
-	this.info_range.set_combo_info();
 }
 
-	return { 
-		grid: this.grid,
-		action: this.action, 
-		selecteur: this.selecteur,
-		info: this.info,
-		set_background_card: this.action.set_action_to_card,
-		cmd: parse_cmd,
-		init: __init,
+	/** 
+ * author: E.p 
+ * **/
+class PRM {
+
+	constructor() {
+		this.selector = new RMSelector();
+		this.grid			= new RMGrid();
+		this.action		= new RMAction();
+		this.range		= new Range(this.selector.get_range_name(), this.grid.get_range(this.selector.get_range_name()) );
+	
+		this.set_eventListener();
 	}
+
+	update_screen() {
+		this.range.info.set_combo_info();
+	}
+
+	// Set action to the select range 
+	set_eventListener() {
+
+		this.selector.table_size.addEventListener('change', () => { 
+			this.selector.table_size_has_changed(); 
+			this.grid.set_range(this.selector.get_range_name());
+			this.range		= new Range(this.selector.get_range_name(), this.grid.get_range(this.selector.get_range_name()) );
+			this.range.info.set_combo_info();
+		} , false);
+		
+		this.selector.hero_pos.addEventListener('change', () => { 
+			this.selector._set_vilain_pos(); 
+			this.grid.set_range(this.selector.get_range_name());
+		this.range		= new Range(this.selector.get_range_name(), this.grid.get_range(this.selector.get_range_name()) );
+			this.range.info.set_combo_info();
+		} , false);
+
+		this.selector.action.addEventListener('change', () => { 
+			this.selector.action_has_changed(); 
+			this.grid.set_range(this.selector.get_range_name()); 
+		this.range		= new Range(this.selector.get_range_name(), this.grid.get_range(this.selector.get_range_name()) );
+			this.range.info.set_combo_info();
+		}, false);
+
+		this.selector.stack_size.addEventListener('change', () => {  
+			this.grid.set_range(this.selector.get_range_name()); 
+		this.range		= new Range(this.selector.get_range_name(), this.grid.get_range(this.selector.get_range_name()) );
+			this.range.info.set_combo_info();
+		}, false);
+
+		this.grid.set_range(this.selector.get_range_name());	
+		this.range		= new Range(this.selector.get_range_name(), this.grid.get_range(this.selector.get_range_name()) );
+		this.range.info.set_combo_info();
+
+		//document.getElementbYId('range_slider').addEventListener(
+	}
+}
+
+	return new PRM();
 
 })();
 
-range_manager.init();
+range_manager.update_screen();

@@ -1,6 +1,7 @@
 var range_manager = (function() {
 
 	// load class
+	{% include 'range.js' %}
 	{% include 'selector.js' %}
 	{% include 'grid.js' %}
 	{% include 'range_info.js' %}
@@ -9,18 +10,11 @@ var range_manager = (function() {
 	// load function
 	{% include 'cmd.js' %}
 	{% include 'slider.js' %}
-	{% include 'init.js' %}
 
-	return { 
-		grid: this.grid,
-		action: this.action, 
-		selecteur: this.selecteur,
-		info: this.info,
-		set_background_card: this.action.set_action_to_card,
-		cmd: parse_cmd,
-		init: __init,
-	}
+	{% include 'PRM.js' %}
+
+	return new PRM();
 
 })();
 
-range_manager.init();
+range_manager.update_screen();

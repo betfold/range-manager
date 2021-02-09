@@ -5,12 +5,11 @@
 
 // update the pourcent of selected hands on the grid
 // the default action set to card is always the first possible action
-function slider_on_change() {
+function slider_on_change(handsingrid) {
 	// 
 	var slider			= document.getElementById('range_slider');
 	var slider_want = Math.round(169 * slider.value / 100);
-	var grid_have		= ui.total_selected;
-	var handsingrid = this.grid.get_used_hand();
+	var grid_have		= handsingrid.length;
 
 
 	//var randum_nhand = Math.floor( Math.random() * 100 + 1 )
@@ -41,6 +40,4 @@ function slider_on_change() {
 			}
 		}
 	}
-	this.grid.save_range();
-	this.info_range.set_combo_info();	
 }

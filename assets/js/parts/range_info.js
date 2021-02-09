@@ -27,6 +27,10 @@ class RangeInfo {
 	}
 
 	calcul_combo() {
+		this.pair = 0;
+		this.suited = 0;
+		this.offsuit = 0;
+		this.screen =  document.getElementById('range_info');
 		var temp_cards	= []; // pour eviter les doublons 
 		for(var action in this.range) {
 			this.action2card[action] = { pourcent: 0, combos: 0 };
