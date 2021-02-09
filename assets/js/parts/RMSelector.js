@@ -188,15 +188,12 @@ class RMSelector {
 					this.positions.vilain[zone] = [];
 					for( var e = 0; e < this.positions.hero[zone].length; e++ ) {
 						var position_name = this.positions.hero[zone][e];
-						console.log(`position ${position_name} ${this.hero_pos.value}`);
 						if ( position_name === this.hero_pos.value ) { stop = false; break; }
 						else {
-							console.log(`ajout de ${position_name}`);
 							this.positions.vilain[zone].push(position_name);
 						}
 					}	
 				}
-				console.log(this.positions.vilain);
 				// hero can't be the first
 				var first_optgroup				= Object.keys(this.positions.hero)[0];
 				this.positions.hero[first_optgroup]	= _.drop(this.positions.hero[first_optgroup]);

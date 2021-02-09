@@ -5,5 +5,6 @@ function __init() {
 	this.selecteur.action.addEventListener('change', () => { this.selecteur.action_has_changed(); set_range(); }, false);
 	this.selecteur.stack_size.addEventListener('change', () => {  set_range(); }, false);
 
+	//document.getElementbYId('range_slider').addEventListener(
 	set_range();	
 }

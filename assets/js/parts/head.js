@@ -6,3 +6,4 @@ var ui = {
 }
 
 this.selecteur = new RMSelector(); 
+this.grid			 = new RMGrid();
