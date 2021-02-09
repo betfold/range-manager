@@ -3,8 +3,8 @@ var range_manager = (function() {
 
 	{% include 'RMSelector.js' %}
 	{% include 'RMGrid.js' %}
+	{% include 'RAngeInfo.js' %}
 	{% include 'head.js' %}
-	{% include 'info_range.js' %}
 	{% include 'action.js' %}
 	{% include 'cmd.js' %}
 	{% include 'slider.js' %}
