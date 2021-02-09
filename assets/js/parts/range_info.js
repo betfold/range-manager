@@ -1,19 +1,23 @@
+const hand_combinations		= 1326;
+
+// multiplacateur
+const pair_combinations			= 6; 
+const suited_combinations		= 4;
+const offsuit_combinations	= 12;
+
+const suited_pourcent		= suited_combinations / hand_combinations * 100;
+const offsuit_pourcent	= offsuit_combinations / hand_combinations * 100;
+const pair_pourcent			= pair_combinations / hand_combinations * 100;
+
+/**
+ *
+ *  RangeInfo use the html hand grid for making stats
+ *  TODO change this with class object of the current range
+ *  **/
 
 class RangeInfo {
 
-	const hand_combinations		= 1326;
-
-	// multiplacateur
-	const pair_combinations			= 6; 
-	const suited_combinations		= 4;
-	const offsuit_combinations	= 12;
-
-	const suited_pourcent		= this.suited_combinations / this.hand_combinations * 100;
-	const offsuit_pourcent	= this.offsuit_combinations / this.hand_combinations * 100;
-	const pair_pourcent			= this.pair_combinations / this.hand_combinations * 100;
-
 	constructor(range) {
-
 		this.screen		= document.getElementById('range_info');
 		this.range		= range;
 		this.pair			= 0;
@@ -78,18 +82,18 @@ class RangeInfo {
 
 			var stat  = this.action2card[action];
 
-			this.screen.innerHTML += templete_info_range(stat.pourcent.toFixed(2) + '%', action, stat.combos + ' combo', action);
+			this.screen.innerHTML += this.template_info_range(stat.pourcent.toFixed(2) + '%', action, stat.combos + ' combo', action);
 		}
 		
 		// set global stat
 		var totalc = calcul.pair.combo + calcul.offsuit.combo + calcul.suited.combo;
 		var totalp = calcul.pair.pourcent + calcul.offsuit.pourcent + calcul.suited.pourcent;
 		
-		this.screen.innerHTML += template_info_range('TOTAL', totalp.toFixed(2) + '%', totalc + " combos", 'global_info_range');
+		this.screen.innerHTML += this.template_info_range('TOTAL', totalp.toFixed(2) + '%', totalc + " combos", 'global_info_range');
 
 		// set stat by type of cards
 		for(var typeofcard in calcul) {
-			this.screen.innerHTML += template_info_range(this[typeofcard] + " " + typeofcard, calcul[typeofcard].pourcent.toFixed(2) + "%", calcul[typeofcard].combo + " combos", typeofcard);
+			this.screen.innerHTML += this.template_info_range(this[typeofcard] + " " + typeofcard, calcul[typeofcard].pourcent.toFixed(2) + "%", calcul[typeofcard].combo + " combos", typeofcard);
 		}
 
 		// FIXME change this

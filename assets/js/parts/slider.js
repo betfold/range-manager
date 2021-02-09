@@ -10,7 +10,7 @@ function slider_on_change() {
 	var slider			= document.getElementById('range_slider');
 	var slider_want = Math.round(169 * slider.value / 100);
 	var grid_have		= ui.total_selected;
-	var handsingrid = get_used_hand();
+	var handsingrid = this.grid.get_used_hand();
 
 
 	//var randum_nhand = Math.floor( Math.random() * 100 + 1 )
@@ -22,7 +22,7 @@ function slider_on_change() {
 			if ( cpt === total2added ) { break; }
 			var hh = rank_holdem[i];
 			if ( !handsingrid.includes(hh.hand) ) {
-				set_action_to_card( hh.hand );
+				this.action.set_action_to_card( hh.hand );
 
 				cpt += 1;	
 			}
@@ -36,11 +36,11 @@ function slider_on_change() {
 			if ( handsingrid.includes(hh.hand) ) {
 				var hid = handsingrid.indexOf(hh.hand);
 				hid = handsingrid.splice(hid, 1)
-				grid_set_hh_to_unset(hid);
+				this.grid.grid_set_hh_to_unset(hid);
 				cpt += 1;
 			}
 		}
 	}
-	save_range();
-	set_combo_info();	
+	this.grid.save_range();
+	this.info_range.set_combo_info();	
 }

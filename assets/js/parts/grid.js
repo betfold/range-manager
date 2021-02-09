@@ -6,7 +6,7 @@ class RMGrid {
 
 	constructor() {
 		this.grid					= document.getElementById('range_manager');
-		this.cells_cards	= this.grid.getElementsByTagNamr('td');
+		this.cells_cards	= this.grid.getElementsByTagName('td');
 		this.ranges				= {};
 	}
 
@@ -33,9 +33,9 @@ class RMGrid {
 		if ( this.ranges.length > 8 ) { localStorage.setItem( range_name, this.ranges); }
 	}
 
-	set_range() {
-		this.clear_range();
-		this.ranges = this.get_range();
+	set_range(range_name) {
+		this.reset_grid();
+		this.ranges = this.get_range(range_name);
 		if(this.ranges != null) {
 			for(var action in this.ranges) {
 				for(var i=0; i < this.ranges[action].length; i++) { 
@@ -43,7 +43,6 @@ class RMGrid {
 				}
 			}
 		}
-		set_combo_info(); // FIXME change function to get_range_info
 	}
 
 	get_range(range_name) {
@@ -51,7 +50,7 @@ class RMGrid {
 	}
 
 	/* clean the html grid */
-	clear_range() {
+	reset_grid() {
 		var grid = this.grid.rows;
 		for(var i = 0; i < 13; i++) {
 			var cols = grid[i].cells;

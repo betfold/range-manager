@@ -13,7 +13,7 @@ function parse_cmd() {
 	user_cmd.args = _.compact(document.getElementById('cmdselect').value.split(' '));
 	user_cmd.ranges = [];
 	user_cmd.args.forEach(filtre =>	exec_cmd(filtre));
-	user_cmd.ranges.forEach(e => set_action_to_card(e));
+	user_cmd.ranges.forEach(e => this.action.set_action_to_card(e));
 	
 }
 

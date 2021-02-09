@@ -1,21 +1,22 @@
 var range_manager = (function() {
 
-
-	{% include 'RMSelector.js' %}
-	{% include 'RMGrid.js' %}
-	{% include 'RAngeInfo.js' %}
-	{% include 'head.js' %}
+	// load class
+	{% include 'selector.js' %}
+	{% include 'grid.js' %}
+	{% include 'range_info.js' %}
 	{% include 'action.js' %}
+
+	// load function
 	{% include 'cmd.js' %}
 	{% include 'slider.js' %}
 	{% include 'init.js' %}
 
 	return { 
-		clear: clear_range,
-		save: save_range, 
-		load: set_range, 
-		set_background_card: set_action_to_card,
+		grid: this.grid,
+		action: this.action, 
 		selecteur: this.selecteur,
+		info: this.info,
+		set_background_card: this.action.set_action_to_card,
 		cmd: parse_cmd,
 		init: __init,
 	}

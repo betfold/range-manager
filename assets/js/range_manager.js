@@ -1,6 +1,6 @@
 var range_manager = (function() {
 
-
+	// RM class
 	/**
  * Range Manager Selecteur
  *  **/
@@ -223,7 +223,7 @@ class RMGrid {
 
 	constructor() {
 		this.grid					= document.getElementById('range_manager');
-		this.cells_cards	= this.grid.getElementsByTagNamr('td');
+		this.cells_cards	= this.grid.getElementsByTagName('td');
 		this.ranges				= {};
 	}
 
@@ -250,9 +250,9 @@ class RMGrid {
 		if ( this.ranges.length > 8 ) { localStorage.setItem( range_name, this.ranges); }
 	}
 
-	set_range() {
-		this.clear_range();
-		this.ranges = this.get_range();
+	set_range(range_name) {
+		this.reset_grid();
+		this.ranges = this.get_range(range_name);
 		if(this.ranges != null) {
 			for(var action in this.ranges) {
 				for(var i=0; i < this.ranges[action].length; i++) { 
@@ -260,7 +260,6 @@ class RMGrid {
 				}
 			}
 		}
-		set_combo_info(); // FIXME change function to get_range_info
 	}
 
 	get_range(range_name) {
@@ -268,7 +267,7 @@ class RMGrid {
 	}
 
 	/* clean the html grid */
-	clear_range() {
+	reset_grid() {
 		var grid = this.grid.rows;
 		for(var i = 0; i < 13; i++) {
 			var cols = grid[i].cells;
@@ -309,176 +308,197 @@ class RMGrid {
 		return c;
 	}
 }
-	var ui = {
-	pair: 0,
-	suited: 0,
-	offsuit: 0,
-	copy: "", // the range name to copy 
-}
+	const hand_combinations		= 1326;
 
-this.selecteur = new RMSelector(); 
-this.grid			 = new RMGrid();
-	
-	function calcul_combo() {
+// multiplacateur
+const pair_combinations			= 6; 
+const suited_combinations		= 4;
+const offsuit_combinations	= 12;
+
+const suited_pourcent		= suited_combinations / hand_combinations * 100;
+const offsuit_pourcent	= offsuit_combinations / hand_combinations * 100;
+const pair_pourcent			= pair_combinations / hand_combinations * 100;
+
+
+class RangeInfo {
+
+	constructor(range) {
+		this.screen		= document.getElementById('range_info');
+		this.range		= range;
+		this.pair			= 0;
+		this.suited		= 0;
+		this.offsuit	= 0;
+		this.action2card	= {};
+	}
+
+	calcul_combo() {
 		var temp_cards	= []; // pour eviter les doublons 
-		var range				= get_range();	
-		ui.pair					= 0;
-		ui.offsuit			= 0;
-		ui.suited				= 0;
-		ui['action']		= {}
-		for(var action in range) {
-			var cards = range[action];
-			ui['action'][action] = { pourcent: 0, combos: 0 };
+		for(var action in this.range) {
+			this.action2card[action] = { pourcent: 0, combos: 0 };
+			var cards = this.range[action];
 			for(var i in cards) {
 				var card = cards[i];
 
 				if(card[2] === "s") { 
-					ui['action'][action].combos += 4;
-					ui['action'][action].pourcent += (4 / 1326 * 100);
+					this.action2card[action].combos += suited_combinations;
+					this.action2card[action].pourcent += suited_pourcent; 
 				}
 				else if(card[2] === "o") {
-					ui['action'][action].combos += 12;
-					ui['action'][action].pourcent += (12 / 1326 * 100);
+					this.action2card[action].combos += offsuit_combinations;
+					this.action2card[action].pourcent += offsuit_pourcent;
 				}
 				else {
-					ui['action'][action].combos += 6;
-					ui['action'][action].pourcent += (6 / 1326 * 100);
+					this.action2card[action].combos += pair_combinations;
+					this.action2card[action].pourcent += pair_pourcent;
 				}
 
 				if(!temp_cards.includes(card)) {
 					temp_cards.push(card);
-					if(card[2] === "s") { ui.suited += 1; }
-					else if(card[2] === "o") {	ui.offsuit += 1; }
-					else { ui.pair += 1; }
+					if(card[2] === "s") { this.suited += 1; }
+					else if(card[2] === "o") {	this.offsuit += 1; }
+					else { this.pair += 1; }
 				}
 			}
 		}
 	}
 
-	function set_combo_info() {
-		calcul_combo();
+	set_combo_info() {
+		this.calcul_combo();
 		var calcul = {
 			pair: { pourcent: 0, combo: 0 },
 			offsuit: { pourcent: 0, combo: 0 },
 			suited: { pourcent: 0, combo: 0},
 		}
 		// the info for compare with slider
-		ui['total_selected']	= ui.pair + ui.suited + ui.offsuit;		
-		calcul.pair.combo			= ui.pair * 6;
-		calcul.offsuit.combo	= ui.offsuit * 12;
-		calcul.suited.combo		= ui.suited * 4;
+		var total_selected		= this.pair + this.suited + this.offsuit;		
+		calcul.pair.combo			= this.pair * pair_combinations;
+		calcul.offsuit.combo	= this.offsuit * offsuit_combinations;
+		calcul.suited.combo		= this.suited * suited_combinations;
 
-		calcul.pair.pourcent		= ui.pair * 6 / 1326 * 100;
-		calcul.offsuit.pourcent = ui.offsuit * 12 / 1326 * 100;
-		calcul.suited.pourcent	= ui.suited * 4 / 1326 * 100;
+		calcul.pair.pourcent		= this.pair * pair_pourcent;
+		calcul.offsuit.pourcent = this.offsuit * offsuit_pourcent;
+		calcul.suited.pourcent	= this.suited * suited_pourcent;
 
-		var info_range = document.getElementById('range_info');
 		// clear info
-		info_range.innerHTML = '';
+		this.screen.innerHTML = '';
 
 		// set stat by action
-		for(var action in ui['action']) {	
+		for(var action in this.action2card) {	
 
-			var stat  = ui['action'][action];
+			var stat  = this.action2card[action];
 
-			info_range.innerHTML += templete_info_range(stat.pourcent.toFixed(2) + '%', action, stat.combos + ' combo', action);
+			this.screen.innerHTML += this.template_info_range(stat.pourcent.toFixed(2) + '%', action, stat.combos + ' combo', action);
 		}
 		
 		// set global stat
 		var totalc = calcul.pair.combo + calcul.offsuit.combo + calcul.suited.combo;
 		var totalp = calcul.pair.pourcent + calcul.offsuit.pourcent + calcul.suited.pourcent;
 		
-		info_range.innerHTML += templete_info_range('TOTAL', totalp.toFixed(2) + '%', totalc + " combos", 'global_info_range');
+		this.screen.innerHTML += this.template_info_range('TOTAL', totalp.toFixed(2) + '%', totalc + " combos", 'global_info_range');
 
 		// set stat by type of cards
 		for(var typeofcard in calcul) {
-			info_range.innerHTML += templete_info_range(ui[typeofcard] + " " + typeofcard, calcul[typeofcard].pourcent.toFixed(2) + "%", calcul[typeofcard].combo + " combos", typeofcard);
+			this.screen.innerHTML += this.template_info_range(this[typeofcard] + " " + typeofcard, calcul[typeofcard].pourcent.toFixed(2) + "%", calcul[typeofcard].combo + " combos", typeofcard);
 		}
 
+		// FIXME change this
 		// set the slider value
 		var slider = document.getElementById('range_slider');
 		slider.value = totalp;
 	}
 
 
-	function templete_info_range(first, second, three, classename) {
+	template_info_range(first, second, three, classename) {
 		return `<ul class="${classename}"><li>${first}</li><li>${second}</li><li>${three}</li></ul>`;
 	}
+}
 	
-function set_action_to_card(card_id) {
+class RMAction {
 
-	var bts = document.getElementsByName('sel');
-	for(var i = 0; i < bts.length; i++) {
-		if(bts[i].checked) {
-			var action = bts[i].value;
-			card_toggle_class(card_id, action)
+	set_action_to_card(card_id) {
+
+		var bts = document.getElementsByName('sel');
+		for(var i = 0; i < bts.length; i++) {
+			if(bts[i].checked) {
+				var action = bts[i].value;
+				this.card_toggle_class(card_id, action)
+			}
 		}
 	}
-	
-	set_combo_info();
-}
-	
+		
 
-function card_toggle_class(idcard, action) {
-	var card = document.getElementById(idcard)
-	if (card.classList.contains(action)) {
-		remove_card_value(card, action);
-	}
-	else { add_card_value(card, action); }
-}
-
-function remove_card_value(card, value) {
-	card.classList.remove(value);
-}
-	
-function grid_set_hh_to_unset(hhid) {
-	var hh = document.getElementById(hhid);
-	hh.className = hh.className.split(' ')[0]
-}
-
-function add_card_value(card, value) {
-	
-	switch(value) {
-		case "flat3bet":
-		case "fourbet":
-		case "flat5bet":
-			if(!card.classList.contains('bet')) { card.classList.add('bet'); }
-			card.classList.remove("flat3bet", "fourbet", "flat5bet", "allin");
-			break;		
-		case "allin":
-			card.classList.remove("bet", "flat3bet", "fourbet", "flat5bet", "threebet", "flat4bet", "flat", "fivebet");
-			break;
-		case "bet":
-			card.classList.remove("allin");
-			break;
-		case "flat":
-			card.classList.remove("threebet", "allin");
-			break;
-		case "threebet":
-			card.classList.remove("flat");
-			break;
-		case "flat4bet":
-		case "fivebet":
-			card.classList.remove("flat");
-			card.classList.add("threebet");
-			break;
-		case 'limpfold':
-		case 'limpcall':
-		case 'limpraise':
-		case 'raisefold':
-		case 'raisecall':
-			card.classList.remove("limpfold", "limpcall", "limpraise", "raisefold", "raisecall");
-			break;
-			
+	card_toggle_class(idcard, action) {
+		var card = document.getElementById(idcard)
+		if (card.classList.contains(action)) {
+			this.remove_card_value(card, action);
+		}
+		else { this.add_card_value(card, action); }
 	}
 
-	card.classList.add(value)
+	remove_card_value(card, value) {
+		card.classList.remove(value);
+	}
+		
+	// Reset card
+	grid_set_hh_to_unset(hhid) {
+		var hh = document.getElementById(hhid);
+		hh.className = hh.className.split(' ')[0]; // Keep the first classname (pair, suited, offsuit)
+	}
+
+	add_card_value(card, value) {
+		
+		switch(value) {
+			case "flat3bet":
+			case "fourbet":
+			case "flat5bet":
+				if(!card.classList.contains('bet')) { card.classList.add('bet'); }
+				card.classList.remove("flat3bet", "fourbet", "flat5bet", "allin");
+				break;		
+			case "allin":
+				card.classList.remove("bet", "flat3bet", "fourbet", "flat5bet", "threebet", "flat4bet", "flat", "fivebet");
+				break;
+			case "bet":
+				card.classList.remove("allin");
+				break;
+			case "flat":
+				card.classList.remove("threebet", "allin");
+				break;
+			case "threebet":
+				card.classList.remove("flat");
+				break;
+			case "flat4bet":
+			case "fivebet":
+				card.classList.remove("flat");
+				card.classList.add("threebet");
+				break;
+			case 'limpfold':
+			case 'limpcall':
+			case 'limpraise':
+			case 'raisefold':
+			case 'raisecall':
+				card.classList.remove("limpfold", "limpcall", "limpraise", "raisefold", "raisecall");
+				break;
+				
+		}
+
+		card.classList.add(value)
+	}
+
 }
 
+	// Search and destroy TODO
+var ui = {
+	pair: 0,
+	suited: 0,
+	offsuit: 0,
+	copy: "", // the range name to copy 
+} ///////
 
-
-
-
+this.selecteur = new RMSelector(); 
+this.grid			 = new RMGrid();
+this.action		 = new RMAction();
+this.info_range = new RangeInfo(this.grid.get_range(this.selecteur.get_range_name()));
+this.info_range.set_combo_info();
 	var user_cmd = { 
 	args: '', 
 	hand_range_weight: ["2", "3", "4", "5", "6", "7", "8", "9", "T", "J", "Q", "K", "A"],
@@ -494,7 +514,7 @@ function parse_cmd() {
 	user_cmd.args = _.compact(document.getElementById('cmdselect').value.split(' '));
 	user_cmd.ranges = [];
 	user_cmd.args.forEach(filtre =>	exec_cmd(filtre));
-	user_cmd.ranges.forEach(e => set_action_to_card(e));
+	user_cmd.ranges.forEach(e => this.action.set_action_to_card(e));
 	
 }
 
@@ -833,7 +853,7 @@ function slider_on_change() {
 	var slider			= document.getElementById('range_slider');
 	var slider_want = Math.round(169 * slider.value / 100);
 	var grid_have		= ui.total_selected;
-	var handsingrid = get_used_hand();
+	var handsingrid = this.grid.get_used_hand();
 
 
 	//var randum_nhand = Math.floor( Math.random() * 100 + 1 )
@@ -845,7 +865,7 @@ function slider_on_change() {
 			if ( cpt === total2added ) { break; }
 			var hh = rank_holdem[i];
 			if ( !handsingrid.includes(hh.hand) ) {
-				set_action_to_card( hh.hand );
+				this.action.set_action_to_card( hh.hand );
 
 				cpt += 1;	
 			}
@@ -859,31 +879,32 @@ function slider_on_change() {
 			if ( handsingrid.includes(hh.hand) ) {
 				var hid = handsingrid.indexOf(hh.hand);
 				hid = handsingrid.splice(hid, 1)
-				grid_set_hh_to_unset(hid);
+				this.grid.grid_set_hh_to_unset(hid);
 				cpt += 1;
 			}
 		}
 	}
-	save_range();
-	set_combo_info();	
+	this.grid.save_range();
+	this.info_range.set_combo_info();	
 }
 	function __init() {
 	// Set action to the select range 
-	this.selecteur.table_size.addEventListener('change', () => { this.selecteur.table_size_has_changed(); set_range();} , false);
-	this.selecteur.hero_pos.addEventListener('change', () => { this.selecteur._set_vilain_pos();set_range();} , false);
-	this.selecteur.action.addEventListener('change', () => { this.selecteur.action_has_changed(); set_range(); }, false);
-	this.selecteur.stack_size.addEventListener('change', () => {  set_range(); }, false);
+	this.selecteur.table_size.addEventListener('change', () => { this.selecteur.table_size_has_changed(); this.grid.set_range(this.selecteur.get_range_name());} , false);
+	this.selecteur.hero_pos.addEventListener('change', () => { this.selecteur._set_vilain_pos(); this.grid.set_range(this.selecteur.get_range_name());} , false);
+	this.selecteur.action.addEventListener('change', () => { this.selecteur.action_has_changed(); this.grid.set_range(this.selecteur.get_range_name()); }, false);
+	this.selecteur.stack_size.addEventListener('change', () => {  this.grid.set_range(this.selecteur.get_range_name()); }, false);
 
 	//document.getElementbYId('range_slider').addEventListener(
-	set_range();	
+	this.grid.set_range(this.selecteur.get_range_name());	
+	this.info_range.set_combo_info();
 }
 
 	return { 
-		clear: clear_range,
-		save: save_range, 
-		load: set_range, 
-		set_background_card: set_action_to_card,
+		grid: this.grid,
+		action: this.action, 
 		selecteur: this.selecteur,
+		info: this.info,
+		set_background_card: this.action.set_action_to_card,
 		cmd: parse_cmd,
 		init: __init,
 	}
