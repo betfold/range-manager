@@ -17,20 +17,21 @@ class PRM {
 
 		// Set event action to the select range 
 		this.selector.table_size.addEventListener('change', () => { 
-			this.range		= new Range(this.selector.get_range_name());
 			this.selector.table_size_has_changed(); 
+			this.selector.action_has_changed(); 
+			this.range		= new Range(this.selector.get_range_name());
 			this.options.reset(this.selector.get_range_name());
 		} , false);
 		
 		this.selector.hero_pos.addEventListener('change', () => { 
-			this.range		= new Range(this.selector.get_range_name());
 			this.selector._set_vilain_pos(); 
+			this.range		= new Range(this.selector.get_range_name());
 			this.options.reset(this.selector.get_range_name());
 		} , false);
 
 		this.selector.action.addEventListener('change', () => { 
-			this.range		= new Range(this.selector.get_range_name());
 			this.selector.action_has_changed(); 
+			this.range		= new Range(this.selector.get_range_name());
 			this.options.reset(this.selector.get_range_name());
 		}, false);
 
