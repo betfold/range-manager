@@ -1,15 +1,40 @@
 /**
  *  The current range
+ *
+ *  saved_range store the original range
+ *  we work on a clone of range on this.ranges
  *  **/
 
 class Range {
 
-	constructor(name, ranges) {
+	constructor(name) {
 		this.name = name; // The id in base
-		this.ranges = ranges; // action:[cards+]
-		
+		this.saved_range = RMDb.get_range(name);
+		this.grid = new RMGrid();
+		this.action = new RMAction(); 
+		this.ranges;
+		this.cards = [];
+		this.info;
+
+		this._set_range();
+	}
+
+	_set_range() {
+		this.ranges = JSON.parse(JSON.stringify(this.saved_range));
+		this.card_list();
 		this.info = new RangeInfo(this.ranges);
 		this.info.set_combo_info();
+		this.grid.set_range(this.ranges);
+	}
+
+	get_range() { return this.ranges; }
+
+	// return uniq list of card
+	card_list() {
+		for(var k in this.ranges) {
+			this.ranges[k].forEach(e => this.cards.push(e))
+		}
+		this.cards = _.uniq(this.cards);
 	}
 
 }

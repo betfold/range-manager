@@ -20,7 +20,6 @@ function parse_cmd() {
 
 function exec_cmd(filtre) {
 
-	console.log("commande :"+ filtre);
 
 	var cmd = nota_parse_cmd_hand(filtre);
 	var ranges = [];
@@ -37,7 +36,6 @@ function exec_cmd(filtre) {
 	
 
 	if ( ranges.length > 0 ) {
-		ranges.forEach(ch => console.log(ch));
 		ranges.forEach(ch => user_cmd.ranges.push(ch));
 	}
 }
@@ -59,7 +57,6 @@ function nota_set_multiple_range(cmd) {
 }
 
 function nota_sel_unique_range(cmd) {
-	console.log(cmd);
 	var start_at = 0;
 	var end_at = 0;
 	var ranges = [];

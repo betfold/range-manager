@@ -8,14 +8,14 @@
 			{% for c in range(0, 13) %}
 				{% if c == l %}
 					{% set cards = signe[c] + signe[c] %}
-					<td class="pair" id="{{cards}}" onclick="range_manager.set_background_card('{{cards}}'); range_manager.save()">{{cards}}</td>
+					<td class="pair" id="{{cards}}">{{cards}}</td>
 				{% else %}
 					{% if c > l %}
 						{% set cards = signe[l] + signe[c] + "s" %}
-						<td class="suited" id="{{cards}}" onclick="range_manager.set_background_card('{{cards}}'); range_manager.save()">{{cards}}</td>	
+						<td class="suited" id="{{cards}}">{{cards}}</td>	
 					{% else %}
 						{% set cards = signe[c] + signe[l] + "o" %}
-						<td class="offsuit" id="{{cards}}" onclick="range_manager.set_background_card('{{cards}}'); range_manager.save()">{{cards}}</td>	
+						<td class="offsuit" id="{{cards}}">{{cards}}</td>	
 					{% endif %}
 				{% endif %}
 			{% endfor %}

@@ -1,18 +1,60 @@
 var range_manager = (function() {
 
 	// load class
+	/** 
+ * A simple get/save range
+ * **/
+
+const RMDb = {
+
+
+	save_range(name, range) {
+		range = JSON.stringify(range);
+		if ( range.length > 8 ) { localStorage.setItem( name, range); }
+	},
+
+
+	get_range(range_name) {
+		return JSON.parse(localStorage.getItem(range_name));
+	}
+
+}
 	/**
  *  The current range
+ *
+ *  saved_range store the original range
+ *  we work on a clone of range on this.ranges
  *  **/
 
 class Range {
 
-	constructor(name, ranges) {
+	constructor(name) {
 		this.name = name; // The id in base
-		this.ranges = ranges; // action:[cards+]
-		
+		this.saved_range = RMDb.get_range(name);
+		this.grid = new RMGrid();
+		this.ranges;
+		this.cards = [];
+		this.info;
+
+		this._set_range();
+	}
+
+	_set_range() {
+		this.ranges = JSON.parse(JSON.stringify(this.saved_range));
+		this.card_list();
 		this.info = new RangeInfo(this.ranges);
 		this.info.set_combo_info();
+		this.grid.set_range(this.ranges);
+	}
+
+	get_range() { return this.ranges; }
+
+	// return uniq list of card
+	card_list() {
+		for(var k in this.ranges) {
+			this.ranges[k].forEach(e => this.cards.push(e))
+		}
+		this.cards = _.uniq(this.cards);
 	}
 
 }
@@ -236,50 +278,24 @@ class RMSelector {
 
 class RMGrid {
 
-	constructor() {
-		this.grid					= document.getElementById('range_manager');
-		this.cells_cards	= this.grid.getElementsByTagName('td');
-		this.ranges				= {};
+	constructor(range) {
+		this.grid	= document.getElementById('range_manager');
+		this.set_range(range);
 	}
 
-	save_range(range_name) {
-		this.ranges = {};
-		
-		for(var n = 0, size = this.cells_cards.length; n < size; n++) {
-			var action_card = this.cells_cards[n].className.split(' ');
-			action_card.forEach(function(action_name) {
-				switch ( action_name ) {
-					case 'pair':
-					case 'offsuit':
-					case 'suited':
-						break;
-					default:
-						if ( ! (action_name in this.ranges) ) { this.ranges[action_name] = []; }
-						this.ranges[action_name].push(this.cells_cards[n].id);
-						break;
-				}
-			});
-		}
-
-		this.ranges = JSON.stringify(this.ranges);
-		if ( this.ranges.length > 8 ) { localStorage.setItem( range_name, this.ranges); }
-	}
-
-	set_range(range_name) {
+	// Set the html grid with the range
+	// range: id list  of cards in the range
+	set_range(range) {
 		this.reset_grid();
-		this.ranges = this.get_range(range_name);
-		if(this.ranges != null) {
-			for(var action in this.ranges) {
-				for(var i=0; i < this.ranges[action].length; i++) { 
-					document.getElementById(this.ranges[action][i]).classList.add(action); 
+		if(range != null) {
+			for(var action in range) {
+				for(var i=0; i < range[action].length; i++) { 
+					document.getElementById(range[action][i]).classList.add(action); 
 				}
 			}
 		}
 	}
 
-	get_range(range_name) {
-		return JSON.parse(localStorage.getItem(range_name));
-	}
 
 	/* clean the html grid */
 	reset_grid() {
@@ -438,7 +454,11 @@ class RangeInfo {
 }
 	
 class RMAction {
-
+	
+	constructor() {
+		this._rmainit();
+	}
+	
 	set_action_to_card(card_id) {
 
 		var bts = document.getElementsByName('sel');
@@ -450,6 +470,10 @@ class RMAction {
 		}
 	}
 		
+	_rmainit() {
+		let grid = document.getElementById('range_manager');
+		let cells = grid.getElementsByTagName('td');
+	}
 
 	card_toggle_class(idcard, action) {
 		var card = document.getElementById(idcard)
@@ -533,7 +557,6 @@ function parse_cmd() {
 
 function exec_cmd(filtre) {
 
-	console.log("commande :"+ filtre);
 
 	var cmd = nota_parse_cmd_hand(filtre);
 	var ranges = [];
@@ -550,7 +573,6 @@ function exec_cmd(filtre) {
 	
 
 	if ( ranges.length > 0 ) {
-		ranges.forEach(ch => console.log(ch));
 		ranges.forEach(ch => user_cmd.ranges.push(ch));
 	}
 }
@@ -572,7 +594,6 @@ function nota_set_multiple_range(cmd) {
 }
 
 function nota_sel_unique_range(cmd) {
-	console.log(cmd);
 	var start_at = 0;
 	var end_at = 0;
 	var ranges = [];
@@ -860,12 +881,11 @@ var rank_holdem = {
 
 // update the pourcent of selected hands on the grid
 // the default action set to card is always the first possible action
-function slider_on_change(handsingrid) {
+function slider_on_change(handsingrid, action) {
 	// 
 	var slider			= document.getElementById('range_slider');
 	var slider_want = Math.round(169 * slider.value / 100);
 	var grid_have		= handsingrid.length;
-
 
 	//var randum_nhand = Math.floor( Math.random() * 100 + 1 )
 	//console.log(`debug affichage de d'une main random ${rank_holdem[randum_nhand].hand} numéro ${randum_nhand}`);
@@ -876,7 +896,7 @@ function slider_on_change(handsingrid) {
 			if ( cpt === total2added ) { break; }
 			var hh = rank_holdem[i];
 			if ( !handsingrid.includes(hh.hand) ) {
-				this.action.set_action_to_card( hh.hand );
+				action.set_action_to_card( hh.hand );
 
 				cpt += 1;	
 			}
@@ -890,7 +910,7 @@ function slider_on_change(handsingrid) {
 			if ( handsingrid.includes(hh.hand) ) {
 				var hid = handsingrid.indexOf(hh.hand);
 				hid = handsingrid.splice(hid, 1)
-				this.grid.grid_set_hh_to_unset(hid);
+				action.grid_set_hh_to_unset(hid);
 				cpt += 1;
 			}
 		}
@@ -904,52 +924,37 @@ class PRM {
 
 	constructor() {
 		this.selector = new RMSelector();
-		this.grid			= new RMGrid();
-		this.action		= new RMAction();
-		this.range		= new Range(this.selector.get_range_name(), this.grid.get_range(this.selector.get_range_name()) );
+		this.range		= new Range(this.selector.get_range_name());
 	
 		this.set_eventListener();
 	}
 
-	update_screen() {
-		this.range.info.set_combo_info();
-	}
 
-	// Set action to the select range 
 	set_eventListener() {
 
+		// Set event action to the select range 
 		this.selector.table_size.addEventListener('change', () => { 
+			this.range		= new Range(this.selector.get_range_name());
 			this.selector.table_size_has_changed(); 
-			this.grid.set_range(this.selector.get_range_name());
-			this.range		= new Range(this.selector.get_range_name(), this.grid.get_range(this.selector.get_range_name()) );
-			this.range.info.set_combo_info();
 		} , false);
 		
 		this.selector.hero_pos.addEventListener('change', () => { 
+			this.range		= new Range(this.selector.get_range_name());
 			this.selector._set_vilain_pos(); 
-			this.grid.set_range(this.selector.get_range_name());
-		this.range		= new Range(this.selector.get_range_name(), this.grid.get_range(this.selector.get_range_name()) );
-			this.range.info.set_combo_info();
 		} , false);
 
 		this.selector.action.addEventListener('change', () => { 
+			this.range		= new Range(this.selector.get_range_name());
 			this.selector.action_has_changed(); 
-			this.grid.set_range(this.selector.get_range_name()); 
-		this.range		= new Range(this.selector.get_range_name(), this.grid.get_range(this.selector.get_range_name()) );
-			this.range.info.set_combo_info();
 		}, false);
 
 		this.selector.stack_size.addEventListener('change', () => {  
-			this.grid.set_range(this.selector.get_range_name()); 
-		this.range		= new Range(this.selector.get_range_name(), this.grid.get_range(this.selector.get_range_name()) );
-			this.range.info.set_combo_info();
+			this.range		= new Range(this.selector.get_range_name());
 		}, false);
 
-		this.grid.set_range(this.selector.get_range_name());	
-		this.range		= new Range(this.selector.get_range_name(), this.grid.get_range(this.selector.get_range_name()) );
-		this.range.info.set_combo_info();
-
-		//document.getElementbYId('range_slider').addEventListener(
+		document.getElementById('range_slider').addEventListener('change', () => {
+			slider_on_change(this.range.cards, this.action);
+		}, false);
 	}
 }
 
@@ -957,4 +962,3 @@ class PRM {
 
 })();
 
-range_manager.update_screen();

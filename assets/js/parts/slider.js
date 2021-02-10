@@ -5,12 +5,11 @@
 
 // update the pourcent of selected hands on the grid
 // the default action set to card is always the first possible action
-function slider_on_change(handsingrid) {
+function slider_on_change(handsingrid, action) {
 	// 
 	var slider			= document.getElementById('range_slider');
 	var slider_want = Math.round(169 * slider.value / 100);
 	var grid_have		= handsingrid.length;
-
 
 	//var randum_nhand = Math.floor( Math.random() * 100 + 1 )
 	//console.log(`debug affichage de d'une main random ${rank_holdem[randum_nhand].hand} numéro ${randum_nhand}`);
@@ -21,7 +20,7 @@ function slider_on_change(handsingrid) {
 			if ( cpt === total2added ) { break; }
 			var hh = rank_holdem[i];
 			if ( !handsingrid.includes(hh.hand) ) {
-				this.action.set_action_to_card( hh.hand );
+				action.set_action_to_card( hh.hand );
 
 				cpt += 1;	
 			}
@@ -35,7 +34,7 @@ function slider_on_change(handsingrid) {
 			if ( handsingrid.includes(hh.hand) ) {
 				var hid = handsingrid.indexOf(hh.hand);
 				hid = handsingrid.splice(hid, 1)
-				this.grid.grid_set_hh_to_unset(hid);
+				action.grid_set_hh_to_unset(hid);
 				cpt += 1;
 			}
 		}

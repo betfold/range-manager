@@ -4,50 +4,24 @@
 
 class RMGrid {
 
-	constructor() {
-		this.grid					= document.getElementById('range_manager');
-		this.cells_cards	= this.grid.getElementsByTagName('td');
-		this.ranges				= {};
+	constructor(range) {
+		this.grid	= document.getElementById('range_manager');
+		this.set_range(range);
 	}
 
-	save_range(range_name) {
-		this.ranges = {};
-		
-		for(var n = 0, size = this.cells_cards.length; n < size; n++) {
-			var action_card = this.cells_cards[n].className.split(' ');
-			action_card.forEach(function(action_name) {
-				switch ( action_name ) {
-					case 'pair':
-					case 'offsuit':
-					case 'suited':
-						break;
-					default:
-						if ( ! (action_name in this.ranges) ) { this.ranges[action_name] = []; }
-						this.ranges[action_name].push(this.cells_cards[n].id);
-						break;
-				}
-			});
-		}
-
-		this.ranges = JSON.stringify(this.ranges);
-		if ( this.ranges.length > 8 ) { localStorage.setItem( range_name, this.ranges); }
-	}
-
-	set_range(range_name) {
+	// Set the html grid with the range
+	// range: id list  of cards in the range
+	set_range(range) {
 		this.reset_grid();
-		this.ranges = this.get_range(range_name);
-		if(this.ranges != null) {
-			for(var action in this.ranges) {
-				for(var i=0; i < this.ranges[action].length; i++) { 
-					document.getElementById(this.ranges[action][i]).classList.add(action); 
+		if(range != null) {
+			for(var action in range) {
+				for(var i=0; i < range[action].length; i++) { 
+					document.getElementById(range[action][i]).classList.add(action); 
 				}
 			}
 		}
 	}
 
-	get_range(range_name) {
-		return JSON.parse(localStorage.getItem(range_name));
-	}
 
 	/* clean the html grid */
 	reset_grid() {

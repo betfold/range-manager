@@ -1,6 +1,7 @@
 var range_manager = (function() {
 
 	// load class
+	{% include 'db.js' %}
 	{% include 'range.js' %}
 	{% include 'selector.js' %}
 	{% include 'grid.js' %}
@@ -17,4 +18,3 @@ var range_manager = (function() {
 
 })();
 
-range_manager.update_screen();
