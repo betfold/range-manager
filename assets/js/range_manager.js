@@ -108,6 +108,26 @@ class RMSelector {
 		this._get_position_by_tablesize()
 		this.set_position();
 		this.toggle_versus();
+		// hidde/show pannel 
+		console.log(this.action.value);
+		switch ( this.action.value ) {
+			case 'rfi':
+				document.getElementById('rfi').classList.remove('disable');
+				document.getElementById('facingrfi').classList.add('disable');
+				document.getElementById('bt_bvb').classList.add('disable');
+				break;
+			case 'facingip':
+			case 'facingoop':
+				document.getElementById('rfi').classList.add('disable');
+				document.getElementById('facingrfi').classList.remove('disable');
+				document.getElementById('bt_bvb').classList.add('disable');
+				break;
+			case 'bvb':
+				document.getElementById('rfi').classList.add('disable');
+				document.getElementById('facingrfi').classList.add('disable');
+				document.getElementById('bt_bvb').classList.remove('disable');
+				break;
+		}
 	}
 	
 	get_range_name() {
@@ -129,6 +149,7 @@ class RMSelector {
 			item.innerHTML = this.actions[action];
 			this.action.appendChild(item);
 		}
+
 	}
 
 	set_position() {
