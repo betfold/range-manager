@@ -40,6 +40,11 @@ class PRM {
 			this.options.reset(this.selector.get_range_name());
 		}, false);
 
+		this.selector.vilain_pos.addEventListener('change', () => {
+			this.range		= new Range(this.selector.get_range_name());
+			this.options.reset(this.selector.get_range_name());
+		}, false);
+
 		// Slider event
 		document.getElementById('range_slider').addEventListener('change', () => {
 			slider_on_change(this.range.cards, this.range.action);

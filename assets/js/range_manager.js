@@ -109,7 +109,6 @@ class RMSelector {
 		this.set_position();
 		this.toggle_versus();
 		// hidde/show pannel 
-		console.log(this.action.value);
 		switch ( this.action.value ) {
 			case 'rfi':
 				document.getElementById('rfi').classList.remove('disable');
@@ -914,6 +913,11 @@ class PRM {
 		}, false);
 
 		this.selector.stack_size.addEventListener('change', () => {  
+			this.range		= new Range(this.selector.get_range_name());
+			this.options.reset(this.selector.get_range_name());
+		}, false);
+
+		this.selector.vilain_pos.addEventListener('change', () => {
 			this.range		= new Range(this.selector.get_range_name());
 			this.options.reset(this.selector.get_range_name());
 		}, false);
