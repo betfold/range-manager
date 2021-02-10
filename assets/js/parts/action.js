@@ -1,10 +1,13 @@
 
 class RMAction {
-	
 	constructor() {
-		this._rmainit();
+		this.grid = document.getElementById('range_manager');
+		this.cells = this.grid.getElementsByTagName('td');
 	}
 	
+	cells() {
+		return this.cells;
+	}
 	set_action_to_card(card_id) {
 
 		var bts = document.getElementsByName('sel');
@@ -16,10 +19,6 @@ class RMAction {
 		}
 	}
 		
-	_rmainit() {
-		let grid = document.getElementById('range_manager');
-		let cells = grid.getElementsByTagName('td');
-	}
 
 	card_toggle_class(idcard, action) {
 		var card = document.getElementById(idcard)

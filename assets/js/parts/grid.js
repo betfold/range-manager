@@ -22,6 +22,31 @@ class RMGrid {
 		}
 	}
 
+	get_range() {
+		var cells = this.grid.getElementsByTagName('td');
+		var ranges = {};
+		
+		for(var n = 0, size = cells.length; n < size; n++) {
+			
+			var action_card = cells[n].className.split(' ');
+			
+			action_card.forEach(function(action_name) {
+				switch ( action_name ) {
+					case 'pair':
+					case 'offsuit':
+					case 'suited':
+						break;
+					default:
+						if ( ! (action_name in ranges) ) { ranges[action_name] = []; }
+						ranges[action_name].push(cells[n].id)
+						break;
+				}
+			});
+		}
+
+		return ranges;
+	}
+	
 
 	/* clean the html grid */
 	reset_grid() {

@@ -7,10 +7,11 @@ var range_manager = (function() {
 	{% include 'grid.js' %}
 	{% include 'range_info.js' %}
 	{% include 'action.js' %}
+	{% include 'range_option.js' %}
 
 	// load function
-	{% include 'cmd.js' %}
 	{% include 'slider.js' %}
+	{# include 'cmd.js' #}
 
 	{% include 'PRM.js' %}
 

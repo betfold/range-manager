@@ -8,13 +8,13 @@ var range_manager = (function() {
 const RMDb = {
 
 
-	save_range(name, range) {
+	save(name, range) {
 		range = JSON.stringify(range);
 		if ( range.length > 8 ) { localStorage.setItem( name, range); }
 	},
 
 
-	get_range(range_name) {
+	get(range_name) {
 		return JSON.parse(localStorage.getItem(range_name));
 	}
 
@@ -30,10 +30,12 @@ class Range {
 
 	constructor(name) {
 		this.name = name; // The id in base
-		this.saved_range = RMDb.get_range(name);
+		this.saved_range = RMDb.get(name);
 		this.grid = new RMGrid();
+		this.action = new RMAction(); 
 		this.ranges;
 		this.cards = [];
+		this.alter = null;
 		this.info;
 
 		this._set_range();
@@ -45,6 +47,17 @@ class Range {
 		this.info = new RangeInfo(this.ranges);
 		this.info.set_combo_info();
 		this.grid.set_range(this.ranges);
+	}
+
+	update_range() {
+		this.alter = {};
+		this.ranges = this.grid.get_range();
+		this.info = new RangeInfo(this.ranges);
+		this.info.set_combo_info(); 
+
+		for(var action in this.ranges) {
+			this.alter[action] = _.difference(this.ranges[action], this.saved_range[action]);
+		}
 	}
 
 	get_range() { return this.ranges; }
@@ -296,6 +309,31 @@ class RMGrid {
 		}
 	}
 
+	get_range() {
+		var cells = this.grid.getElementsByTagName('td');
+		var ranges = {};
+		
+		for(var n = 0, size = cells.length; n < size; n++) {
+			
+			var action_card = cells[n].className.split(' ');
+			
+			action_card.forEach(function(action_name) {
+				switch ( action_name ) {
+					case 'pair':
+					case 'offsuit':
+					case 'suited':
+						break;
+					default:
+						if ( ! (action_name in ranges) ) { ranges[action_name] = []; }
+						ranges[action_name].push(cells[n].id)
+						break;
+				}
+			});
+		}
+
+		return ranges;
+	}
+	
 
 	/* clean the html grid */
 	reset_grid() {
@@ -454,11 +492,14 @@ class RangeInfo {
 }
 	
 class RMAction {
-	
 	constructor() {
-		this._rmainit();
+		this.grid = document.getElementById('range_manager');
+		this.cells = this.grid.getElementsByTagName('td');
 	}
 	
+	cells() {
+		return this.cells;
+	}
 	set_action_to_card(card_id) {
 
 		var bts = document.getElementsByName('sel');
@@ -470,10 +511,6 @@ class RMAction {
 		}
 	}
 		
-	_rmainit() {
-		let grid = document.getElementById('range_manager');
-		let cells = grid.getElementsByTagName('td');
-	}
 
 	card_toggle_class(idcard, action) {
 		var card = document.getElementById(idcard)
@@ -533,173 +570,67 @@ class RMAction {
 	}
 
 }
+	// Tools for manage unod copy call and save
+//
+class GridAlter {
+
+	constructor(range_name) {
+		this.alter = false;
+		this.copy = false;
+		this.current_range_name = range_name;
+		this.range_name = '';
+		this.range = {};
+		
+		this.set_display();
+	}
+
+	range_change() {
+		this.alter = true;
+		this.set_display();
+	}
+
+	reset(current_range_name) {
+		this.alter = false;
+		this.current_range_name = current_range_name;
+		this.set_display();
+	}
+
+	paste() {
+		this.copy = false;
+		this.alter = true;
+		this.range_name = '';
+		this.set_display();
+	}
+	copy_range(range_name, range) {
+		this.copy = true;
+		this.range = range;
+		this.range_name = range_name;
+	}
+
+	set_display() {
+		if ( this.alter ) {
+			document.getElementById('grid_save').classList.remove('disable'); 
+			document.getElementById('grid_undo').classList.remove('disable');
+			
+		}
+		else { 
+			document.getElementById('grid_save').classList.add('disable');
+			document.getElementById('grid_undo').classList.add('disable');
+		}
+
+		if ( this.copy && this.current_range_name === this.range_name ) { 
+			document.getElementById('grid_copy').classList.add('disable'); 
+			document.getElementById('grid_paste').classList.add('disable'); 
+		}
+		else if( this.copy && this.current_range_name !== this.range_name ) {
+			document.getElementById('grid_copy').classList.remove('disable');
+			document.getElementById('grid_paste').classList.remove('disable'); 
+		}
+
+	}
+}
 
 	// load function
-	var user_cmd = { 
-	args: '', 
-	hand_range_weight: ["2", "3", "4", "5", "6", "7", "8", "9", "T", "J", "Q", "K", "A"],
-	hand_sign: ['o', 's', '+', '-'],
-	auth_char: _.concat(this.hand_range_weight, this.hand_sign),
-	ranges: [],
-
- }
-	
-
-function parse_cmd() {
-
-	user_cmd.args = _.compact(document.getElementById('cmdselect').value.split(' '));
-	user_cmd.ranges = [];
-	user_cmd.args.forEach(filtre =>	exec_cmd(filtre));
-	user_cmd.ranges.forEach(e => this.action.set_action_to_card(e));
-	
-}
-
-
-function exec_cmd(filtre) {
-
-
-	var cmd = nota_parse_cmd_hand(filtre);
-	var ranges = [];
-
-	if (cmd.hands[0][0] === cmd.hands[0][1]) {
-		ranges = nota_sel_by_pair(cmd);
-	}
-	else if ( cmd.hands.length === 1 ) {
-		ranges = nota_sel_unique_range(cmd);
-	}
-	else {
-		ranges = nota_set_multiple_range(cmd);
-	}
-	
-
-	if ( ranges.length > 0 ) {
-		ranges.forEach(ch => user_cmd.ranges.push(ch));
-	}
-}
-
-function nota_set_multiple_range(cmd) {
-	var start_at = 0;
-	var end_at = 0;
-	var ranges = [];	
-	if (cmd.hands[0][0] === cmd.hands[1][0] ) {
-		start_at = user_cmd.hand_range_weight.indexOf( cmd.hands[0][1] );
-		end_at = user_cmd.hand_range_weight.indexOf( cmd.hands[1][1] );
-		for(start_at; start_at < end_at; start_at++) {
-			var c = cmd.hands[0][0] + ""+ user_cmd.hand_range_weight[start_at];
-			ranges.push(c);
-		}
-		ranges = nota_added_card_by(ranges, cmd.type)
-	}
-	return ranges;
-}
-
-function nota_sel_unique_range(cmd) {
-	var start_at = 0;
-	var end_at = 0;
-	var ranges = [];
-	switch ( cmd['opt'] ) {
-		case '-':
-			start_at = 0;
-			end_at = user_cmd.hand_range_weight.indexOf( cmd.hands[0][1] );
-			break;
-		case '+':
-			start_at = user_cmd.hand_range_weight.indexOf( cmd.hands[0][1] );
-			end_at = user_cmd.hand_range_weight.indexOf( cmd.hands[0][0] );
-			break;
-	}
-
-	if ( cmd.opt === '+' || cmd.opt === '-' ) {
-		for(start_at; start_at < end_at; start_at++) {
-			var c = cmd.hands[0][0] + ""+ user_cmd.hand_range_weight[start_at];
-			ranges.push(c);
-		}
-		
-	}
-	else {
-		ranges.push(cmd.hands[0]);
-	}
-
-	ranges = nota_added_card_by(ranges, cmd.type);
-	return ranges;
-}
-
-function nota_parse_cmd_hand(filtre) {
-	var arg_cmd = {hands: [], type: "all", opt: "none" };
-	filtre = filtre.split('');
-	if (filtre.includes('-') && filtre.slice(-1) !== '-') {
-		arg_cmd.hands = filtre.join('').split('-');
-	} else { arg_cmd.hands.push(filtre.join('')); }
-
-	arg_cmd.hands.forEach(function(argument, index) {
-		argument = argument.split('');
-		var opts = argument.splice(2, 2);
-		argument = argument.splice(0, 2);
-
-		if (user_cmd.hand_range_weight.indexOf( argument[0] ) < user_cmd.hand_range_weight.indexOf( argument[1] )) {
-			argument.reverse();
-		}
-		
-		arg_cmd.hands[index] = argument.join('');
-
-		opts.forEach(function(signe) {
-			switch (signe) {
-				case 'o':
-				case 's':
-					arg_cmd.type = signe;
-					break;
-				case '+':
-				case '-':
-					arg_cmd.opt = signe;
-					break;
-			}
-		});
-	});
-
-	if ( arg_cmd.hands.length > 1) {
-		if ( user_cmd.hand_range_weight.indexOf( arg_cmd.hands[0][0] ) > user_cmd.hand_range_weight.indexOf( arg_cmd.hands[1][0] )) {
-			arg_cmd.hands.reverse();
-		}
-	}
-	return arg_cmd;	
-}
-
-
-function nota_sel_by_pair(cmd) {
-	var start_at = user_cmd.hand_range_weight.indexOf( cmd.hands[0][0] );
-	var end_at   = 13;
-	var ranges = [];
-	if ( cmd.hands.length > 1 ) { end_at = user_cmd.hand_range_weight.indexOf( cmd.hands[1][0] ) + 1; }
-
-	for(start_at; start_at < end_at; start_at++) {
-		var c = user_cmd.hand_range_weight[start_at];
-		c += c;
-		ranges.push(c);
-	}
-	return ranges;
-}
-
-function nota_added_card_by(cards, by) {
-	// NOTE Sometimes I make a mistake betwen slice & splice 
-	var cs = cards.slice(); //
-	switch (by) {
-		case 'all':
-			cs.forEach(e => cards.push(e+'o'));
-			cs.forEach(e => cards.push(e+'s'));
-		break;
-		case 's':
-			cs.forEach(e => cards.push(e+'s'));
-		break;
-		case 'o':
-			cs.forEach(e => cards.push(e+'o'));
-		break;
-	}
-	for(var i = 0; i < cs.length; i++) {
-		cards.splice(cards.indexOf(cs[i]), 1);
-	}
-	return cards	
-}
-
-
 	//source https://www.gamblingsites.org/poker/texas-holdem/starting-hand-rankings/
 // holdmem have a grid of 169 pf hand 
 // TODO fixe the correct pourcentage win value
@@ -916,6 +847,7 @@ function slider_on_change(handsingrid, action) {
 		}
 	}
 }
+	
 
 	/** 
  * author: E.p 
@@ -925,6 +857,8 @@ class PRM {
 	constructor() {
 		this.selector = new RMSelector();
 		this.range		= new Range(this.selector.get_range_name());
+		this.options = new GridAlter();
+		this.copy = null;
 	
 		this.set_eventListener();
 	}
@@ -936,26 +870,64 @@ class PRM {
 		this.selector.table_size.addEventListener('change', () => { 
 			this.range		= new Range(this.selector.get_range_name());
 			this.selector.table_size_has_changed(); 
+			this.options.reset(this.selector.get_range_name());
 		} , false);
 		
 		this.selector.hero_pos.addEventListener('change', () => { 
 			this.range		= new Range(this.selector.get_range_name());
 			this.selector._set_vilain_pos(); 
+			this.options.reset(this.selector.get_range_name());
 		} , false);
 
 		this.selector.action.addEventListener('change', () => { 
 			this.range		= new Range(this.selector.get_range_name());
 			this.selector.action_has_changed(); 
+			this.options.reset(this.selector.get_range_name());
 		}, false);
 
 		this.selector.stack_size.addEventListener('change', () => {  
 			this.range		= new Range(this.selector.get_range_name());
+			this.options.reset(this.selector.get_range_name());
 		}, false);
 
+		// Slider event
 		document.getElementById('range_slider').addEventListener('change', () => {
-			slider_on_change(this.range.cards, this.action);
+			slider_on_change(this.range.cards, this.range.action);
+			this.range.update_range();
+		}, false);
+
+		// Card on grid event
+		for(var i = 0, n = this.range.action.cells.length; i < n; i++) {
+			var cell = this.range.action.cells[i];
+			cell.addEventListener('click', (e) => {
+				this.range.action.set_action_to_card(e.target.id);
+				this.options.range_change();
+				this.range.update_range();
+			}, false);
+		}
+
+		// Set action on save
+		document.getElementById('grid_save').addEventListener('click', () => {
+			RMDb.save(this.selector.get_range_name(), this.range.grid.get_range());
+			this.options.reset(this.selector.get_range_name());
+			this.range.saved_range = this.range.grid.get_range();
+		}, false);
+
+		document.getElementById('grid_copy').addEventListener('click', () => {
+			this.options.copy_range(this.selector.get_range_name(), this.range.grid.get_range());
+		}, false);
+
+		document.getElementById('grid_undo').addEventListener('click', () => {
+			this.range.grid.set_range(this.range.saved_range);
+			this.options.reset(this.selector.get_range_name())	
+		}, false);
+
+		document.getElementById('grid_paste').addEventListener('click', () => {
+			this.range.grid.set_range(this.options.range);
+			this.options.paste();
 		}, false);
 	}
+
 }
 
 	return new PRM();
