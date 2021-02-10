@@ -115,17 +115,20 @@ class RMSelector {
 				document.getElementById('rfi').classList.remove('disable');
 				document.getElementById('facingrfi').classList.add('disable');
 				document.getElementById('bt_bvb').classList.add('disable');
+				document.getElementById('action_bet').checked = true;
 				break;
 			case 'facingip':
 			case 'facingoop':
 				document.getElementById('rfi').classList.add('disable');
 				document.getElementById('facingrfi').classList.remove('disable');
 				document.getElementById('bt_bvb').classList.add('disable');
+				document.getElementById('facing_flat').checked = true;
 				break;
 			case 'bvb':
 				document.getElementById('rfi').classList.add('disable');
 				document.getElementById('facingrfi').classList.add('disable');
 				document.getElementById('bt_bvb').classList.remove('disable');
+				document.getElementById('action_limpfold').checked = true;
 				break;
 		}
 	}
