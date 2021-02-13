@@ -39,13 +39,14 @@ class RMAction {
 				if ( this.rfi.classList.contains('disable') ) this.rfi.classList.remove('disable');
 				if ( ! this.facingrfi.classList.contains('disable') )	this.facingrfi.classList.add('disable');
 				if ( ! this.bvb.classList.contains('disable') )	this.bvb.classList.add('disable');
+				document.getElementById('action_bet').checked = true;
 				break;
 			case 'facingip':
 			case 'facingoop':
 				if ( ! this.rfi.classList.contains('disable') ) this.rfi.classList.add('disable');
 				if ( this.facingrfi.classList.contains('disable') )	this.facingrfi.classList.remove('disable');
 				if ( ! this.bvb.classList.contains('disable') )	this.bvb.classList.add('disable');
-				break;
+				document.getElementById('facing_flat').checked = true;
 				break;
 		}
 		if ( action === 'bvb') {
@@ -55,16 +56,20 @@ class RMAction {
 					if ( ! this.rfi.classList.contains('disable') ) this.rfi.classList.add('disable');
 					if ( ! this.facingrfi.classList.contains('disable') )	this.facingrfi.classList.add('disable');
 					if ( this.bvb.classList.contains('disable') )	this.bvb.classList.remove('disable');
+					document.getElementById('action_limpfold').checked = true;
 					break;
 				case 'BB vs SB Limp':
+					document.getElementById('action_bet').checked = true;
 					if ( this.rfi.classList.contains('disable') ) this.rfi.classList.remove('disable');
 					if ( ! this.facingrfi.classList.contains('disable') )	this.facingrfi.classList.add('disable');
 					if ( ! this.bvb.classList.contains('disable') )	this.bvb.classList.add('disable');
+					document.getElementById('action_bet').checked = true;
 					break;
 				case 'BB vs SB Raise':
 					if ( ! this.rfi.classList.contains('disable') ) this.rfi.classList.add('disable');
 					if ( this.facingrfi.classList.contains('disable') )	this.facingrfi.classList.remove('disable');
 					if ( ! this.bvb.classList.contains('disable') )	this.bvb.classList.add('disable');
+					document.getElementById('facing_flat').checked = true;
 					break;
 			}
 

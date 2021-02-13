@@ -14,11 +14,13 @@ class PRM {
 
 
 	set_eventListener() {
+		this.range.action.action_visibility(this.selector.action.value);
 
 		// Set event action to the select range 
 		this.selector.table_size.addEventListener('change', () => { 
 			this.range		= new Range(this.selector.get_range_name());
 			this.options.reset(this.selector.get_range_name());
+			this.range.action.action_visibility(this.selector.action.value);
 		} , false);
 		
 		this.selector.hero_pos.addEventListener('change', () => { 
