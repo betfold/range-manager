@@ -15,47 +15,13 @@
 
 
 <h1>THNL Hands Grid</h1>
-
 <div id="grid_options" style="margin-bottom:1em;display:flex;justify-content:left;">
 	<input type="button" id="grid_undo" value="undo" />
 	<input type="button" id="grid_paste" value="paste"/>
 	<input type="button" id="grid_copy" value="copy"/>
 	<input type="button" id="grid_save" value="save" />
 </div>
-<form id="pannel_selection">
-
-	<select id="table_size">
-		<option value="9" selected>9-max</option>
-		<option value="8">8 handed</option>
-		<option value="7">7 handed</option>
-		<option value="6">6-max</option>
-		<option value="5">5-max</option>
-		<option value="4">4 handed</option>
-		<option value="3">3 handed</option>
-		<option value="2">HU</option>
-	</select>
-
-	<select id="stack_size">
-		<option value="70#100" selected>70-100bb</option>
-		<option value="25#50">25-50bb</option>
-		<option value="12#20">12-20bb</option>
-	</select>
-
-
-	<select id="action_name">
-	</select>
-
-	<select id="hero_pos">
-	</select>
-
-
-	<label id="versuslabel"  for="versus">Versus</label>
-	<select id="vilain_pos">
-	</select>
-
-
-</form>
-
+<select-range id="rs"></select-range>
 <br/>
 
 <div style="display:flex">

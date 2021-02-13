@@ -1,7 +1,5 @@
 {% include 'holdem_combinaison_rank.json' %}
 
-// TODO create a current list of selected cards with they're id
-//
 
 // update the pourcent of selected hands on the grid
 // the default action set to card is always the first possible action

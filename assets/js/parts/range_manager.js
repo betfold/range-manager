@@ -1,3 +1,5 @@
+"use strict"; 
+
 var range_manager = (function() {
 
 	// load class
@@ -14,6 +16,7 @@ var range_manager = (function() {
 	{# include 'cmd.js' #}
 
 	{% include 'PRM.js' %}
+
 
 	return new PRM();
 
