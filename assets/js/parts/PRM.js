@@ -24,11 +24,13 @@ class PRM {
 		this.selector.hero_pos.addEventListener('change', () => { 
 			this.range		= new Range(this.selector.get_range_name());
 			this.options.reset(this.selector.get_range_name());
+			this.range.action.action_visibility(this.selector.action.value);
 		} , false);
 
 		this.selector.action.addEventListener('change', () => { 
 			this.range		= new Range(this.selector.get_range_name());
 			this.options.reset(this.selector.get_range_name());
+			this.range.action.action_visibility(this.selector.action.value);
 		}, false);
 
 		this.selector.stack_size.addEventListener('change', () => {  

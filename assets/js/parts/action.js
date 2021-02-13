@@ -1,13 +1,23 @@
-
+/**
+ * @class
+ * @classdesc Set the background color referer to the action to the grid
+ */
 class RMAction {
+	/**
+		* Get the grid.<HTMLElement> grid_manager
+		*/  
 	constructor() {
 		this.grid = document.getElementById('range_manager');
 		this.cells = this.grid.getElementsByTagName('td');
+		this.rfi = document.getElementById('rfi');
+		this.facingrfi = document.getElementById('facingrfi');
+		this.bvb = document.getElementById('bt_bvb');
 	}
 	
 	cells() {
 		return this.cells;
 	}
+
 	set_action_to_card(card_id) {
 
 		var bts = document.getElementsByName('sel');
@@ -18,7 +28,48 @@ class RMAction {
 			}
 		}
 	}
-		
+	/**
+	 * Set the visibility to the good pannel action
+	 * @param { String } action
+	 */
+	action_visibility(action) {
+
+		switch ( action ) {
+			case 'rfi':
+				if ( this.rfi.classList.contains('disable') ) this.rfi.classList.remove('disable');
+				if ( ! this.facingrfi.classList.contains('disable') )	this.facingrfi.classList.add('disable');
+				if ( ! this.bvb.classList.contains('disable') )	this.bvb.classList.add('disable');
+				break;
+			case 'facingip':
+			case 'facingoop':
+				if ( ! this.rfi.classList.contains('disable') ) this.rfi.classList.add('disable');
+				if ( this.facingrfi.classList.contains('disable') )	this.facingrfi.classList.remove('disable');
+				if ( ! this.bvb.classList.contains('disable') )	this.bvb.classList.add('disable');
+				break;
+				break;
+		}
+		if ( action === 'bvb') {
+			var value = document.getElementById('rs').shadowRoot.getElementById('positions').value;
+			switch (value) {
+				case 'Small Blind Strategy':
+					if ( ! this.rfi.classList.contains('disable') ) this.rfi.classList.add('disable');
+					if ( ! this.facingrfi.classList.contains('disable') )	this.facingrfi.classList.add('disable');
+					if ( this.bvb.classList.contains('disable') )	this.bvb.classList.remove('disable');
+					break;
+				case 'BB vs SB Limp':
+					if ( this.rfi.classList.contains('disable') ) this.rfi.classList.remove('disable');
+					if ( ! this.facingrfi.classList.contains('disable') )	this.facingrfi.classList.add('disable');
+					if ( ! this.bvb.classList.contains('disable') )	this.bvb.classList.add('disable');
+					break;
+				case 'BB vs SB Raise':
+					if ( ! this.rfi.classList.contains('disable') ) this.rfi.classList.add('disable');
+					if ( this.facingrfi.classList.contains('disable') )	this.facingrfi.classList.remove('disable');
+					if ( ! this.bvb.classList.contains('disable') )	this.bvb.classList.add('disable');
+					break;
+			}
+
+		}
+	}
 
 	card_toggle_class(idcard, action) {
 		var card = document.getElementById(idcard)
