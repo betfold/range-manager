@@ -6,8 +6,8 @@ class PRM {
 	constructor() {
 		this.selector = new RMSelector();
 		this.range		= new Range(this.selector.get_range_name());
-		this.options = new GridAlter();
-		this.copy = null;
+		this.options  = new GridAlter();
+		this.slider	  = new RMSlider();
 	
 		this.set_eventListener();
 	}
@@ -47,7 +47,7 @@ class PRM {
 
 		// Slider event
 		document.getElementById('range_slider').addEventListener('change', () => {
-			slider_on_change(this.range.cards, this.range.action);
+			this.slider.change(this.range.grid.get_used_hand(), this.range.action);
 			this.range.update_range();
 		}, false);
 

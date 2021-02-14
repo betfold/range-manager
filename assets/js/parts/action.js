@@ -19,7 +19,6 @@ class RMAction {
 	}
 
 	set_action_to_card(card_id) {
-
 		var bts = document.getElementsByName('sel');
 		for(var i = 0; i < bts.length; i++) {
 			if(bts[i].checked) {
