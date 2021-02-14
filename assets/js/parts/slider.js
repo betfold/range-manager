@@ -26,7 +26,6 @@ class RMSlider {
 				if ( cpt === total2added ) { break; }
 				var hh = rank_holdem[i];
 				if ( !handsingrid.includes(hh.hand) ) {
-					// FIXME By the hell how this can works !
 					action.set_action_to_card( hh.hand );
 
 					cpt += 1;	
