@@ -541,7 +541,6 @@ class RMAction {
 	}
 
 	set_action_to_card(card_id) {
-		console.log('set action card');
 		var bts = document.getElementsByName('sel');
 		for(var i = 0; i < bts.length; i++) {
 			if(bts[i].checked) {
@@ -922,7 +921,6 @@ class RMSlider {
 				if ( cpt === total2added ) { break; }
 				var hh = rank_holdem[i];
 				if ( !handsingrid.includes(hh.hand) ) {
-					// FIXME By the hell how this can works !
 					action.set_action_to_card( hh.hand );
 
 					cpt += 1;	
@@ -996,6 +994,7 @@ class PRM {
 		// Slider event
 		document.getElementById('range_slider').addEventListener('change', () => {
 			this.slider.change(this.range.grid.get_used_hand(), this.range.action);
+			this.options.range_change();
 			this.range.update_range();
 		}, false);
 

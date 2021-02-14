@@ -48,6 +48,7 @@ class PRM {
 		// Slider event
 		document.getElementById('range_slider').addEventListener('change', () => {
 			this.slider.change(this.range.grid.get_used_hand(), this.range.action);
+			this.options.range_change();
 			this.range.update_range();
 		}, false);
 
