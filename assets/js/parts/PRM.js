@@ -75,6 +75,7 @@ class PRM {
 
 		document.getElementById('grid_undo').addEventListener('click', () => {
 			this.range.grid.set_range(this.range.saved_range);
+			this.range.update_range();
 			this.options.reset(this.selector.get_range_name())	
 		}, false);
 
