@@ -31,12 +31,12 @@ class RangeInfo {
 		this.suited = 0;
 		this.offsuit = 0;
 		this.screen =  document.getElementById('range_info');
-		var temp_cards	= []; // pour eviter les doublons 
-		for(var action in this.range) {
+		let temp_cards	= []; // pour eviter les doublons 
+		for(let action in this.range) {
 			this.action2card[action] = { pourcent: 0, combos: 0 };
-			var cards = this.range[action];
-			for(var i in cards) {
-				var card = cards[i];
+			let cards = this.range[action];
+			for(let i in cards) {
+				let card = cards[i];
 
 				if(card[2] === "s") { 
 					this.action2card[action].combos += suited_combinations;
@@ -63,13 +63,13 @@ class RangeInfo {
 
 	set_combo_info() {
 		this.calcul_combo();
-		var calcul = {
+		let calcul = {
 			pair: { pourcent: 0, combo: 0 },
 			offsuit: { pourcent: 0, combo: 0 },
 			suited: { pourcent: 0, combo: 0},
 		}
 		// the info for compare with slider
-		var total_selected		= this.pair + this.suited + this.offsuit;		
+		let total_selected		= this.pair + this.suited + this.offsuit;		
 		calcul.pair.combo			= this.pair * pair_combinations;
 		calcul.offsuit.combo	= this.offsuit * offsuit_combinations;
 		calcul.suited.combo		= this.suited * suited_combinations;
@@ -82,27 +82,27 @@ class RangeInfo {
 		this.screen.innerHTML = '';
 
 		// set stat by action
-		for(var action in this.action2card) {	
+		for(let action in this.action2card) {	
 
-			var stat  = this.action2card[action];
+			let stat  = this.action2card[action];
 
 			this.screen.innerHTML += this.template_info_range(stat.pourcent.toFixed(2) + '%', action, stat.combos + ' combo', action);
 		}
 		
 		// set global stat
-		var totalc = calcul.pair.combo + calcul.offsuit.combo + calcul.suited.combo;
-		var totalp = calcul.pair.pourcent + calcul.offsuit.pourcent + calcul.suited.pourcent;
+		let totalc = calcul.pair.combo + calcul.offsuit.combo + calcul.suited.combo;
+		let totalp = calcul.pair.pourcent + calcul.offsuit.pourcent + calcul.suited.pourcent;
 		
 		this.screen.innerHTML += this.template_info_range('TOTAL', totalp.toFixed(2) + '%', totalc + " combos", 'global_info_range');
 
 		// set stat by type of cards
-		for(var typeofcard in calcul) {
+		for(let typeofcard in calcul) {
 			this.screen.innerHTML += this.template_info_range(this[typeofcard] + " " + typeofcard, calcul[typeofcard].pourcent.toFixed(2) + "%", calcul[typeofcard].combo + " combos", typeofcard);
 		}
 
 		// FIXME change this
 		// set the slider value
-		var slider = document.getElementById('range_slider');
+		let slider = document.getElementById('range_slider');
 		slider.value = totalp;
 	}
 

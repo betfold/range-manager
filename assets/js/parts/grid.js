@@ -23,12 +23,12 @@ class RMGrid {
 	}
 
 	get_range() {
-		var cells = this.grid.getElementsByTagName('td');
-		var ranges = {};
+		let cells = this.grid.getElementsByTagName('td');
+		let ranges = {};
 		
-		for(var n = 0, size = cells.length; n < size; n++) {
+		for(let n = 0, size = cells.length; n < size; n++) {
 			
-			var action_card = cells[n].className.split(' ');
+			let action_card = cells[n].className.split(' ');
 			
 			action_card.forEach(function(action_name) {
 				switch ( action_name ) {
@@ -50,10 +50,10 @@ class RMGrid {
 
 	/* clean the html grid */
 	reset_grid() {
-		var grid = this.grid.rows;
-		for(var i = 0; i < 13; i++) {
+		let grid = this.grid.rows;
+		for(let i = 0; i < 13; i++) {
 			var cols = grid[i].cells;
-			for(var c = 0; c < 13; c++) {
+			for(let c = 0; c < 13; c++) {
 				cols[c].className.split(' ').forEach(function(item) {
 					switch ( item ) {
 						case 'pair':
@@ -73,18 +73,18 @@ class RMGrid {
 	// Return list of id hands selected
 	// TODO change the html id of table hand to grid_mananger
 	get_used_hand() {
-		var rows = this.grid.getElementsByTagName('td');
-		var hands = [];
-		for ( var i = 0, n = rows.length; i < n; i++ ) {
+		let rows = this.grid.getElementsByTagName('td');
+		let hands = [];
+		for ( let i = 0, n = rows.length; i < n; i++ ) {
 			if ( rows[i].className.split(' ').length > 1 ) { hands.push( rows[i].id ); }
 		}
 		return hands;
 	}
 
 	get_card_by_action(action) {
-		var cards = this.grid.getElementsByClassName(action);
-		var c = [];
-		for(var i=0; i < cards.length; i++) {
+		let cards = this.grid.getElementsByClassName(action);
+		let c = [];
+		for(let i=0; i < cards.length; i++) {
 			c.push(cards[i].id);
 		}
 		return c;

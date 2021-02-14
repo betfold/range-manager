@@ -19,10 +19,10 @@ class RMAction {
 	}
 
 	set_action_to_card(card_id) {
-		var bts = document.getElementsByName('sel');
-		for(var i = 0; i < bts.length; i++) {
+		let bts = document.getElementsByName('sel');
+		for(let i = 0; i < bts.length; i++) {
 			if(bts[i].checked) {
-				var action = bts[i].value;
+				let action = bts[i].value;
 				this.card_toggle_class(card_id, action)
 			}
 		}
@@ -76,7 +76,7 @@ class RMAction {
 	}
 
 	card_toggle_class(idcard, action) {
-		var card = document.getElementById(idcard)
+		let card = document.getElementById(idcard)
 		if (card.classList.contains(action)) {
 			this.remove_card_value(card, action);
 		}
@@ -89,7 +89,7 @@ class RMAction {
 		
 	// Reset card
 	grid_set_hh_to_unset(hhid) {
-		var hh = document.getElementById(hhid);
+		let hh = document.getElementById(hhid);
 		hh.className = hh.className.split(' ')[0]; // Keep the first classname (pair, suited, offsuit)
 	}
 

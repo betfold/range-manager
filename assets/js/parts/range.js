@@ -2,9 +2,8 @@
  *  The current range
  *
  *  saved_range store the original range
- *  we work on a clone of range on this.ranges
- *  **/
-
+ *  work on a clone of the original range
+ */
 class Range {
 
 	constructor(name) {
@@ -43,7 +42,7 @@ class Range {
 
 	// return uniq list of card
 	card_list() {
-		for(var k in this.ranges) {
+		for(let k in this.ranges) {
 			this.ranges[k].forEach(e => this.cards.push(e))
 		}
 		this.cards = _.uniq(this.cards);

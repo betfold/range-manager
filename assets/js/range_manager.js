@@ -25,9 +25,8 @@ const RMDb = {
  *  The current range
  *
  *  saved_range store the original range
- *  we work on a clone of range on this.ranges
- *  **/
-
+ *  work on a clone of the original range
+ */
 class Range {
 
 	constructor(name) {
@@ -66,7 +65,7 @@ class Range {
 
 	// return uniq list of card
 	card_list() {
-		for(var k in this.ranges) {
+		for(let k in this.ranges) {
 			this.ranges[k].forEach(e => this.cards.push(e))
 		}
 		this.cards = _.uniq(this.cards);
@@ -175,7 +174,7 @@ class SelectRange extends HTMLElement {
 	}
 
 	set_action() {
-		var actions = '';
+		let actions = '';
 		switch ( this.tables.value ) {
 			case '2':
 				actions = { bvb: "Blind vs Blind" };
@@ -214,12 +213,12 @@ class SelectRange extends HTMLElement {
 		select.innerHTML = '';
 		
 		for(const name in positions) {
-			var optgroup = document.createElement("optgroup");
+			let optgroup = document.createElement("optgroup");
 			optgroup.label = name + " position";
 			if ( positions[name].length > 0) {
-				for(var v in positions[name]) {
-					var option = document.createElement("option");
-					var value = positions[name][v];
+				for(let v in positions[name]) {
+					let option = document.createElement("option");
+					let value = positions[name][v];
 					option.value = value;
 					option.innerHTML = value;
 					optgroup.appendChild(option);
@@ -239,7 +238,7 @@ class SelectRange extends HTMLElement {
 			case 'facingip':
 				for(const zone in l) {
 					var n = false;
-					for( var position_name of l[zone] ) {
+					for( let position_name of l[zone] ) {
 						if ( position_name === this.positions.value ) 
 							{  n = true; break; }
 						else {
@@ -300,7 +299,7 @@ class RMSelector {
 
 	
 	get_range_name() {
-		var name	 = `${this.table_size.value}${this.hero_pos.value}${this.stack_size.value}${this.action.value}`;
+		let name	 = `${this.table_size.value}${this.hero_pos.value}${this.stack_size.value}${this.action.value}`;
 		switch ( this.action.value ) {
 			case 'facingip':
 			case 'facingoop':
@@ -340,12 +339,12 @@ class RMGrid {
 	}
 
 	get_range() {
-		var cells = this.grid.getElementsByTagName('td');
-		var ranges = {};
+		let cells = this.grid.getElementsByTagName('td');
+		let ranges = {};
 		
-		for(var n = 0, size = cells.length; n < size; n++) {
+		for(let n = 0, size = cells.length; n < size; n++) {
 			
-			var action_card = cells[n].className.split(' ');
+			let action_card = cells[n].className.split(' ');
 			
 			action_card.forEach(function(action_name) {
 				switch ( action_name ) {
@@ -367,10 +366,10 @@ class RMGrid {
 
 	/* clean the html grid */
 	reset_grid() {
-		var grid = this.grid.rows;
-		for(var i = 0; i < 13; i++) {
+		let grid = this.grid.rows;
+		for(let i = 0; i < 13; i++) {
 			var cols = grid[i].cells;
-			for(var c = 0; c < 13; c++) {
+			for(let c = 0; c < 13; c++) {
 				cols[c].className.split(' ').forEach(function(item) {
 					switch ( item ) {
 						case 'pair':
@@ -390,18 +389,18 @@ class RMGrid {
 	// Return list of id hands selected
 	// TODO change the html id of table hand to grid_mananger
 	get_used_hand() {
-		var rows = this.grid.getElementsByTagName('td');
-		var hands = [];
-		for ( var i = 0, n = rows.length; i < n; i++ ) {
+		let rows = this.grid.getElementsByTagName('td');
+		let hands = [];
+		for ( let i = 0, n = rows.length; i < n; i++ ) {
 			if ( rows[i].className.split(' ').length > 1 ) { hands.push( rows[i].id ); }
 		}
 		return hands;
 	}
 
 	get_card_by_action(action) {
-		var cards = this.grid.getElementsByClassName(action);
-		var c = [];
-		for(var i=0; i < cards.length; i++) {
+		let cards = this.grid.getElementsByClassName(action);
+		let c = [];
+		for(let i=0; i < cards.length; i++) {
 			c.push(cards[i].id);
 		}
 		return c;
@@ -440,12 +439,12 @@ class RangeInfo {
 		this.suited = 0;
 		this.offsuit = 0;
 		this.screen =  document.getElementById('range_info');
-		var temp_cards	= []; // pour eviter les doublons 
-		for(var action in this.range) {
+		let temp_cards	= []; // pour eviter les doublons 
+		for(let action in this.range) {
 			this.action2card[action] = { pourcent: 0, combos: 0 };
-			var cards = this.range[action];
-			for(var i in cards) {
-				var card = cards[i];
+			let cards = this.range[action];
+			for(let i in cards) {
+				let card = cards[i];
 
 				if(card[2] === "s") { 
 					this.action2card[action].combos += suited_combinations;
@@ -472,13 +471,13 @@ class RangeInfo {
 
 	set_combo_info() {
 		this.calcul_combo();
-		var calcul = {
+		let calcul = {
 			pair: { pourcent: 0, combo: 0 },
 			offsuit: { pourcent: 0, combo: 0 },
 			suited: { pourcent: 0, combo: 0},
 		}
 		// the info for compare with slider
-		var total_selected		= this.pair + this.suited + this.offsuit;		
+		let total_selected		= this.pair + this.suited + this.offsuit;		
 		calcul.pair.combo			= this.pair * pair_combinations;
 		calcul.offsuit.combo	= this.offsuit * offsuit_combinations;
 		calcul.suited.combo		= this.suited * suited_combinations;
@@ -491,27 +490,27 @@ class RangeInfo {
 		this.screen.innerHTML = '';
 
 		// set stat by action
-		for(var action in this.action2card) {	
+		for(let action in this.action2card) {	
 
-			var stat  = this.action2card[action];
+			let stat  = this.action2card[action];
 
 			this.screen.innerHTML += this.template_info_range(stat.pourcent.toFixed(2) + '%', action, stat.combos + ' combo', action);
 		}
 		
 		// set global stat
-		var totalc = calcul.pair.combo + calcul.offsuit.combo + calcul.suited.combo;
-		var totalp = calcul.pair.pourcent + calcul.offsuit.pourcent + calcul.suited.pourcent;
+		let totalc = calcul.pair.combo + calcul.offsuit.combo + calcul.suited.combo;
+		let totalp = calcul.pair.pourcent + calcul.offsuit.pourcent + calcul.suited.pourcent;
 		
 		this.screen.innerHTML += this.template_info_range('TOTAL', totalp.toFixed(2) + '%', totalc + " combos", 'global_info_range');
 
 		// set stat by type of cards
-		for(var typeofcard in calcul) {
+		for(let typeofcard in calcul) {
 			this.screen.innerHTML += this.template_info_range(this[typeofcard] + " " + typeofcard, calcul[typeofcard].pourcent.toFixed(2) + "%", calcul[typeofcard].combo + " combos", typeofcard);
 		}
 
 		// FIXME change this
 		// set the slider value
-		var slider = document.getElementById('range_slider');
+		let slider = document.getElementById('range_slider');
 		slider.value = totalp;
 	}
 
@@ -541,10 +540,10 @@ class RMAction {
 	}
 
 	set_action_to_card(card_id) {
-		var bts = document.getElementsByName('sel');
-		for(var i = 0; i < bts.length; i++) {
+		let bts = document.getElementsByName('sel');
+		for(let i = 0; i < bts.length; i++) {
 			if(bts[i].checked) {
-				var action = bts[i].value;
+				let action = bts[i].value;
 				this.card_toggle_class(card_id, action)
 			}
 		}
@@ -598,7 +597,7 @@ class RMAction {
 	}
 
 	card_toggle_class(idcard, action) {
-		var card = document.getElementById(idcard)
+		let card = document.getElementById(idcard)
 		if (card.classList.contains(action)) {
 			this.remove_card_value(card, action);
 		}
@@ -611,7 +610,7 @@ class RMAction {
 		
 	// Reset card
 	grid_set_hh_to_unset(hhid) {
-		var hh = document.getElementById(hhid);
+		let hh = document.getElementById(hhid);
 		hh.className = hh.className.split(' ')[0]; // Keep the first classname (pair, suited, offsuit)
 	}
 
@@ -717,8 +716,6 @@ class GridAlter {
 
 	}
 }
-
-	// load function
 	//source https://www.gamblingsites.org/poker/texas-holdem/starting-hand-rankings/
 // holdmem have a grid of 169 pf hand 
 // TODO fixe the correct pourcentage win value
@@ -909,17 +906,17 @@ class RMSlider {
 
 	change(handsingrid, action) {
 		// 
-		var slider_want = Math.round(169 * this.slider.value / 100);
-		var grid_have		= handsingrid.length;
+		let slider_want = Math.round(169 * this.slider.value / 100);
+		let grid_have		= handsingrid.length;
 		
 		//var randum_nhand = Math.floor( Math.random() * 100 + 1 )
 		//console.log(`debug affichage de d'une main random ${rank_holdem[randum_nhand].hand} numéro ${randum_nhand}`);
 		
 		if ( slider_want > grid_have ) {
-			var total2added = slider_want - grid_have;
-			for(var cpt = 0, i = 1; i <= 169; i++) {
+			let total2added = slider_want - grid_have;
+			for(let cpt = 0, i = 1; i <= 169; i++) {
 				if ( cpt === total2added ) { break; }
-				var hh = rank_holdem[i];
+				let hh = rank_holdem[i];
 				if ( !handsingrid.includes(hh.hand) ) {
 					action.set_action_to_card( hh.hand );
 
@@ -928,12 +925,12 @@ class RMSlider {
 			}
 		}
 		else {
-			var total2remove = grid_have - slider_want;
-			for ( cpt = 0, i = 169; i > 0; i--) {
+			let total2remove = grid_have - slider_want;
+			for (let cpt = 0, i = 169; i > 0; i--) {
 				if ( cpt === total2remove ) { break; }
-				hh = rank_holdem[i];
+				let hh = rank_holdem[i];
 				if ( handsingrid.includes(hh.hand) ) {
-					var hid = handsingrid.indexOf(hh.hand);
+					let hid = handsingrid.indexOf(hh.hand);
 					hid = handsingrid.splice(hid, 1)
 					action.grid_set_hh_to_unset(hid);
 					cpt += 1;
@@ -942,10 +939,11 @@ class RMSlider {
 		}
 	}
 }
+
 	
 
 	/** 
- * author: E.p 
+ * author: E.p TrouDuCuLHideOut2.0 
  * **/
 class PRM {
 

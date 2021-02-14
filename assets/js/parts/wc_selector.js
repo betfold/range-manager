@@ -96,7 +96,7 @@ class SelectRange extends HTMLElement {
 	}
 
 	set_action() {
-		var actions = '';
+		let actions = '';
 		switch ( this.tables.value ) {
 			case '2':
 				actions = { bvb: "Blind vs Blind" };
@@ -135,12 +135,12 @@ class SelectRange extends HTMLElement {
 		select.innerHTML = '';
 		
 		for(const name in positions) {
-			var optgroup = document.createElement("optgroup");
+			let optgroup = document.createElement("optgroup");
 			optgroup.label = name + " position";
 			if ( positions[name].length > 0) {
-				for(var v in positions[name]) {
-					var option = document.createElement("option");
-					var value = positions[name][v];
+				for(let v in positions[name]) {
+					let option = document.createElement("option");
+					let value = positions[name][v];
 					option.value = value;
 					option.innerHTML = value;
 					optgroup.appendChild(option);
@@ -160,7 +160,7 @@ class SelectRange extends HTMLElement {
 			case 'facingip':
 				for(const zone in l) {
 					var n = false;
-					for( var position_name of l[zone] ) {
+					for( let position_name of l[zone] ) {
 						if ( position_name === this.positions.value ) 
 							{  n = true; break; }
 						else {

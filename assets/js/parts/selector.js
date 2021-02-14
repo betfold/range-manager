@@ -19,7 +19,7 @@ class RMSelector {
 
 	
 	get_range_name() {
-		var name	 = `${this.table_size.value}${this.hero_pos.value}${this.stack_size.value}${this.action.value}`;
+		let name	 = `${this.table_size.value}${this.hero_pos.value}${this.stack_size.value}${this.action.value}`;
 		switch ( this.action.value ) {
 			case 'facingip':
 			case 'facingoop':
